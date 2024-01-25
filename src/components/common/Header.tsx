@@ -12,13 +12,13 @@ function Header() {
       ${isLandingPage ? "" : "border-b-1 border-b-gray-D9D9"}`}>
       <Link href="/" className="flex items-center">
         <Image width={29} height={33} src="/images/logo.png" alt="로고 이미지" />
-        <Image width={80} height={22} src="/images/Taskify.png" alt="Taskify 이미지" className="hidden tablet:block" />
+        <Image className="hidden tablet:block" width={80} height={22} src="/images/Taskify.png" alt="Taskify 이미지" />
       </Link>
       <div className="flex gap-36">
-        <Link href="/login" className="font-Pretendard text-16 font-normal">
+        <Link className="font-normal font-Pretendard text-16" href="/login">
           로그인
         </Link>
-        <Link href="/signup" className="font-Pretendard text-16 font-normal">
+        <Link className="font-normal font-Pretendard text-16" href="/signup">
           회원가입
         </Link>
       </div>
