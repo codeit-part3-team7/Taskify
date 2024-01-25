@@ -1,3 +1,10 @@
+import Header from "@/components/common/Header";
+
 export default function Landing() {
-  return <div>Landing</div>;
+  return (
+    <>
+      <Header />
+      <div>Landing</div>
+    </>
+  );
 }
