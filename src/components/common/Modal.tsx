@@ -68,9 +68,9 @@ function Modal({
                 <button
                   onClick={() => {
                     //케밥 컴포넌트 생성 후 추가
-                    console.log("kebob");
+                    console.log("kebab");
                   }}>
-                  <Image src={"/images/kebob.png"} alt="kebob" width={28} height={28} />
+                  <Image src={"/images/kebab.png"} alt="kebab" width={28} height={28} />
                 </button>
                 <button onClick={onClose}>
                   <Image src={"/images/close.png"} alt="close" width={32} height={32} />
