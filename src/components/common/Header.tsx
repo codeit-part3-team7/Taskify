@@ -11,8 +11,15 @@ function Header() {
       className={`flex items-center justify-between w-full h-70 pr-24 tablet:pr-40 pc:pr-80 pl-30 py-16 bg-white 
       ${isLandingPage ? "" : "border-b-1 border-b-gray-D9D9"}`}>
       <Link href="/" className="flex items-center">
-        <Image width={29} height={33} src="/images/logo.png" alt="로고 이미지" />
-        <Image className="hidden tablet:block" width={80} height={22} src="/images/Taskify.png" alt="Taskify 이미지" />
+        <Image className="w-full h-auto" width={29} height={33} src="/images/logo.png" alt="로고 이미지" />
+        <Image
+          className="hidden w-full h-auto tablet:block"
+          width={80}
+          height={22}
+          src="/images/Taskify.png"
+          alt="Taskify 이미지"
+          priority={true}
+        />
       </Link>
       <div className="flex gap-36">
         <Link className="font-normal font-Pretendard text-16" href="/login">
