@@ -1,3 +1,10 @@
+import CommentInput from "@/components/modal/input/CommentInput";
+
 export default function Landing() {
-  return <div>Landing</div>;
+  return (
+    <>
+      <CommentInput />
+      <div>Landing</div>
+    </>
+  );
 }
