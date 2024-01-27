@@ -1,8 +1,8 @@
-import React from 'react'
-import Modal from '../common/Modal'
+import React from "react";
+import Modal from "../common/Modal";
 
 interface AlertModalProps {
-    onClose: () => void;
+  onClose: () => void;
 }
 
 function AlertModal({ onClose }: AlertModalProps) {
@@ -15,4 +15,4 @@ function AlertModal({ onClose }: AlertModalProps) {
   );
 }
 
-export default AlertModal
+export default AlertModal;

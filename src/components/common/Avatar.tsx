@@ -15,7 +15,7 @@ function Avatar({ name, src, profile }: AvatarProps) {
     backgroundPosition: "center",
   };
 
-  const avatarStyle = profile ? "h-26 w-26" : "h-38 w-38 tablet:h-34 tablet:w-34";
+  const avatarStyle = profile ? "h-34 w-34 mobile:h-38 mobile:w-38" : "h-26 w-26";
 
   return (
     <div
