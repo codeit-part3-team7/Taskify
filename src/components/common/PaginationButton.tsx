@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-function PaginationButton = () => {
+function PaginationButton() {
   const [isEnabled, setIsEnabled] = useState(true);
 
   const clickButton = () => {
