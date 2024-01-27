@@ -1,13 +1,12 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-const PaginationButton = () => {
+function PaginationButton = () => {
   const [isEnabled, setIsEnabled] = useState(true);
 
   const clickButton = () => {
     setIsEnabled(!isEnabled);
   };
-
 
   return (
     <div className="inline-flex items-center justify-center">
