@@ -1,5 +1,3 @@
-import React from 'react';
-
 type Variant = "login" | "approve" | "deny" | "delete";
 
 type ButtonBaseProps = {
@@ -8,7 +6,7 @@ type ButtonBaseProps = {
   disabled?: boolean;
 };
 
-const ButtonBase: React.FC<ButtonBaseProps> = ({ variant, content, disabled = false }) => {
+function ButtonBase: React.FC<ButtonBaseProps> = ({ variant, content, disabled = false }) => {
   const variantClasses = (variant: Variant) => {
     switch (variant) {
       case "login":
