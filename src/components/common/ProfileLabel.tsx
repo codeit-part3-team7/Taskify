@@ -1,7 +1,6 @@
 import React from "react";
 import Avatar from "./Avatar";
 
-<<<<<<< HEAD
 interface ProfileLabelProps {
   data: any;
   profile?: boolean;
@@ -9,9 +8,6 @@ interface ProfileLabelProps {
 
 function ProfileLabel({ data, profile }: ProfileLabelProps) {
   //profile이 true인 경우 텍스트 반응형으로 숨김 처리.
-=======
-function ProfileLabel({ data, profile }: any) {
->>>>>>> 12e574c (Feat : ProfileLabel 컴포넌트 생성)
   const labelType = profile ? "hidden mobile:block" : "";
 
   return (
