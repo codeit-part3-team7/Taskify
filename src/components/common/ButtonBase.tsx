@@ -1,13 +1,13 @@
 type Variant = "login" | "approve" | "deny" | "delete";
 
-type ButtonBaseProps = {
+type ButtonProps = {
   variant: Variant;
   disabled?: boolean;
   onClick?: () => void;
   children?: React.ReactNode;
 };
 
-function ButtonBase({ variant, disabled = false, onClick, children }: ButtonBaseProps): JSX.Element {
+function Button({ variant, disabled = false, onClick, children }: ButtonProps): JSX.Element {
   const variantClasses = (): string => {
     switch (variant) {
       case "login":
@@ -33,4 +33,4 @@ function ButtonBase({ variant, disabled = false, onClick, children }: ButtonBase
   );
 };
 
-export default ButtonBase;
+export default Button;
