@@ -2,12 +2,13 @@ type Variant = "login" | "approve" | "deny" | "delete";
 
 type ButtonBaseProps = {
   variant: Variant;
-  content: string;
   disabled?: boolean;
+  onClick?: () => void;
+  children?: React.ReactNode;
 };
 
-function ButtonBase: React.FC<ButtonBaseProps> = ({ variant, content, disabled = false }) => {
-  const variantClasses = (variant: Variant) => {
+function ButtonBase({ variant, disabled = false, onClick, children }: ButtonBaseProps): JSX.Element {
+  const variantClasses = (): string => {
     switch (variant) {
       case "login":
         if (disabled) {
@@ -26,8 +27,8 @@ function ButtonBase: React.FC<ButtonBaseProps> = ({ variant, content, disabled =
   };
 
   return (
-    <button className={`${variantClasses(variant)}`} disabled={disabled}>
-      {content}
+    <button className={`${variantClasses(variant)}`} disabled={disabled} onClick={onClick}>
+      {children}
     </button>
   );
 };
