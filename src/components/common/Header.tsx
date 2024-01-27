@@ -13,7 +13,7 @@ function Header() {
       <Link href="/" className="flex items-center">
         <Image className="w-full h-auto" width={29} height={33} src="/images/logo.png" alt="로고 이미지" />
         <Image
-          className="hidden w-full h-auto tablet:block"
+          className="hidden tablet:block"
           width={80}
           height={22}
           src="/images/Taskify.png"
