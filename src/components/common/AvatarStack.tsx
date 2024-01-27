@@ -23,7 +23,7 @@ function AvatarStack({ list }: AvatarsProps) {
         {list.slice(0, VISIBLE_COUNT_INIT).map((data, index) => {
           return (
             <div key={index} className={`relative`}>
-              <Avatar name={data.name} />
+              <Avatar name={data.name} profile />
             </div>
           );
         })}
