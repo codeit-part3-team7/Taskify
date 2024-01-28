@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import Comments from "../Comments";
+import Button from "@/components/common/Button";
 
 function CommentInput() {
   const [comment, setComment] = useState("");
@@ -34,12 +35,9 @@ function CommentInput() {
           onChange={handleChange}
         />
         <div className="absolute bottom-15 right-15">
-          <button
-            className="flex w-83 h-32 justify-center items-center gap-10 flex-shrink-0 rounded-4 border-2 border-gray-D9D9 text-violet text-center font-Pretendard text-lg font-bold"
-            type="button"
-            onClick={handleSubmit}>
+          <Button variant="input" onClick={handleSubmit}>
             입력
-          </button>
+          </Button>
         </div>
       </div>
       <div>
