@@ -1,11 +1,11 @@
 import Avatar from "../common/Avatar";
 
 interface CommentsProps {
-  submitComment?: string;
+  comment?: string;
   onDelete?: () => void;
 }
 
-function Comments({ submitComment, onDelete }: CommentsProps) {
+function Comments({ comment, onDelete }: CommentsProps) {
   const handleDelete = () => {
     if (onDelete) {
       onDelete();
@@ -20,7 +20,7 @@ function Comments({ submitComment, onDelete }: CommentsProps) {
           <span className="text-black font-Pretendard text-14 font-bold">이름</span>
           <span className="text-gray-9FA6 font-Pretendard text-12 font-normal">2022.12.27 14:00</span>
         </div>
-        <div className="mt-6 text-black font-Pretendard text-14 font-normal">{submitComment}</div>
+        <div className="mt-6 text-black font-Pretendard text-14 font-normal">{comment}</div>
         <div className="flex gap-12 mt-12">
           <button className="text-gray-9FA6 font-Pretendard text-12 font-normal underline">수정</button>
           <button className="text-gray-9FA6 font-Pretendard text-12 font-normal underline" onClick={handleDelete}>

@@ -4,7 +4,7 @@ import Button from "@/components/common/Button";
 
 function CommentInput() {
   const [comment, setComment] = useState("");
-  const [submitComment, setSubmitComment] = useState<string[]>([]);
+  const [commentList, setCommentList] = useState<string[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -12,15 +12,14 @@ function CommentInput() {
 
   const handleSubmit = () => {
     if (comment.trim() !== "") {
-      setSubmitComment([...submitComment, comment]);
+      setCommentList([comment, ...commentList]);
       setComment("");
     }
   };
 
-  const handleDelete = (index: number) => {
-    const updatedComments = [...submitComment];
-    updatedComments.splice(index, 1);
-    setSubmitComment(updatedComments);
+  const handleDelete = (id: number) => {
+    const updatedComments = commentList.filter((_, index) => index !== id);
+    setCommentList(updatedComments);
   };
 
   return (
@@ -41,8 +40,8 @@ function CommentInput() {
         </div>
       </div>
       <div>
-        {submitComment.map((comment, index) => (
-          <Comments key={index} submitComment={comment} onDelete={() => handleDelete(index)} />
+        {commentList.map((comment, index) => (
+          <Comments key={index} comment={comment} onDelete={() => handleDelete(index)} />
         ))}
       </div>
     </>
