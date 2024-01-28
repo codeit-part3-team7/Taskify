@@ -8,7 +8,7 @@ interface CommentsProps {
 function Comments({ submitComment, onDelete }: CommentsProps) {
   const handleDelete = () => {
     if (onDelete) {
-      onDelete(); // onDelete 함수 호출
+      onDelete();
     }
   };
 
