@@ -1,4 +1,4 @@
-type Variant = "login" | "approve" | "deny" | "delete" | "input";
+type Variant = "filled" | "ghost" | "ghost_gray";
 
 type ButtonProps = {
   variant: Variant;
