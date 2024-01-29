@@ -24,11 +24,11 @@ function CommentInput() {
 
   return (
     <>
-      <div className="flex flex-col gap-5 w-287 tablet:w-450 relative">
-        <label className="font-Pretendard text-xl font-medium leading-normal">댓글</label>
-        <div className="w-full h-70 tablet:h-110 p-16 rounded-6 border-2 border-gray-D9D9 outline-none focus-within:border-violet placeholder:text-gray-9FA6 font-Pretendard text-base font-normal leading-normal">
+      <div className="relative flex flex-col gap-5 w-287 tablet:w-450">
+        <label className="text-xl font-medium leading-normal font-Pretendard">댓글</label>
+        <div className="w-full p-16 text-base font-normal leading-normal border-2 outline-none h-70 tablet:h-110 rounded-6 border-gray-D9D9 focus-within:border-violet placeholder:text-gray-9FA6 font-Pretendard">
           <textarea
-            className="w-320 h-full resize-none outline-none"
+            className="h-full outline-none resize-none w-170 tablet:w-320"
             placeholder="댓글 작성하기"
             value={comment}
             onChange={handleChange}></textarea>
@@ -39,11 +39,13 @@ function CommentInput() {
           </Button>
         </div>
       </div>
-      <div>
-        {commentList.map((comment, index) => (
-          <Comments key={index} comment={comment} onDelete={() => handleDelete(index)} />
-        ))}
-      </div>
+      {commentList && commentList.length > 0 && (
+        <div className="overflow-auto h-300 w-300 tablet:w-480">
+          {commentList.map((comment, index) => (
+            <Comments key={index} comment={comment} onDelete={() => handleDelete(index)} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
