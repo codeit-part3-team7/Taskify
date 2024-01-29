@@ -51,7 +51,7 @@ function ModalInputField({ labelName, labelTitle, textArea, rules, required, ...
         render={({ field }) =>
           textArea ? (
             <textarea
-              className={`${fieldClass} ${errorBorder} resize-none`}
+              className={`${fieldClass} ${errorBorder} resize-none outline-none`}
               {...field}
               {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
             />
