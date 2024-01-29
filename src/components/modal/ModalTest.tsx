@@ -1,8 +1,8 @@
 import { useToggle } from "usehooks-ts";
-import AlertModal from "@/components/modal/alert";
 import NewDashModal from "@/components/modal/newDash";
 import { CreateColumn, UpdateColumn } from "@/components/modal/column";
 import { CreateTodo, UpdateTodo } from "@/components/modal/todo";
+import AlertModal from "./Alert";
 
 export default function ModalTest() {
   const [createValue, createToggle, setCreateValue] = useToggle();
