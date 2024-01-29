@@ -2,6 +2,9 @@ type Variant = "login" | "approve" | "deny" | "delete" | "input";
 
 type ButtonProps = {
   variant: Variant;
+  width: string | number;
+  height?: string | number;
+  text: string | number;
   disabled?: boolean;
   onClick?: () => void;
   children?: React.ReactNode;
@@ -29,7 +32,12 @@ function Button({ variant, disabled = false, onClick, children }: ButtonProps): 
   };
 
   return (
-    <button className={`${variantClasses(variant)}`} disabled={disabled} onClick={onClick}>
+    <button
+      className={variantClasses()}
+      style={inlineStyles}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
