@@ -69,9 +69,7 @@ export default function ModalTest() {
       </div>
       <div>
         <button onClick={taskToggle}>TaskModal</button>
-        {taskValue && (
-          <TaskModal onClose={() => setTodoUpdateValue(false)} callback={() => console.log("할일을 변경")} />
-        )}
+        {taskValue && <TaskModal onClose={() => setTaskValue(false)} callback={() => console.log("할일을 변경")} />}
       </div>
     </>
   );
