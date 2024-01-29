@@ -9,7 +9,7 @@ function UpdateColumnModal({ onClose, onDelete }: any) {
 
   return (
     <FormProvider {...methods}>
-      <Modal title="컬럼 관리" modalType={"update"} onClose={onClose} onDelete={onDelete} useFormData>
+      <Modal title="컬럼 관리" modalType={"update"} onClose={onClose} onDelete={onDelete}>
         <ModalInputField labelName="name" labelTitle="이름" rules={rules} />
       </Modal>
     </FormProvider>
