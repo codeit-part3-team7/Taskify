@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useFormContext, FieldValues } from "react-hook-form";
+import Button from "./Button";
 
 interface ModalProps<T = void> {
   children: ReactNode;
@@ -63,7 +64,7 @@ function Modal({ children, title, modalType, hasOptionsbutton, useFormData, call
           className="bg-white min-w-327 tablet:min-w-540 min-h-220 tablet:min-h-250: rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto]"
           onClick={stopEventBubbling}>
           {/* 모달 헤더 영역 */}
-          <header className="flex items-center justify-between modal-header mb-24 tablet:mt-4 tablet:mb-32">
+          <header className="flex items-center justify-between mb-24 modal-header tablet:mt-4 tablet:mb-32">
             {!isDelete && <span className="font-bold text-black-3332 text-20 tablet:text-24">{title}</span>}
             {/**모달 헤더 버튼 영역 */}
             {hasOptionsbutton && (
@@ -86,21 +87,30 @@ function Modal({ children, title, modalType, hasOptionsbutton, useFormData, call
           {/* 모달 푸터 영역 */}
           {modalType && (
             <footer className="flex flex-col tablet:flex-row tablet:justify-between mt-28 tablet:mt-32">
-              {isUpdate && (
-                <span className="underline text-nowrap text-gray-9FA6 cursor-pointer" onClick={onDelete}>
+              {!useFormData && isUpdate && (
+                <span className="underline cursor-pointer text-nowrap text-gray-9FA6" onClick={onDelete}>
                   삭제하기
                 </span>
               )}
               <div className="flex justify-center w-full gap-12 tablet:justify-end">
-                {/* 버튼 컴포넌트 생성 후 변경 */}
-                {!isAlert && <button onClick={onClose}>취소</button>}
+                {!isAlert && (
+                  <Button variant="ghost" buttonType="modal" onClick={onClose}>
+                    취소
+                  </Button>
+                )}
                 {useFormData && (
-                  <button type="submit" onClick={formContext.handleSubmit(handleButtonClick)}>
+                  <Button
+                    variant="filled"
+                    type="submit"
+                    buttonType="modal"
+                    onClick={formContext.handleSubmit(handleButtonClick)}>
                     {buttonMapping[modalType]}
-                  </button>
+                  </Button>
                 )}
                 {!hasOptionsbutton && !useFormData && (
-                  <button onClick={handleButtonClick}>{buttonMapping[modalType]}</button>
+                  <Button variant="filled" buttonType="modal" onClick={handleButtonClick}>
+                    {buttonMapping[modalType]}
+                  </Button>
                 )}
               </div>
             </footer>
