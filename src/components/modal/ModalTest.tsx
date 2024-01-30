@@ -4,6 +4,10 @@ import { CreateColumn, UpdateColumn } from "@/components/modal/column";
 import { CreateTodo, UpdateTodo } from "@/components/modal/todo";
 import InviteModal from "./invite";
 import AlertModal from "./Alert";
+import Button from "../common/Button";
+import Avatar from "../common/Avatar";
+import AvatarStack from "../common/AvatarStack";
+import ProfileLabel from "../common/ProfileLabel";
 
 export default function ModalTest() {
   const [createValue, createToggle, setCreateValue] = useToggle();
@@ -77,6 +81,55 @@ export default function ModalTest() {
         {inviteValue && (
           <InviteModal onClose={() => setInviteValue(false)} callback={() => console.log("구성원을 초대")} />
         )}
+      </div>
+      <div className="mb-10">
+        <span>button list</span>
+        <div className="mb-10">
+          <Button variant="ghost" buttonType="comment">
+            입력
+          </Button>
+        </div>
+        <div className="mb-10">
+          <Button variant="ghost" buttonType="delete">
+            삭제
+          </Button>
+        </div>
+        <div className="flex flex-col mb-10 w-500 gap-10">
+          <Button variant="filled" buttonType="auth">
+            로그인
+          </Button>
+          <Button variant="filled" buttonType="auth" disabled>
+            로그인
+          </Button>
+        </div>
+        <div className="flex gap-10 mb-10">
+          <Button variant="ghost_gray" buttonType="modal">
+            취소
+          </Button>
+          <Button variant="filled" buttonType="modal">
+            확인
+          </Button>
+        </div>
+        <div className="flex gap-10 mb-10">
+          <Button variant="filled" buttonType="confirm">
+            수락
+          </Button>
+          <Button variant="ghost" buttonType="confirm">
+            거절
+          </Button>
+        </div>
+      </div>
+      <div>
+        <Avatar nickname="홍길동" />
+      </div>
+      <div>
+        <ProfileLabel data={{ nickname: "홍길동", profileImageUrl: "" }} />
+      </div>
+      <div>
+        <ProfileLabel data={{ nickname: "홍길동", profileImageUrl: "" }} avatarType="dropdown" />
+      </div>
+      <div>
+        <AvatarStack list={[{ nickname: "홍길동" }, { nickname: "김길동" }, { nickname: "이길동" }]} />
       </div>
     </>
   );
