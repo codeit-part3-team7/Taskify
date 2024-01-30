@@ -8,17 +8,17 @@ interface ProfileData {
 
 interface ProfileLabelProps {
   data: ProfileData;
-  avatarType?: "default" | "dropdown";
+  avatarType?: "default" | "modal" | "dropdown";
 }
 
 function ProfileLabel({ data, avatarType = "default" }: ProfileLabelProps) {
-  //profile이 true인 경우 텍스트 반응형으로 숨김 처리.
-  const labelType = avatarType === "default" ? "hidden mobile:block" : "";
+  const labelType = avatarType === "default" ? "hidden tablet:block" : "";
+  const labelSize = avatarType === "modal" ? "text-12 tablet:text-14" : "text-14 tablet:text-16";
 
   return (
     <div className="flex items-center gap-6">
       <Avatar nickname={data.nickname} profileImageUrl={data.profileImageUrl} avatarType={avatarType} />
-      <span className={`text-14 tablet:text-16 text-black-3332 ${labelType}`}>{data.nickname}</span>
+      <span className={`${labelSize} text-black-3332 ${labelType}`}>{data.nickname}</span>
     </div>
   );
 }

@@ -18,12 +18,12 @@ function AvatarStack({ list }: AvatarsProps) {
   const isVisible = count > visibleCount;
 
   return (
-    <div className={`relative flex h-10 group`}>
+    <div className={`relative flex group`}>
       <div className={`h-38 flex items-center -space-x-10 tablet:-space-x-8`}>
         {list.slice(0, VISIBLE_COUNT_INIT).map((data, index) => {
           return (
             <div key={index} className={`relative`}>
-              <Avatar nickname={data.nickname} />
+              <Avatar nickname={data.nickname} profileImageUrl={data.profileImageUrl} />
             </div>
           );
         })}
