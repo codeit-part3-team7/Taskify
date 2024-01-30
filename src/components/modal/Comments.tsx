@@ -40,7 +40,6 @@ function Comments({ comment, onDelete }: CommentsProps) {
         {isEditing ? (
           <textarea
             className="p-16 mt-6 text-base font-normal leading-normal border-2 outline-none resize-none w-250 tablet:w-410 h-70 tablet:h-110 rounded-6 border-gray-D9D9 focus:border-violet placeholder:text-gray-9FA6 font-Pretendard"
-            maxLength={180}
             value={editingComment}
             onChange={(e) => setEditingComment(e.target.value)}
           />
