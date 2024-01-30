@@ -12,8 +12,8 @@ function ProfileLabel({ data, profile }: ProfileLabelProps) {
 
   return (
     <div className="flex items-center gap-6">
-      <Avatar name={data.name} profile />
-      <span className={`text-14 tablet:text-16 text-black-3332 ${labelType}`}>{data.name}</span>
+      <Avatar profile />
+      <span className={`text-14 tablet:text-16 text-black-3332 ${labelType}`}>중급 프로젝트</span>
     </div>
   );
 }
