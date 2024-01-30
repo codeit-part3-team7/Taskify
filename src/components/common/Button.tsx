@@ -51,4 +51,5 @@ function Button({ variant, buttonType, children, ...props }: ButtonProps) {
     </button>
   );
 }
+
 export default Button;

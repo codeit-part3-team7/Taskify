@@ -4,6 +4,7 @@ import { CreateColumn, UpdateColumn } from "@/components/modal/column";
 import { CreateTodo, UpdateTodo } from "@/components/modal/todo";
 import AlertModal from "./alert";
 import TaskModal from "./task";
+import InviteModal from "./invite";
 
 export default function ModalTest() {
   const [createValue, createToggle, setCreateValue] = useToggle();
@@ -14,6 +15,7 @@ export default function ModalTest() {
   const [todoValue, todoToggle, setTodoValue] = useToggle();
   const [todoUpdateValue, todoUpdateToggle, setTodoUpdateValue] = useToggle();
   const [taskValue, taskToggle, setTaskValue] = useToggle();
+  const [inviteValue, inviteToggle, setInviteValue] = useToggle();
 
   return (
     <>
@@ -70,6 +72,12 @@ export default function ModalTest() {
       <div>
         <button onClick={taskToggle}>TaskModal</button>
         {taskValue && <TaskModal onClose={() => setTaskValue(false)} callback={() => console.log("할일을 변경")} />}
+      </div>
+      <div>
+        <button onClick={inviteToggle}>InviteModal</button>
+        {inviteValue && (
+          <InviteModal onClose={() => setInviteValue(false)} callback={() => console.log("구성원을 초대")} />
+        )}
       </div>
     </>
   );
