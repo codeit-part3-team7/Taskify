@@ -123,7 +123,7 @@ export default function ModalTest() {
         <Avatar nickname="홍길동" />
       </div>
       <div>
-        <ProfileLabel data={{ nickname: "홍길동", profileImageUrl: "" }} />
+        <ProfileLabel data={{ nickname: "홍길동", profileImageUrl: "" }} avatarType="modal" />
       </div>
       <div>
         <ProfileLabel data={{ nickname: "홍길동", profileImageUrl: "" }} avatarType="dropdown" />
