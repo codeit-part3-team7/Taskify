@@ -1,3 +1,7 @@
+import MemberTable from "@/components/mydashboard/MemberTable";
+
 export default function Landing() {
-  return <div>Landing</div>;
+  return <div>
+    <MemberTable />
+  </div>;
 }
