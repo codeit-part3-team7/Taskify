@@ -10,15 +10,7 @@ type ButtonProps = {
   children?: React.ReactNode;
 };
 
-function Button({
-  variant,
-  width,
-  height,
-  fontsize,
-  disabled = false,
-  onClick,
-  children,
-}: ButtonProps): JSX.Element {
+function Button({ variant, width, height, fontsize, disabled = false, onClick, children }: ButtonProps): JSX.Element {
   const variantClasses = (): string => {
     switch (variant) {
       case "filled":
@@ -33,18 +25,13 @@ function Button({
   };
 
   const inlineStyles = {
-    width: typeof width === 'number' ? `${width}px`: width,
-    height: typeof height === 'number' ? `${height}px` : height,  
-    fontSize: typeof fontsize === 'number' ? `${fontsize}px` : fontsize,
+    width: typeof width === "number" ? `${width}px` : width,
+    height: typeof height === "number" ? `${height}px` : height,
+    fontSize: typeof fontsize === "number" ? `${fontsize}px` : fontsize,
   };
 
   return (
-    <button
-      className={variantClasses()}
-      style={inlineStyles}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <button className={variantClasses()} style={inlineStyles} disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );
