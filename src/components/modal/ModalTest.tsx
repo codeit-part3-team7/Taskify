@@ -2,6 +2,7 @@ import { useToggle } from "usehooks-ts";
 import NewDashModal from "@/components/modal/newDash";
 import { CreateColumn, UpdateColumn } from "@/components/modal/column";
 import { CreateTodo, UpdateTodo } from "@/components/modal/todo";
+import InviteModal from "./invite";
 import AlertModal from "./Alert";
 
 export default function ModalTest() {
@@ -12,6 +13,8 @@ export default function ModalTest() {
   const [columnUpdateValue, columnUpdateToggle, setColumnUpdateValue] = useToggle();
   const [todoValue, todoToggle, setTodoValue] = useToggle();
   const [todoUpdateValue, todoUpdateToggle, setTodoUpdateValue] = useToggle();
+  const [taskValue, taskToggle, setTaskValue] = useToggle();
+  const [inviteValue, inviteToggle, setInviteValue] = useToggle();
 
   return (
     <>
@@ -63,6 +66,16 @@ export default function ModalTest() {
         <button onClick={todoUpdateToggle}>UpdateTodo</button>
         {todoUpdateValue && (
           <UpdateTodo onClose={() => setTodoUpdateValue(false)} callback={() => console.log("할일을 변경")} />
+        )}
+      </div>
+      <div>
+        <button onClick={taskToggle}>TaskModal</button>
+        {taskValue && <TaskModal onClose={() => setTaskValue(false)} callback={() => console.log("할일을 변경")} />}
+      </div>
+      <div>
+        <button onClick={inviteToggle}>InviteModal</button>
+        {inviteValue && (
+          <InviteModal onClose={() => setInviteValue(false)} callback={() => console.log("구성원을 초대")} />
         )}
       </div>
     </>

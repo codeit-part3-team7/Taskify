@@ -7,7 +7,7 @@ import Button from "./Button";
 interface ModalProps<T = void> {
   children: ReactNode;
   title?: string;
-  modalType?: "alert" | "create" | "update" | "delete";
+  modalType?: "alert" | "create" | "update" | "delete" | "invite";
   hasOptionsbutton?: boolean;
   useFormData?: boolean;
   callback?: (data: FieldValues) => T;
@@ -24,6 +24,7 @@ function Modal({ children, title, modalType, hasOptionsbutton, useFormData, call
     create: "생성",
     update: "수정",
     delete: "삭제",
+    invite: "초대",
   };
 
   const isAlert = modalType === "alert";
