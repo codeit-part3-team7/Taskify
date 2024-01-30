@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useFormContext, FieldValues } from "react-hook-form";
 import Button from "./Button";
+import Popover from "./Popover";
+import { MODAL_POPOVER } from "@/lib/constants";
 
 interface ModalProps<T = void> {
   children: ReactNode;
@@ -70,13 +72,9 @@ function Modal({ children, title, modalType, hasOptionsbutton, useFormData, call
             {/**모달 헤더 버튼 영역 */}
             {hasOptionsbutton && (
               <div className="flex items-center gap-15">
-                <button
-                  onClick={() => {
-                    //케밥 컴포넌트 생성 후 추가
-                    console.log("kebab");
-                  }}>
+                <Popover contents={MODAL_POPOVER}>
                   <Image src={"/images/kebab.png"} alt="kebab" width={28} height={28} />
-                </button>
+                </Popover>
                 <button onClick={onClose}>
                   <Image src={"/images/close.png"} alt="close" width={32} height={32} />
                 </button>
