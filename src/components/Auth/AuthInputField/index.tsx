@@ -1,4 +1,4 @@
-import { Input, Label, ErrorMessage } from "./elements";
+import { Input, Label, ErrorMessage } from "./Elements";
 import { useState } from "react";
 
 interface AuthInputProps {
