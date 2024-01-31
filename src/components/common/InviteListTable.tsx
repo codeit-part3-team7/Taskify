@@ -2,6 +2,14 @@ import Button from "../common/Button";
 import InviteButton from "../common/InviteButton";
 import PaginationButton from "../common/PaginationButton";
 
+const MOCK_MEMBERS = [
+    { email: "codeitA@codeit.com" },
+    { email: "codeitB@codeit.com" },
+    { email: "codeitC@codeit.com" },
+    { email: "codeitD@codeit.com" },
+    { email: "codeitE@codeit.com" }
+]
+
 function InviteListTable() {
     return (
       <div>
@@ -23,26 +31,12 @@ function InviteListTable() {
         </div>
             {/* 아래 div안의 데이터가 1개일 때와 5번째 순서마다 border-b-1이 안보이는 기능은 기능구현 때 구현 */}
         <div>
+            {MOCK_MEMBERS.map((member, index) => (
             <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                <p className="text-14">codeitA@codeit.com</p>
+                <p className="text-14">{member.email}</p>
                 <Button variant="ghost" buttonType="delete">취소</Button>
             </div>
-            <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                <p className="text-14">codeitB@codeit.com</p>
-                <Button variant="ghost" buttonType="delete">취소</Button>
-            </div>
-            <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                <p className="text-14">codeitC@codeit.com</p>
-                <Button variant="ghost" buttonType="delete">취소</Button>
-            </div>
-            <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                <p className="text-14">codeitD@codeit.com</p>
-                <Button variant="ghost" buttonType="delete">취소</Button>
-            </div>
-            <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                <p className="text-14">codeitE@codeit.com</p>
-                <Button variant="ghost" buttonType="delete">취소</Button>
-            </div>
+            ))}
         </div>
     </div> 
     )
