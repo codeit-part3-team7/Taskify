@@ -8,7 +8,7 @@ interface ProfileData {
 
 interface ProfileLabelProps {
   data: ProfileData;
-  avatarType?: "default" | "modal" | "dropdown";
+  avatarType?: "default" | "modal" | "dropdown" | "table";
 }
 
 function ProfileLabel({ data, avatarType = "default" }: ProfileLabelProps) {

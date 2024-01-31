@@ -4,6 +4,7 @@ import MemberTable from "@/components/common/MemberTable";
 
 export default function Landing() {
   return <div>
+    
     <MemberTable />
     <InviteListTable />
     <InviteDashTable />
