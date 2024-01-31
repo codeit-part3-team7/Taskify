@@ -14,8 +14,8 @@ function InviteDashTable() {
             <p className="text-gray-9FA6 text-14 pt-18 tablet:text-16">이름</p>
                 <div>
                     <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE">
-                        <div className="flex gap-x-1">
-                            <Button variant="filled" buttonType="confirm">수락</Button>
+                        <div className="flex gap-x-10">
+                            <Button variant="filled_4" buttonType="confirm">수락</Button>
                             <Button variant="ghost" buttonType="confirm">거절</Button>
                         </div>
                     </div>
