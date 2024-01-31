@@ -20,7 +20,7 @@ function InviteDashTable() {
             <div className="pt-20">
                 <SearchBar />
             </div>
-            <div className="hidden tablet:grid tablet:grid-cols-3 tablet:pt-20">
+            <div className="hidden tablet:grid tablet:grid-cols-3 tablet:pt-24">
                 <p className="text-gray-9FA6 text-14 pt-18 tablet:text-16">이름</p>
                 <p className="text-gray-9FA6 text-14 pt-18 tablet:text-16">초대자</p>
                 <p className="text-gray-9FA6 text-14 pt-18 tablet:text-16">수락 여부</p>
