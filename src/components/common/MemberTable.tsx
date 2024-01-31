@@ -22,19 +22,19 @@ function MemberTable() {
             {/* 아래 div안의 데이터가 1개일 때와 4번째 순서마다 border-b-1이 안보이는 기능은 기능구현 때 구현 */}
             <div>                                   
                 <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                    <ProfileLabel data={userData}/>
+                    <ProfileLabel data={userData} avatarType="table"/>
                     <Button variant="ghost" buttonType="delete">삭제</Button>
                 </div>
                 <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                    <ProfileLabel data={userData}/>
+                    <ProfileLabel data={userData}  avatarType="table"/>
                     <Button variant="ghost" buttonType="delete">삭제</Button>
                 </div>
                 <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                    <ProfileLabel data={userData}/>
+                    <ProfileLabel data={userData}  avatarType="table"/>
                     <Button variant="ghost" buttonType="delete">삭제</Button>
                 </div>
                 <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28">
-                    <ProfileLabel data={userData}/>
+                    <ProfileLabel data={userData}  avatarType="table"/>
                     <Button variant="ghost" buttonType="delete">삭제</Button>
                 </div>
             </div>
