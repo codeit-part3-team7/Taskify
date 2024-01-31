@@ -26,7 +26,7 @@ function Button({ variant, buttonType, children, ...props }: ButtonProps) {
     //single Button
     auth: "w-full h-50 text-18",
     delete: "w-52 h-28 text-12 tablet:w-84 tablet:h-32 tablet:text-14",
-    comment: "w-84 h-28 tablet:h-32",
+    comment: "w-84 h-28 font-medium tablet:h-32",
   };
 
   return (
