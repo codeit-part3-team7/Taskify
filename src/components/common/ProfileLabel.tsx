@@ -12,7 +12,7 @@ interface ProfileLabelProps {
 }
 
 function ProfileLabel({ data, avatarType = "default" }: ProfileLabelProps) {
-  const labelType = avatarType === "default" || avatarType === "table" ? "hidden tablet:block" : "";
+  const labelType = avatarType === "default" ? "hidden tablet:block" : "";
   const labelSize = avatarType === "modal" ? "text-12 tablet:text-14" : "text-14 tablet:text-16";
   const labelGaps = {
     default: "gap-12",
