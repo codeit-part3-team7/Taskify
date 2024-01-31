@@ -4,7 +4,8 @@ import ProfileLabel from "../common/ProfileLabel";
 
 // ProfileLabel 컴포넌트를 사용하기 위해 정의했습니다.
 const userData = {
-    name: '정만철',
+    nickname: "정만철",
+    profileImageUrl: ""
   };
 
 function MemberTable() {
