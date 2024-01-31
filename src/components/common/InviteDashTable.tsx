@@ -1,7 +1,6 @@
 import Button from "../common/Button";
 import SearchBar from "./SearchBar";
 
-
 const MOCK_MEMBERS = [
     { dashboardname: "프로덕트 디자인", nickname: "손동희" },
     { dashboardname: "새로운 기획 문서", nickname: "안귀영" },
