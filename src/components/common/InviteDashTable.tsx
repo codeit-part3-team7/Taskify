@@ -12,10 +12,8 @@ const MOCK_MEMBERS = [
 
 function InviteDashTable() {
     return (
-        <div className="px-20 tablet:px-28">
-            <div className="flex items-center justify-between pt-22 tablet:pt-26">
-                <p className="text-20 font-bold tablet:text-24">초대받은 대시보드</p>
-            </div>
+        <div className="px-16 tablet:px-28">
+            <p className="text-20 font-bold tablet:text-24 pt-24 tablet:pt-32">초대받은 대시보드</p>
             <div className="pt-20">
                 <SearchBar />
             </div>
