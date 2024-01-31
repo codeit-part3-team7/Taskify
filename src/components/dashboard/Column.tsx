@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ChipNum } from "../common/Chips";
 import { mockData } from "./mockData";
 import Card from "@/components/dashboard/Card";
+import AddColumnButton from "../common/AddColumnButton";
 
 interface ColumnProps {
   title: string;
@@ -26,10 +27,11 @@ function Column({ title, id }: ColumnProps) {
           <ChipNum totalCount={totalCount} />
         </div>
         <button className="relative inline-block size-22 tablet:size-24" onClick={handleColumnEdit}>
-          <Image fill src="/images/setting.png" alt="setting" />
+          <Image fill src="/images/settings.png" alt="setting" />
         </button>
       </div>
       <div className="flex flex-col gap-16">
+        <AddColumnButton />
         {cards?.map(({ id, title, tags, dueDate, assignee, imageUrl }) => (
           <Card key={id} title={title} tags={tags} dueDate={dueDate} assignee={assignee} imageUrl={imageUrl} id={id} />
         ))}
