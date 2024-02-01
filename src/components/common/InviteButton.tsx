@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+// width 대신 패딩값 사용하기
 function InviteButton({ variant = "default" }) {
   const buttonStyle = (variant: string) => {
     switch (variant) {
@@ -41,8 +42,8 @@ function InviteButton({ variant = "default" }) {
   const { width, height } = imageSize(variant);
 
   return (
-    <button className={`flex items-center justify-center flex-shrink-0 ${buttonStyle(variant)}`}>
-      <div className={`${imageContainerStyle(variant)}`}> 
+    <button className={flex items-center justify-center flex-shrink-0 ${buttonStyle(variant)}}>
+      <div className={${imageContainerStyle(variant)}}> 
         <Image
           src={imageSrc(variant)}
           alt="초대하기 아이콘"
@@ -50,7 +51,7 @@ function InviteButton({ variant = "default" }) {
           height={height} />
       </div>
       <p>초대하기</p>
-    </button>    
+    </button>
   );
 };
 
