@@ -11,23 +11,25 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
       case "filled":
         return "h-28 px-12 gap-6 rounded-4px text-12 bg-violet text-white rounded-4 tablet:w-105 tablet:h-32 tablet:text-14 tablet:px-16"; 
       case "ghost":
-        return "h-40 px-12 gap-8 border rounded-8 text-14 bg-white text-gray-7874 tablet:h-36 tablet:px-16 pc:h-40";
+        return "h-30 px-12 gap-8 border rounded-8 text-14 bg-white text-gray-7874 border-gray-D9D9 tablet:h-36 tablet:px-16 pc:h-40";
       default: 
         return ""; 
     }
   };
 
-  const imageSrc = (variant: string) => {
-    switch (variant) {
-      case "filled":
-        return '/images/add_box_white.png';
-      case "ghost":
-        return '/images/add_box_gray.png';
+  const imageSrc = (variant: string, children: string) => {
+    const key = `${variant}-${children}`;
+    switch (key) {
+      case "filled-초대하기":
+        return "/images/add_box_white.png";
+      case "ghost-초대하기":
+        return "/images/add_box_gray.png";
+      case "ghost-관리":
+        return "/images/settings.png";
       default:
-        return ""; 
+        return "";
     }
   };
-
   const imageSize = (variant: string) => {
     switch (variant) {
       case "filled":
@@ -49,12 +51,12 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
     <button className={`flex items-center justify-center flex-shrink-0 ${buttonStyle(variant)}`}>
       <div className={`${imageContainerStyle(variant)}`}> 
         <Image
-          src={imageSrc(variant)}
+          src={imageSrc(variant, children)}
           alt="초대하기 아이콘"
           width={width}
           height={height} />
       </div>
-      <p>{children}</p>
+      {children}
     </button>    
   );
 }
