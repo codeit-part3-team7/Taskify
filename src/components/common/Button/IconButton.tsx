@@ -45,6 +45,8 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
     return variant === "ghost" ? "hidden tablet:flex" : "flex";
   };
 
+  const altText = `${children} 아이콘`
+
   const { width, height } = imageSize(variant);
 
   return (
@@ -52,7 +54,7 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
       <div className={`${imageContainerStyle(variant)}`}> 
         <Image
           src={imageSrc(variant, children)}
-          alt="초대하기 아이콘"
+          alt={altText}
           width={width}
           height={height} />
       </div>
