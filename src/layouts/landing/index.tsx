@@ -10,7 +10,7 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
   return (
     <div className="min-h-screen">
       <Header />
-      <div className="tablet:mx-40 pc:mx-200 mt-42 mb:120 tablet:mt-94 tablet:mb-160">{children}</div>
+      <div className="mx-16 tablet:mx-40 pc:mx-200 mt-112 mb:120 tablet:mt-94 tablet:mb-160">{children}</div>
       <Footer />
     </div>
   );
