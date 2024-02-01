@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AvatarStack from "./AvatarStack";
-import InviteButton from "./Button/InviteButton";
+import InviteButton from "./Button/IconButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ProfileLabel from "./ProfileLabel";
@@ -72,7 +72,7 @@ function DashboardHeader({ myData, dashboadData, members }: DashboardHeaderProps
               <Link href={`/dashboard/${dashboadData?.id}/edit`}>
                 <SettingButton />
               </Link>
-              <InviteButton onClick={() => setIsModalOpen(true)} />
+              <InviteButton variant="ghost" onClick={() => setIsModalOpen(true)} />
             </div>
           )}
           <div className="flex items-center gap-12 pc:gap-32 tablet:gap-24">

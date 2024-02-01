@@ -1,13 +1,17 @@
 import Image from 'next/image';
 
-// width 대신 패딩값 사용하기
-function InviteButton({ variant = "default" }) {
+interface IconButtonProps {
+  variant?: "default" | "filled" | "ghost";
+  children: string;
+}
+
+function IconButton({ variant = "default", children }: IconButtonProps) {
   const buttonStyle = (variant: string) => {
     switch (variant) {
       case "filled":
-        return "w-86 h-28 gap-6 rounded-4px text-12 bg-violet text-white rounded-4 tablet:w-105 tablet:h-32 tablet:text-14"; 
+        return "h-28 px-12 gap-6 rounded-4px text-12 bg-violet text-white rounded-4 tablet:w-105 tablet:h-32 tablet:text-14 tablet:px-16"; 
       case "ghost":
-        return "w-73 h-40 gap-8 border rounded-8 text-14 bg-white text-gray-7874 tablet:w-109 tablet:h-36 pc:w-116 pc:h-40 pc:text-16";
+        return "h-40 px-12 gap-8 border rounded-8 text-14 bg-white text-gray-7874 tablet:h-36 tablet:px-16 pc:h-40";
       default: 
         return ""; 
     }
@@ -42,17 +46,17 @@ function InviteButton({ variant = "default" }) {
   const { width, height } = imageSize(variant);
 
   return (
-    <button className={flex items-center justify-center flex-shrink-0 ${buttonStyle(variant)}}>
-      <div className={${imageContainerStyle(variant)}}> 
+    <button className={`flex items-center justify-center flex-shrink-0 ${buttonStyle(variant)}`}>
+      <div className={`${imageContainerStyle(variant)}`}> 
         <Image
           src={imageSrc(variant)}
           alt="초대하기 아이콘"
           width={width}
           height={height} />
       </div>
-      <p>초대하기</p>
-    </button>
+      <p>{children}</p>
+    </button>    
   );
-};
+}
 
-export default InviteButton;
+export default IconButton;
