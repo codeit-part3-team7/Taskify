@@ -1,4 +1,4 @@
-import Button from "../common/Button";
+import Button from "./Button/Button";
 import SearchBar from "./SearchBar";
 
 const MOCK_MEMBERS = [
