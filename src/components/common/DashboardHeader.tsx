@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AvatarStack from "./AvatarStack";
-import InviteButton from "./Button/InviteButton";
+import InviteButton from "./Button/IconButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ProfileLabel from "./ProfileLabel";
