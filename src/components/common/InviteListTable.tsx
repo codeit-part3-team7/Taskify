@@ -1,5 +1,5 @@
 import Button from "./Button/Button";
-import InviteButton from "./Button/InviteButton";
+import InviteButton from "./Button/IconButton";
 import PaginationButton from "./Button/PaginationButton";
 
 const MOCK_MEMBERS = [
@@ -19,7 +19,7 @@ function InviteListTable() {
                 <p className="text-12 font-normal tablet:text-14">1 페이지 중 1</p>
                 <PaginationButton />
                 <div className="hidden tablet:block">
-                    <InviteButton variant="filled"/>
+                    <InviteButton variant="filled">초대하기</InviteButton>
                 </div>
             </div>
         </div>
