@@ -1,12 +1,11 @@
 import Image from "next/image";
 import AvatarStack from "./AvatarStack";
-import InviteButton from "./Button/IconButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ProfileLabel from "./ProfileLabel";
-import SettingButton from "./Button/SettingButton";
 import { useState } from "react";
 import InviteModal from "../modal/invite";
+import IconButton from "./Button/IconButton";
 
 interface MyDataProps {
   id: number;
@@ -70,9 +69,9 @@ function DashboardHeader({ myData, dashboadData, members }: DashboardHeaderProps
           {ownerIsMe && (
             <div className="flex gap-6 pc:gap-16 tablet:gap-12">
               <Link href={`/dashboard/${dashboadData?.id}/edit`}>
-                <SettingButton />
+                <IconButton variant="ghost">관리하기</IconButton>
               </Link>
-              <InviteButton variant="ghost" onClick={() => setIsModalOpen(true)} />
+              <IconButton variant="ghost" onClick={() => setIsModalOpen(true)}>초대하기</IconButton>
             </div>
           )}
           <div className="flex items-center gap-12 pc:gap-32 tablet:gap-24">
