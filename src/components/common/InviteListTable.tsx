@@ -1,6 +1,6 @@
-import Button from "../common/Button";
-import InviteButton from "../common/InviteButton";
-import PaginationButton from "../common/PaginationButton";
+import Button from "./Button/Button";
+import InviteButton from "./Button/InviteButton";
+import PaginationButton from "./Button/PaginationButton";
 
 const MOCK_MEMBERS = [
     { email: "codeitA@codeit.com" },

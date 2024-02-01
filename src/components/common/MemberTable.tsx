@@ -1,5 +1,5 @@
-import Button from "../common/Button";
-import PaginationButton from "../common/PaginationButton";
+import Button from "./Button/Button";
+import PaginationButton from "./Button/PaginationButton";
 import ProfileLabel from "../common/ProfileLabel";
 
 const MOCK_MEMBERS = [

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import AvatarStack from "./AvatarStack";
-import InviteButton from "./InviteButton";
+import InviteButton from "./Button/InviteButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ProfileLabel from "./ProfileLabel";
-import SettingButton from "./SettingButton";
+import SettingButton from "./Button/SettingButton";
 import { useState } from "react";
 import InviteModal from "../modal/invite";
 
