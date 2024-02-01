@@ -22,7 +22,7 @@ const ScrollTopButton: React.FC = () => {
   };
 
   return toggleBtn ? (
-    <div className="fixed flex items-center justify-center rounded-full bottom-50 tablet:bottom-100 right-50 tablet:right-100 animate-bounce w-50 h-50 bg-violet">
+    <div className="fixed flex items-center justify-center rounded-full bottom-50 tablet:bottom-100 right-50 tablet:right-80 animate-bounce w-50 h-50 bg-violet">
       <button className="text-white text-30" onClick={goToTop}>
         ⬆️
       </button>
