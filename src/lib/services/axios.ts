@@ -14,21 +14,6 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
-axiosInstance.interceptors.request.use(
   async (config) => {
     config.headers = config.headers ?? {};
     if (config.data instanceof FormData) {
@@ -36,7 +21,7 @@ axiosInstance.interceptors.request.use(
     } else {
       config.headers["Content-Type"] = "application/json";
     }
-    config.headers.Authorization = `Bearer ${sessionStorage.getItem("accessToken")}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
     return config;
   },
   (error) => {
@@ -63,4 +48,3 @@ export async function service<T, U>(method: HttpMethod, url: string, data?: U): 
     }
   }
 }
-
