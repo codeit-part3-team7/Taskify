@@ -1,5 +1,5 @@
 import Button from "./Button/Button";
-import InviteButton from "./Button/IconButton";
+import IconButton from "./Button/IconButton";
 import PaginationButton from "./Button/PaginationButton";
 
 const MOCK_MEMBERS = [
@@ -19,14 +19,14 @@ function InviteListTable() {
                 <p className="text-12 font-normal tablet:text-14">1 페이지 중 1</p>
                 <PaginationButton />
                 <div className="hidden tablet:block">
-                    <InviteButton variant="filled">초대하기</InviteButton>
+                    <IconButton variant="filled">초대하기</IconButton>
                 </div>
             </div>
         </div>
         <div className="pt-18 flex items-center justify-between pb-12 px-20 tablet:px-28">
             <p className="text-gray-9FA6 text-14 tablet:text-16">이메일</p>
             <div className="tablet:hidden">
-                <InviteButton variant="filled"/>
+                <IconButton variant="filled"/>
             </div>
         </div>
             {/* 아래 div안의 데이터가 1개일 때와 5번째 순서마다 border-b-1이 안보이는 기능은 기능구현 때 구현 */}
