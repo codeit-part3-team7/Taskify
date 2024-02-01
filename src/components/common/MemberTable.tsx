@@ -13,7 +13,7 @@ const MOCK_MEMBERS = [
 function MemberTable() {
     return (
     <div className="">
-        <div className="flex items-center justify-between pt-22 px-20 tablet:px-28 tablet:pt-26">
+        <div className="flex items-center justify-between pt-22 px-20 bg-white tablet:px-28 tablet:pt-26">
             <p className="text-20 font-bold tablet:text-24">구성원</p>
             <div className="flex items-center gap-x-12">
                 <p className="text-12 font-normal tablet:text-14">1 페이지 중 1</p>
