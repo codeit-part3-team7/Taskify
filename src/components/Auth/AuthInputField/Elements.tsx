@@ -59,4 +59,9 @@ function ErrorMessage({ children }: any) {
   return <div className="text-red text-14">{children}</div>;
 }
 
-export { Input, Label, ErrorMessage };
+function InputContainer({ auth, children }: any) {
+  const gap = auth ? "gap-8" : "gap-10";
+  return <div className={`flex flex-col w-full ${gap}`}>{children}</div>;
+}
+
+export { Input, Label, ErrorMessage, InputContainer };
