@@ -7,8 +7,8 @@ interface AddTodoButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 function AddTodoButton({ title, onClick }: AddTodoButtonProps) {
-  const buttonClassName = `flex items-center gap-12 justify-center border rounded-8 h-60 tablet:h-70 w-full border-gray-D9D9 ${
-    title === "새로운 대시보드" ? "bg-white text-black grow" : ""
+  const buttonClassName = `flex items-center gap-12 justify-center border rounded-8 w-full border-gray-D9D9 ${
+    title === "새로운 대시보드" ? "bg-white text-black grow h-58 tablet:h-68" : "h-60 tablet:h-70"
   }`;
 
   return (
