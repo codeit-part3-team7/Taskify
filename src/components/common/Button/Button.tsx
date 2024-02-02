@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 
-type Variant = "filled" | "ghost" | "ghost_gray";
+type Variant = "filled" | "filled_4" | "ghost" | "ghost_gray";
 type ButtonType = "auth" | "confirm" | "modal" | "delete" | "comment" | "landing";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
