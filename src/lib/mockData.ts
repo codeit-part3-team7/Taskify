@@ -222,6 +222,7 @@ export const card = {
   updatedAt: "2024-01-31T20:08:15.541Z",
 };
 
+/** 댓글 목록 조회 데이터 */
 export const comments = {
   comments: [
     {
