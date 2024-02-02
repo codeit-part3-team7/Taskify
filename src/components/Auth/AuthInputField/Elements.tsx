@@ -9,7 +9,7 @@ interface InputProps {
   auth?: boolean;
 }
 
-function Input({ id, type, placeholder, isError, auth, ...props }: InputProps) {
+export function Input({ id, type, placeholder, isError, auth, ...props }: InputProps) {
   const [inputType, setInputType] = useState(type);
 
   const handlePasswordVisible = (e: MouseEvent<HTMLButtonElement>) => {
@@ -45,7 +45,7 @@ function Input({ id, type, placeholder, isError, auth, ...props }: InputProps) {
   );
 }
 
-function Label({ children, id, auth }: any) {
+export function Label({ children, id, auth }: any) {
   const AUTH_TEXT = auth ? "" : "tablet:text-18 font-medium tablet:h-21 h-19";
 
   return (
@@ -55,13 +55,11 @@ function Label({ children, id, auth }: any) {
   );
 }
 
-function ErrorMessage({ children }: any) {
+export function ErrorMessage({ children }: any) {
   return <div className="text-red text-14">{children}</div>;
 }
 
-function InputContainer({ auth, children }: any) {
+export function InputContainer({ auth, children }: any) {
   const gap = auth ? "gap-8" : "gap-10";
   return <div className={`flex flex-col w-full ${gap}`}>{children}</div>;
 }
-
-export { Input, Label, ErrorMessage, InputContainer };

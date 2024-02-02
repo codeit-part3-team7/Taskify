@@ -1,5 +1,5 @@
 import AuthLayout from "@/layouts/auth";
-import { AuthInputField, AuthCheckBox } from "@/components/Auth/AuthInputField";
+import AuthCheckbox from "@/components/Auth/AuthCheckbox";
 import EmailField from "@/components/Auth/EmailField ";
 import NameField from "@/components/Auth/NameField";
 import PasswordField from "@/components/Auth/PasswordField";
@@ -12,7 +12,7 @@ export default function SignUp() {
       <NameField />
       <PasswordField />
       <PasswordCheckField />
-      <AuthCheckBox />
+      <AuthCheckbox />
     </AuthLayout>
   );
 }
