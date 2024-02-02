@@ -9,15 +9,15 @@ interface AuthFormProps {
   disabled?: boolean;
 }
 
-function AuthForm({ type, children, disabled }: AuthFormProps) {
+function AuthForm({ type, children, disabled, onSubmit }: AuthFormProps) {
   const FORM_TYPE = AUTH_MAPPING[type];
 
   return (
     <section>
-      <form className="flex flex-col gap-16">
+      <form className="flex flex-col gap-16" onSubmit={onSubmit}>
         {children}
         <div className="pt-4">
-          <Button variant="filled" buttonType="auth" disabled={disabled}>
+          <Button variant="filled" buttonType="auth" disabled={disabled} type="submit">
             {FORM_TYPE.button}
           </Button>
         </div>
