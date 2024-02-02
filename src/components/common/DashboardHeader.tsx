@@ -1,12 +1,11 @@
 import Image from "next/image";
 import AvatarStack from "./AvatarStack";
-import InviteButton from "./InviteButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ProfileLabel from "./ProfileLabel";
-import SettingButton from "./SettingButton";
 import { useState } from "react";
 import InviteModal from "../modal/invite";
+import IconButton from "./Button/IconButton";
 
 interface MyDataProps {
   id: number;
@@ -32,7 +31,7 @@ interface MembersProps {
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null; // 받아오는 데이터값이 null이라 추가했습니다.
   createdAt: string;
   updatedAt: string;
   isOwner: boolean;
@@ -40,7 +39,7 @@ interface MembersProps {
 
 interface DashboardHeaderProps {
   myData: MyDataProps; // 로그인 되어있는 나의 정보
-  dashboardData?: DashboardDataProp;
+  dashboardData?: DashboardDataProp[];
   members?: MembersProps[];
 }
 
@@ -54,7 +53,7 @@ function DashboardHeader({ myData, dashboardData, members }: DashboardHeaderProp
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 내가 만든 대시보드인지 확인하기
-  const ownerIsMe = dashboardData?.createdByMe;
+  const ownerIsMe = dashboardData[0]?.createdByMe;
   // ProfileLabel에 전달할 나의 데이터
   const data = { name: myData?.nickname, src: myData?.profileImageUrl };
 
@@ -70,9 +69,9 @@ function DashboardHeader({ myData, dashboardData, members }: DashboardHeaderProp
           {ownerIsMe && (
             <div className="flex gap-6 pc:gap-16 tablet:gap-12">
               <Link href={`/dashboard/${dashboardData?.id}/edit`}>
-                <SettingButton />
+                <IconButton variant="ghost" type="setting" />
               </Link>
-              <InviteButton variant="ghost" onClick={() => setIsModalOpen(true)} />
+              <IconButton variant="ghost" type="invite" onClick={() => setIsModalOpen(true)} />
             </div>
           )}
           <div className="flex items-center gap-12 pc:gap-32 tablet:gap-24">
