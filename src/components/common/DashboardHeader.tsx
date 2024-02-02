@@ -31,7 +31,7 @@ interface MembersProps {
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null ; // 받아오는 데이터값이 null이라 추가했습니다.
   createdAt: string;
   updatedAt: string;
   isOwner: boolean;
