@@ -69,9 +69,9 @@ function DashboardHeader({ myData, dashboardData, members }: DashboardHeaderProp
           {ownerIsMe && (
             <div className="flex gap-6 pc:gap-16 tablet:gap-12">
               <Link href={`/dashboard/${dashboardData?.id}/edit`}>
-                <IconButton variant="ghost">관리하기</IconButton>
+                <IconButton variant="ghost" type="setting"/>
               </Link>
-              <IconButton variant="ghost" onClick={() => setIsModalOpen(true)}>초대하기</IconButton>
+              <IconButton variant="ghost" type="invite" onClick={() => setIsModalOpen(true)} />
             </div>
           )}
           <div className="flex items-center gap-12 pc:gap-32 tablet:gap-24">

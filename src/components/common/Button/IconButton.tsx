@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import { ReactNode } from "react";
 
 interface IconButtonProps {
   variant?: "default" | "filled" | "ghost";
-  children: string;
+  type: "invite" | "setting"; 
 }
 
-function IconButton({ variant = "default", children }: IconButtonProps) {
+function IconButton({ variant = "default", type }: IconButtonProps) {
   const buttonStyle = (variant: string) => {
     switch (variant) {
       case "filled":
@@ -18,20 +17,30 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
     }
   };
 
-  const imageSrc = (variant: string, children: string) => {
-    const key = `${variant}-${children}`;
-    switch (key) {
-      case "filled-초대하기":
+  const imageSrc = (variant: string, type: string) => {
+    if (variant === "filled" && type === "invite") {
         return "/images/add_box_white.png";
-      case "ghost-초대하기":
+    } else if (variant === "ghost" && type === "invite") {
         return "/images/add_box_gray.png";
-      case "ghost-관리":
+    } else if (variant === "ghost" && type === "setting") {
         return "/images/settings.png";
+    } else {
+        return "";
+    }
+};
+
+  const nameTag = ( type: string ) => {
+    switch (type) {
+      case "invite":
+        return "초대하기"
+      case "setting":
+        return "관리"
       default:
         return "";
     }
-  };
-  const imageSize = (variant: string) => {
+  }
+
+  const imageSize = ( variant: string) => {
     switch (variant) {
       case "filled":
         return { width: 16, height: 16 }; 
@@ -46,7 +55,7 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
     return variant === "ghost" ? "hidden tablet:flex" : "flex";
   };
 
-  const altText = `${children} 아이콘`
+  const altText = `${type} icon`
 
   const { width, height } = imageSize(variant);
 
@@ -54,12 +63,12 @@ function IconButton({ variant = "default", children }: IconButtonProps) {
     <button className={`flex items-center justify-center flex-shrink-0 ${buttonStyle(variant)}`}>
       <div className={`${imageContainerStyle(variant)}`}> 
         <Image
-          src={imageSrc(variant, children)}
+          src={imageSrc(variant, type)}
           alt={altText}
           width={width}
           height={height} />
       </div>
-      {children}
+      <p>{nameTag(type)}</p>
     </button>    
   );
 }
