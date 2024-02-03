@@ -17,7 +17,6 @@ export default function Edit() {
   return (
     // <BoardLayout type="editOrMypage" sideMenu={<SideMenu />} dashboardHeader={<DashboardHeader myData={userData} dashboardData={dashBoardList.dashboards} members={members.members}/>}>
     <BoardLayout
-      type="editOrMypage"
       sideMenu={<SideMenu />}
       dashboardHeader={<DashboardHeader myData={userData} dashboardData={dashboard} members={members.members} />}>
       <BackButton />
