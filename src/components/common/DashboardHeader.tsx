@@ -20,9 +20,9 @@ interface DashboardDataProp {
   id: number;
   title: string;
   color: string;
+  userId: number;
   createdAt: string;
   updatedAt: string;
-  userId: number;
   createdByMe: boolean;
 }
 
@@ -31,7 +31,7 @@ interface MembersProps {
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl: string | null; // 받아오는 데이터값이 null이라 추가했습니다.
+  profileImageUrl: string | null ;
   createdAt: string;
   updatedAt: string;
   isOwner: boolean;
@@ -57,7 +57,7 @@ function DashboardHeader({ myData, dashboardData, members }: DashboardHeaderProp
   // ProfileLabel에 전달할 나의 데이터
   const data = { name: myData?.nickname, src: myData?.profileImageUrl };
 
-  return (
+  return (     
     <>
       {isModalOpen && <InviteModal onClose={() => setIsModalOpen(false)} />}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-end pr-12 bg-white pc:justify-between tablet:h-70 h-60 border-b-1 border-gray-D9D9 pc:pl-340 pl-0 pc:pr-80 tablet:pr-40 z-[300]">
@@ -69,7 +69,7 @@ function DashboardHeader({ myData, dashboardData, members }: DashboardHeaderProp
           {ownerIsMe && (
             <div className="flex gap-6 pc:gap-16 tablet:gap-12">
               <Link href={`/dashboard/${dashboardData?.id}/edit`}>
-                <IconButton variant="ghost" type="setting" />
+                <IconButton variant="ghost" type="setting"/>
               </Link>
               <IconButton variant="ghost" type="invite" onClick={() => setIsModalOpen(true)} />
             </div>
