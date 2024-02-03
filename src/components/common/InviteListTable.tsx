@@ -4,6 +4,8 @@ import IconButton from "./Button/IconButton";
 import PaginationButton from "./Button/PaginationButton";
 
 function InviteListTable() {
+    const { invitations } = sentInvitations;
+
     return (
       <div className="bg-white rounded-8">
         <div className="flex items-center justify-between pt-22 px-20 tablet:px-28 tablet:pt-26">
@@ -24,11 +26,11 @@ function InviteListTable() {
         </div>
             {/* 아래 div안의 데이터가 1개일 때와 5번째 순서마다 border-b-1이 안보이는 기능은 기능구현 때 구현 */}
         <div>
-        {sentInvitations.invitations.map((invitation) => (
-            <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28"  key={invitation.invitee.email}>
-                <p className="text-14">{invitation.invitee.email}</p>
-                <Button variant="ghost" buttonType="delete">취소</Button>
-            </div>
+            {invitations.map((invitation) => (
+                <div className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28" key={invitation.invitee.email}>
+                    <p className="text-14">{invitation.invitee.email}</p>
+                    <Button variant="ghost" buttonType="delete">취소</Button>
+                </div>
             ))}
         </div> 
     </div> 
