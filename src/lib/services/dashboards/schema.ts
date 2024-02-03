@@ -26,7 +26,7 @@ export type NavigationMethodstring = ["infiniteScroll", "pagination"];
 
 export type FindDashboardsRequestDto = {
   navigationMethod: NavigationMethodstring;
-  cursorId: number;
+  cursorId: number | null;
   page: number;
   size: number;
 };

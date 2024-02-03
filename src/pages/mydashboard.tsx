@@ -1,26 +1,55 @@
+import { useState, useEffect } from "react";
+import BoardLayout from "@/layouts/board";
+import MyDashboardLayout from "@/layouts/board/mydashboard";
 import DashboardHeader from "@/components/common/DashboardHeader";
 import SideMenu from "@/components/common/SideMenu";
-import BoardLayout from "@/layouts/board";
-import { Mock_DashBoard, Mock_MyData } from "@/components/mypage/MockData";
-import { useState } from "react";
-import InviteDashTable from "@/components/common/InviteDashTable";
+import { Mock_MyData } from "@/components/mypage/MockData";
 import DashboardLinkButton from "@/components/mydashboard/DashboardLinkButton";
 import AddTodoButton from "@/components/dashboard/AddTodoButton";
 import PaginationButton from "@/components/common/Button/PaginationButton";
+import InviteDashTable from "@/components/common/InviteDashTable";
 import NewDashModal from "@/components/modal/newDash";
-import MyDashboardLayout from "@/layouts/board/mydashboard";
+import { findDashboard } from "@/lib/services/dashboards";
+
+interface Dashboard {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: boolean;
+  userId: number;
+}
 
 export default function MyDashboard() {
   const [myData, setMyData] = useState(Mock_MyData);
-  const [dashboards, setDashboards] = useState(Mock_DashBoard);
-  const [showNewDashModal, setShowNewDashModal] = useState(false);
+  const [dashboards, setDashboards] = useState<Dashboard[]>([]);
+  const [showNewDashModal, setShowNewDashModal] = useState<boolean>(false);
+
+  const sideMenu = <SideMenu dashboards={dashboards} />;
+  const header = <DashboardHeader myData={myData} />;
 
   const handleAddNewDashModal = () => {
     setShowNewDashModal(true);
   };
 
-  const sideMenu = <SideMenu dashboards={dashboards} />;
-  const header = <DashboardHeader myData={myData} />;
+  useEffect(() => {
+    const fetchDashboards = async () => {
+      try {
+        const query = {
+          navigationMethod: ["pagination"],
+          page: 1,
+          size: 10,
+        };
+        const response = await findDashboard(query);
+        setDashboards(response.data?.dashboards || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDashboards();
+  }, []);
 
   return (
     <BoardLayout sideMenu={sideMenu} dashboardHeader={header}>
@@ -28,9 +57,15 @@ export default function MyDashboard() {
         <div className="flex flex-col gap-8 tablet:gap-10 pc:gap-12">
           <div className="grid grid-cols-1 tablet:grid-cols-2 pc:grid-cols-3 gap-8 tablet:gap-13 w-full">
             <AddTodoButton title="새로운 대시보드" onClick={handleAddNewDashModal} />
-            <DashboardLinkButton id={1} title="테스트" createdByMe={true} color="#7ac555" />
-            <DashboardLinkButton id={1} title="테스트" createdByMe={true} color="#7ac555" />
-            <DashboardLinkButton id={1} title="테스트" createdByMe={true} color="#7ac555" />
+            {dashboards.map((dashboard) => (
+              <DashboardLinkButton
+                key={dashboard.id}
+                id={dashboard.id}
+                title={dashboard.title}
+                createdByMe={dashboard.createdByMe}
+                color={dashboard.color}
+              />
+            ))}
             {showNewDashModal && <NewDashModal />}
           </div>
           <div className="flex justify-end">
