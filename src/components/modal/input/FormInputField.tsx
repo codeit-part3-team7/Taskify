@@ -4,6 +4,7 @@ import { useFormContext, Controller } from "react-hook-form";
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelName: string;
   labelTitle: string;
+  defaultValue?: string;
   textArea?: boolean;
   rules?: any;
   required?: boolean;
@@ -12,6 +13,7 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 interface TextAreaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   labelName: string;
   labelTitle: string;
+  defaultValue?: string;
   textArea: true;
   rules?: any;
   required?: boolean;
@@ -19,15 +21,23 @@ interface TextAreaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaEl
 
 type CombinedFieldProps = InputFieldProps | TextAreaFieldProps;
 
-function ModalInputField({ labelName, labelTitle, textArea, rules, required, ...props }: CombinedFieldProps) {
+function FormInputField({
+  labelName,
+  labelTitle,
+  defaultValue,
+  textArea,
+  rules,
+  required,
+  ...props
+}: CombinedFieldProps) {
   const {
     trigger,
     control,
     formState: { errors },
   } = useFormContext();
 
-  const errorMessage = errors[labelName]?.message;
-  const errorText = typeof errorMessage === "string" ? errorMessage : "";
+  const isMessage = errors[labelName]?.message;
+  const errorMessage = typeof isMessage === "string" ? isMessage : "";
 
   //blur 적용할거면 사용.
   const triggerValidationOnBlur = async () => {
@@ -47,7 +57,7 @@ function ModalInputField({ labelName, labelTitle, textArea, rules, required, ...
         name={labelName}
         control={control}
         rules={rules}
-        defaultValue={""}
+        defaultValue={defaultValue || ""}
         render={({ field }) =>
           textArea ? (
             <textarea
@@ -64,9 +74,9 @@ function ModalInputField({ labelName, labelTitle, textArea, rules, required, ...
           )
         }
       />
-      {errors[labelName] && <span className="text-red">{errorText}</span>}
+      {errors[labelName] && <span className="text-red">{errorMessage}</span>}
     </div>
   );
 }
 
-export default ModalInputField;
+export default FormInputField;
