@@ -26,7 +26,7 @@ function PasswordField({ control, errors, name, triggerPasswordCheck }: any) {
             {...field}
             onChange={async (values: string) => {
               await field.onChange(values);
-              triggerPasswordCheck();
+              if (triggerPasswordCheck) return triggerPasswordCheck();
             }}
             placeholder="비밀번호를 입력해 주세요"
             isError={!!errors[name]}
