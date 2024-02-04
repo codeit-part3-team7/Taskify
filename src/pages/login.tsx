@@ -1,12 +1,13 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import AuthLayout from "@/layouts/auth";
+import AuthForm from "@/layouts/auth/Form";
 import EmailField from "@/components/Auth/EmailField ";
 import PasswordField from "@/components/Auth/PasswordField";
-import AuthForm from "@/layouts/auth/Form";
-import { useForm } from "react-hook-form";
 import { login } from "@/lib/services/auth";
-import { useRouter } from "next/router";
-import AlertModal from "@/components/modal/alert";
-import { useToggle } from "usehooks-ts";
+import AlertModal, { AlertType } from "@/components/modal/alert";
 
 interface LoginForm {
   email: string;
@@ -15,6 +16,7 @@ interface LoginForm {
 
 export default function Login() {
   const [alertValue, alertToggle, setAlertValue] = useToggle();
+  const [alertType, setAlertType] = useState<AlertType>("");
   const LOGIN_FORM = {
     email: "",
     password: "",
@@ -23,8 +25,7 @@ export default function Login() {
     control,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-    setError,
-  } = useForm({ defaultValues: LOGIN_FORM, mode: "onBlur" });
+  } = useForm({ defaultValues: LOGIN_FORM, mode: "onChange" });
 
   const router = useRouter();
 
@@ -40,18 +41,18 @@ export default function Login() {
       if (response.errorMessage) {
         switch (response.errorMessage) {
           case "존재하지 않는 유저입니다.":
-            setError("email", {
-              type: "manual",
-              message: `${response.errorMessage}`,
-            });
+            setAlertType("userNotFound");
+            setAlertValue(true);
             break;
           case "비밀번호가 일치하지 않습니다.":
+            setAlertType("passwordMismatch");
             setAlertValue(true);
             break;
         }
       }
     } catch (error) {
-      alert("서버 처리중 에러가 발생했습니다. 잠시 후 다시 시도해주세요."); // 화면상에서 에러 표시 처리
+      setAlertType("serverError");
+      setAlertValue(true);
     }
   };
 
@@ -63,7 +64,7 @@ export default function Login() {
           <PasswordField name="password" control={control} errors={errors} />
         </AuthForm>
       </AuthLayout>
-      {alertValue && <AlertModal modalType="alert" onClose={() => setAlertValue(false)} />}
+      {alertValue && <AlertModal modalType="alert" alertType={alertType} onClose={() => setAlertValue(false)} />}
     </>
   );
 }
