@@ -1,9 +1,10 @@
 import Modal from "@/components/common/Modal";
 import React from "react";
+import { FieldValues } from "react-hook-form";
 
-interface AlertModalProps {
+interface AlertModalProps<T = void> {
   modalType: "alert" | "delete";
-  callback?: any;
+  callback?: (data: FieldValues) => Promise<T>;
   onClose: () => void;
 }
 

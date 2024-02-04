@@ -1,33 +1,40 @@
+import Image from "next/image";
 import { formatDate } from "@/lib/util/formatDate";
 import { ChipCard } from "../common/Chips";
-import Image from "next/image";
+import { CardServiceResponseDto } from "@/lib/services/cards/schema";
+import Avatar from "../common/Avatar";
+import { useToggle } from "usehooks-ts";
+import TaskModal from "../modal/task";
+import { useEffect, useState } from "react";
+import { card } from "@/lib/services/cards";
+import { useTrigger } from "../contexts/TriggerContext";
 
 interface CardProps {
-  id: number;
-  title: string;
-  tags: string[];
-  dueDate: string | null;
-  assignee: {
-    id: number;
-    profileImageUrl: string | null;
-    nickname: string;
-  };
-  imageUrl: string | null;
+  cardData: CardServiceResponseDto;
+  cardTitle: string;
+  columnId: number;
 }
 
-function Card({ title, tags, dueDate, assignee, imageUrl, id }: CardProps) {
-  const firstLetter = assignee.nickname[0].toUpperCase();
+function Card({ cardData: { title, tags, dueDate, assignee, imageUrl, id }, cardTitle, columnId }: CardProps) {
+  const [taskData, setTaskData] = useState<CardServiceResponseDto>();
+  const [taskModalValue, taskToggle, setTaskModalValue] = useToggle();
+  const { isTriggered } = useTrigger();
+  const { nickname, profileImageUrl } = assignee;
   const noTagsClassName = tags.length === 0 ? "hidden" : null;
   const noDueDate = dueDate === null;
 
-  const handleCardClick = () => {
-    console.log(id);
-  };
+  useEffect(() => {
+    const fetch = async () => {
+      if (!id) return;
+      await card("get", id).then(({ data }) => setTaskData(data as CardServiceResponseDto));
+    };
+    fetch();
+  }, [id, isTriggered]);
 
   return (
     <div
       className="flex flex-col w-full p-12 bg-white border cursor-pointer pc:flex-col tablet:flex-row pc:gap-y-12 tablet:gap-x-20 tablet:p-20 gap-y-10 rounded-6 border-gray-D9D9 pc:px-20"
-      onClick={handleCardClick}>
+      onClick={taskToggle}>
       {imageUrl && (
         <div className="relative w-full overflow-hidden shrink-0 pc:w-274 tablet:w-91 h-152 pc:h-160 tablet:h-53 rounded-6">
           <Image fill src={imageUrl} alt="카드 이미지" style={{ objectFit: "cover" }} />
@@ -49,15 +56,20 @@ function Card({ title, tags, dueDate, assignee, imageUrl, id }: CardProps) {
               {noDueDate ? "마감기한 없음" : formatDate(dueDate)}
             </p>
           </div>
-          <div className="relative bg-[#A3C4A2] tablet:size-24 size-22 rounded-99 flex justify-center items-center overflow-hidden">
-            {assignee.profileImageUrl ? (
-              <Image fill src={assignee.profileImageUrl} alt="담당자 프로필 이미지" style={{ objectFit: "cover" }} />
-            ) : (
-              <span className="font-semibold text-white tablet:text-12 text-10">{firstLetter}</span>
-            )}
-          </div>
+          <Avatar nickname={nickname} profileImageUrl={profileImageUrl} avatarType="card" />
         </div>
       </div>
+      {taskModalValue && (
+        <TaskModal
+          cardTitle={cardTitle}
+          cardId={id}
+          taskData={taskData}
+          onClose={(e) => {
+            e?.stopPropagation();
+            setTaskModalValue(false);
+          }}
+        />
+      )}
     </div>
   );
 }
