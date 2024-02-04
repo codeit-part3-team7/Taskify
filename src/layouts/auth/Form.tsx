@@ -7,6 +7,7 @@ interface AuthFormProps {
   type: AuthType;
   children: ReactNode;
   disabled?: boolean;
+  onSubmit: any; // 수정예정
 }
 
 function AuthForm({ type, children, disabled, onSubmit }: AuthFormProps) {

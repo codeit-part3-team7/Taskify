@@ -1,15 +1,19 @@
 import Image from "next/image";
-import { useState, MouseEvent } from "react";
-
+import { useState, MouseEvent, forwardRef, ForwardedRef } from "react";
 interface InputProps {
   id: string;
   type: string;
   placeholder: string;
   isError?: boolean;
   auth?: boolean;
+  autoComplete?: string;
+  onChange: any; // 타입 수정 예정
 }
 
-export function Input({ id, type, placeholder, isError, auth, ...props }: InputProps) {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { id, type, placeholder, isError, auth, autoComplete, ...props },
+  ref,
+) {
   const [inputType, setInputType] = useState(type);
 
   const handlePasswordVisible = (e: MouseEvent<HTMLButtonElement>) => {
@@ -32,18 +36,20 @@ export function Input({ id, type, placeholder, isError, auth, ...props }: InputP
         id={id}
         type={inputType}
         placeholder={placeholder}
+        autoComplete={autoComplete}
+        ref={ref}
         {...props}
       />
       {type === "password" && (
         <button className="absolute right-16 translate-y-13" onClick={handlePasswordVisible}>
           <div className={`relative ${AUTH_EYEIMG_STYLE}`}>
-            <Image fill src={eyeImage} alt="password toggle" />
+            <Image fill src={eyeImage} alt="password toggle" sizes="24px" />
           </div>
         </button>
       )}
     </div>
   );
-}
+});
 
 export function Label({ children, id, auth }: any) {
   const AUTH_TEXT = auth ? "" : "tablet:text-18 font-medium tablet:h-21 h-19";
