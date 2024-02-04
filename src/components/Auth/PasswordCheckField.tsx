@@ -1,22 +1,36 @@
 import { Label, Input, ErrorMessage, InputContainer } from "./AuthInputField/Elements";
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 
-function PasswordCheckField({ ...props }) {
-  const [errorMsg, setErrorMsg] = useState(null);
+function PasswordCheckField({ control, errors, name, password }: any) {
+  const rules = {
+    required: "비밀번호를 확인해 주세요",
+    validate: {
+      checkPassword: (value: string) => password === value || "비밀번호가 일치하지 않습니다.",
+    },
+  };
+
   return (
     <InputContainer auth>
       <Label id="password" auth>
-        비밀번호 확인
+        비밀번호
       </Label>
-      <Input
-        id="password"
-        type="password"
-        placeholder="비밀번호를 한번 더 입력해 주세요"
-        isError={!!errorMsg}
-        auth
-        {...props}
+      <Controller
+        name={name}
+        control={control}
+        rules={rules}
+        render={({ field }) => (
+          <Input
+            id={name}
+            type="password"
+            placeholder="비밀번호를 한번 더 입력해 주세요"
+            {...field}
+            isError={!!errors[name]}
+            auth
+            autoComplete="off"
+          />
+        )}
       />
-      {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
+      {errors[name] && <ErrorMessage>{errors[name]?.message}</ErrorMessage>}
     </InputContainer>
   );
 }
