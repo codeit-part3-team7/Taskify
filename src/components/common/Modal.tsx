@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useFormContext, FieldValues } from "react-hook-form";
 import Button from "./Button/Button";
 import Popover from "./Popover";
-import { MODAL_POPOVER } from "@/lib/constants";
 
 interface ModalProps<T = void> {
   children: ReactNode;
@@ -12,12 +11,23 @@ interface ModalProps<T = void> {
   modalType?: "alert" | "create" | "update" | "delete" | "invite";
   hasOptionsbutton?: boolean;
   useFormData?: boolean;
-  callback?: (data: FieldValues) => T;
+  cardId?: number;
+  callback?: (data: FieldValues) => Promise<T>;
   onClose: () => void;
   onDelete?: () => void;
 }
 
-function Modal({ children, title, modalType, hasOptionsbutton, useFormData, callback, onClose, onDelete }: ModalProps) {
+function Modal({
+  children,
+  title,
+  modalType,
+  hasOptionsbutton,
+  useFormData,
+  cardId,
+  callback,
+  onClose,
+  onDelete,
+}: ModalProps) {
   const formContext = useFormContext();
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
@@ -34,15 +44,20 @@ function Modal({ children, title, modalType, hasOptionsbutton, useFormData, call
   const isDelete = modalType === "delete";
 
   const stopEventBubbling = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleButtonClick = (data: FieldValues) => {
-    if (callback) {
-      callback(data);
+  const handleButtonClick = async (data: FieldValues) => {
+    if (typeof callback === "function") {
+      try {
+        await callback(data);
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      onClose();
     }
-    onClose();
   };
 
   // CSR 환경에서만 접근
@@ -72,7 +87,7 @@ function Modal({ children, title, modalType, hasOptionsbutton, useFormData, call
             {/**모달 헤더 버튼 영역 */}
             {hasOptionsbutton && (
               <div className="flex items-center gap-15">
-                <Popover contents={MODAL_POPOVER}>
+                <Popover cardId={cardId}>
                   <Image src={"/images/kebab.png"} alt="kebab" width={28} height={28} />
                 </Popover>
                 <button onClick={onClose}>
