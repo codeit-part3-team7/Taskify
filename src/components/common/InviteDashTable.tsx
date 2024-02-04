@@ -4,37 +4,48 @@ import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { invitation, responseInvitation } from "@/lib/services/invitations";
 
-function InviteDashTable() {
-  const [invitedDashBoards, setInvitedDashBoards] = useState([]);
-  const [searchResult, setSearchResult] = useState([]);
+interface Invitation {
+  id: number;
+  dashboard?: {
+    title: string;
+  };
+  inviter?: {
+    nickname: string;
+  };
+}
 
-  const handleSearch = (searchTerm: string) => {
+function InviteDashTable(): JSX.Element {
+  const [invitedDashBoards, setInvitedDashBoards] = useState<Invitation[]>([]);
+  const [searchResult, setSearchResult] = useState<Invitation[]>([]);
+
+  const handleSearch = (searchTerm: string): void => {
     if (searchTerm.trim() === "") {
       setSearchResult(invitedDashBoards);
       return;
     }
 
-    const filteredResult = invitedDashBoards.filter((invitation) =>
+    const filteredResult = invitedDashBoards.filter((invitation: Invitation) =>
       invitation.dashboard?.title.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     setSearchResult(filteredResult);
   };
 
-  const handleResponseInvitation = async (invitationId, inviteAccepted) => {
+  const handleResponseInvitation = async (invitationId: number, inviteAccepted: boolean): Promise<void> => {
     try {
       const response = await responseInvitation(invitationId, inviteAccepted);
-      setSearchResult((prevSearchResult) => prevSearchResult.filter((invitation) => invitation.id !== invitationId));
+      setSearchResult((prevSearchResult: Invitation[]) =>
+        prevSearchResult.filter((invitation) => invitation.id !== invitationId),
+      );
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    const fetchInvitationDashboard = async () => {
+    const fetchInvitationDashboard = async (): Promise<void> => {
       try {
         const response = await invitation();
-        console.log(response);
         const invitations = response.data?.invitations || [];
         setInvitedDashBoards(invitations);
         setSearchResult(invitations);
@@ -60,7 +71,7 @@ function InviteDashTable() {
             <p className="text-gray-9FA6 text-14 pt-18 tablet:text-16">수락 여부</p>
           </div>
           <div>
-            {searchResult.map((invitation, index) => (
+            {searchResult.map((invitation: Invitation, index: number) => (
               <div key={index} className="tablet:grid tablet:grid-cols-3 py-12 border-b-1 border-gray-EEEE text-14">
                 <div className="flex items-center pb-10 tablet:pb-0 gap-x-28 tablet:gap-x-0">
                   <p className="tablet:hidden text-14 text-gray-9FA6">이름</p>
