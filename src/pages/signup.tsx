@@ -30,7 +30,7 @@ export default function SignUp() {
     handleSubmit,
     formState: { errors, isValid, isDirty, touchedFields },
     trigger,
-  } = useForm({ defaultValues: SIGN_UP_FORM, mode: "onChange" });
+  } = useForm({ defaultValues: SIGN_UP_FORM, mode: "onTouched" });
 
   const router = useRouter();
 

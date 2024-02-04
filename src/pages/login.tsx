@@ -25,7 +25,7 @@ export default function Login() {
     control,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm({ defaultValues: LOGIN_FORM, mode: "onChange" });
+  } = useForm({ defaultValues: LOGIN_FORM, mode: "onTouched" });
 
   const router = useRouter();
 
