@@ -10,6 +10,7 @@ import PaginationButton from "@/components/common/Button/PaginationButton";
 import InviteDashTable from "@/components/common/InviteDashTable";
 import NewDashModal from "@/components/modal/newDash";
 import { findDashboard } from "@/lib/services/dashboards";
+import { FindDashboardsRequestDto, FindDashboardsResponseDto } from "@/lib/services/dashboards/schema";
 
 interface Dashboard {
   id: number;
@@ -36,13 +37,13 @@ export default function MyDashboard() {
   useEffect(() => {
     const fetchDashboards = async () => {
       try {
-        const qs = {
-          navigationMethod: ["pagination"],
+        const qs: FindDashboardsRequestDto = {
+          navigationMethod: "pagination",
         };
-        const response = await findDashboard(qs);
-        setDashboards(response.data?.dashboards || []);
+        const res = (await findDashboard(qs)).data as FindDashboardsResponseDto;
+        setDashboards(res.dashboards);
       } catch (error) {
-        console.error(error);
+        console.error("대시보드를 불러오는 데 실패했습니다.");
       }
     };
 
@@ -64,7 +65,7 @@ export default function MyDashboard() {
                 color={dashboard.color}
               />
             ))}
-            {showNewDashModal && <NewDashModal />}
+            {showNewDashModal && <NewDashModal onClose={() => setShowNewDashModal(false)} />}
           </div>
           <div className="flex justify-end">
             <PaginationButton />

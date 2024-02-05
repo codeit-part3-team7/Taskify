@@ -3,6 +3,7 @@ import Button from "../common/Button/Button";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { invitation, responseInvitation } from "@/lib/services/invitations";
+import { InvitaionServiceResponseDto } from "@/lib/services/invitations/schema";
 
 interface Invitation {
   id: number;
@@ -31,7 +32,7 @@ function InviteDashTable(): JSX.Element {
     setSearchResult(filteredResult);
   };
 
-  const handleResponseInvitation = async (invitationId: number, inviteAccepted: boolean): Promise<void> => {
+  const ResponseInvitation = async (invitationId: number, inviteAccepted: boolean): Promise<void> => {
     try {
       const response = await responseInvitation(invitationId, inviteAccepted);
       setSearchResult((prevSearchResult: Invitation[]) =>
@@ -45,12 +46,12 @@ function InviteDashTable(): JSX.Element {
   useEffect(() => {
     const fetchInvitationDashboard = async (): Promise<void> => {
       try {
-        const res = await invitation();
-        const invitations = res.data?.invitations || [];
+        const res = (await invitation({})).data as InvitaionServiceResponseDto;
+        const invitations = res.invitations || [];
         setInvitedDashBoards(invitations);
         setSearchResult(invitations);
       } catch (error) {
-        console.error(error);
+        console.error("초대 받은 대시보드를 불러오는 데 실패했습니다.");
       }
     };
 
@@ -58,7 +59,7 @@ function InviteDashTable(): JSX.Element {
   }, []);
 
   return (
-    <div className="px-16 tablet:px-28 py-24 tablet:py-32">
+    <div className="max-h-600 overflow-y-auto px-16 tablet:px-28 py-24 tablet:py-32">
       <p className="text-20 font-bold tablet:text-24">초대받은 대시보드</p>
       <div className="pt-20">
         <SearchBar onSearch={handleSearch} />
@@ -85,13 +86,10 @@ function InviteDashTable(): JSX.Element {
                   <Button
                     variant="filled_4"
                     buttonType="confirm"
-                    onClick={() => handleResponseInvitation(invitation.id, true)}>
+                    onClick={() => ResponseInvitation(invitation.id, true)}>
                     수락
                   </Button>
-                  <Button
-                    variant="ghost"
-                    buttonType="confirm"
-                    onClick={() => handleResponseInvitation(invitation.id, false)}>
+                  <Button variant="ghost" buttonType="confirm" onClick={() => ResponseInvitation(invitation.id, false)}>
                     거절
                   </Button>
                 </div>
