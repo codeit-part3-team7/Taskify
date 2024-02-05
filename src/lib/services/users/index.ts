@@ -22,7 +22,7 @@ export const register = (data: CreateUserRequestDto): Promise<ServiceResponse<Us
  */
 export const me = (
   method: HttpMethod,
-  data: UpdateMyInfoRequestDto,
+  data?: UpdateMyInfoRequestDto,
 ): Promise<ServiceResponse<UserServiceReponseDto>> => {
   if (method === "put") {
     return service(method, userAddress.mypage, data);
