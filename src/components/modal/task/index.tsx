@@ -4,11 +4,12 @@ import { ChipCard, ChipProgress } from "@/components/common/Chips";
 import Modal from "@/components/common/Modal";
 import CommentInput from "../input/CommentInput";
 import TaskInfo from "./TaskInfo";
+import { CardServiceResponseDto } from "@/lib/services/cards/schema";
 
 interface TaskModalProps {
   cardTitle: string;
   cardId: number;
-  taskData?: any;
+  taskData: CardServiceResponseDto;
   onClose: (e?: React.MouseEvent) => void;
 }
 
@@ -19,6 +20,7 @@ interface assignee {
 }
 
 function TaskModal({ cardTitle, cardId, taskData, onClose }: TaskModalProps) {
+  console.log(taskData);
   const methods = useForm();
 
   return (
@@ -42,7 +44,7 @@ function TaskModal({ cardTitle, cardId, taskData, onClose }: TaskModalProps) {
             <div className="flex items-center justify-center w-full h-auto tablet:w-450">
               {taskData.imageUrl && <Image src={taskData.imageUrl} alt="테스트 이미지" width={450} height={260} />}
             </div>
-            <CommentInput />
+            <CommentInput cardId={cardId} columnId={taskData.columnId} />
           </div>
           <div className="hidden tablet:w-180 pc:w-200 tablet:flex tablet:justify-end">
             <TaskInfo data={taskData?.assignee as assignee} dueDate={taskData?.dueDate as string} />

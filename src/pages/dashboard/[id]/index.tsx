@@ -73,6 +73,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const { data: members } = await memberList(qs, config);
     const { data: columns } = await findColumns({ dashboardId }, config);
+    console.log(members, columns);
     if (!members || !columns) {
       return {
         redirect: {
