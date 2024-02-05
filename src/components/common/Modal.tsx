@@ -8,7 +8,8 @@ import Popover from "./Popover";
 interface ModalProps<T = void> {
   children: ReactNode;
   title?: string;
-  modalType?: "alert" | "create" | "update" | "delete" | "invite";
+  // modalType?: "alert" | "create" | "update" | "delete" | "invite";
+  modalType?: "alert" | "create" | "update" | "delete" | "invite" | "success_profile" | "success_password";
   hasOptionsbutton?: boolean;
   useFormData?: boolean;
   cardId?: number;
@@ -38,9 +39,12 @@ function Modal({
     update: "수정",
     delete: "삭제",
     invite: "초대",
+    success_profile: "확인",
+    success_password: "확인",
   };
 
-  const isAlert = modalType === "alert";
+  // const isAlert = modalType === "alert"
+  const isAlert = modalType === "alert" || "success_profile" || "success_password";
   const isUpdate = modalType === "update";
   const isDelete = modalType === "delete";
 
