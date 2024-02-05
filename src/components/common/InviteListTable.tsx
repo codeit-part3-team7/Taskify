@@ -2,9 +2,41 @@ import { sentInvitations } from "@/lib/mockData";
 import Button from "./Button/Button";
 import IconButton from "./Button/IconButton";
 import PaginationButton from "./Button/PaginationButton";
+import { findInvitationDashboard, deleteInvitationDashboard } from "@/lib/services/dashboards";
+import { useState, useEffect } from "react";
 
 function InviteListTable() {
-  const { invitations } = sentInvitations;
+  const [invitations, setInvitations] = useState([]);
+
+  const dashboardId = 2919;
+  const qs = {};
+
+  // 초대 목록을 조회하는 함수
+  const getInvitations = async () => {
+    try {
+      const response = await findInvitationDashboard(dashboardId, qs);
+      if (response && response.data) {
+        setInvitations(response.data.invitations);
+      }
+    } catch (error) {
+      console.error("초대 목록 조회 실패:", error);
+    }
+  };
+
+  // 초대 취소함수
+  const handleCancelInvitation = async (invitationId) => {
+    try {
+      await deleteInvitationDashboard(dashboardId, invitationId);
+      getInvitations(); // 초대 목록 새로고침
+    } catch (error) {
+      console.error("초대 취소 실패:", error);
+    }
+  };
+
+  // 컴포넌트 마운트 시 초대 목록 가져오기
+  useEffect(() => {
+    getInvitations();
+  }, []);
 
   return (
     <div className="bg-white rounded-8">
@@ -24,14 +56,14 @@ function InviteListTable() {
           <IconButton variant="filled" type="invite" />
         </div>
       </div>
-      {/* 아래 div안의 데이터가 1개일 때와 5번째 순서마다 border-b-1이 안보이는 기능은 기능구현 때 구현 */}
+      {/* 5명씩 페이지 구분*/}
       <div>
         {invitations.map((invitation) => (
           <div
             className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28"
-            key={invitation.invitee.email}>
+            key={invitation.id}>
             <p className="text-14">{invitation.invitee.email}</p>
-            <Button variant="ghost" buttonType="delete">
+            <Button variant="ghost" buttonType="delete" onClick={() => handleCancelInvitation(invitation.id)}>
               취소
             </Button>
           </div>
