@@ -4,6 +4,7 @@ import { useState } from "react";
 import { changePassword } from "@/lib/services/auth";
 import TextInput from "./PasswordInput";
 import AlertModal from "../modal/alert";
+import { useToggle } from "usehooks-ts";
 
 interface PasswordFormInput {
   password: string;
@@ -21,8 +22,14 @@ function PasswordChangeForm() {
   } = useForm<PasswordFormInput>({
     shouldUnregister: false,
   });
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalPwdSuccess, setModalPwdSuccess] = useState(false);
+
+  const [alertValue, alertToggle, setAlertValue] = useToggle();
+  const [alertType, setAlertType] = useState("");
+
+  const messageToType = {
+    "기존 비밀번호와 동일합니다.": "passwordSameError",
+    "현재 비밀번호가 틀렸습니다.": "passwordWrongError",
+  };
 
   const onSubmit: SubmitHandler<PasswordFormInput> = async (data) => {
     try {
@@ -34,11 +41,14 @@ function PasswordChangeForm() {
       const response = await changePassword(newPasswordData);
 
       if (response.errorMessage) {
-        setErrorMessage(response.errorMessage);
+        const errorMessage = response.errorMessage;
+        const type = messageToType[errorMessage];
+        setAlertType(type);
+        setAlertValue(true);
       } else {
-        console.log("비밀번호가 변경되었습니다!");
+        setAlertType("passwordSuccess");
+        setAlertValue(true);
         reset();
-        setModalPwdSuccess(true);
       }
     } catch (error) {
       console.error("현재 비밀번호가 틀렸습니다!", error);
@@ -47,9 +57,8 @@ function PasswordChangeForm() {
 
   return (
     <>
-      {modalPwdSuccess && (
-        <AlertModal modalType="alert" onClose={() => setModalPwdSuccess(false)} alertType="passwordSuccess" />
-      )}
+      {alertValue && <AlertModal modalType="alert" onClose={alertToggle} alertType={alertType} />}
+
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col tablet:gap-24 gap-16">
         <TextInput
           type="password"

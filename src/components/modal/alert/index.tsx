@@ -10,6 +10,8 @@ export type AlertType =
   | "profileSuccess"
   | "passwordSuccess"
   | "incorrectPassword"
+  | "passwordSameError"
+  | "passwordWrongError"
   | "";
 
 interface AlertModalProps {
@@ -28,6 +30,8 @@ function AlertModal({ modalType, callback, onClose, alertType }: AlertModalProps
     profileSuccess: "프로필을 저장하였습니다.",
     passwordSuccess: "비밀번호가 변경되었습니다.",
     incorrectPassword: "현재 비밀번호가 틀렸습니다.",
+    passwordSameError: "현재 비밀번호와 새 비밀번호가 동일합니다.",
+    passwordWrongError: "현재 비밀번호가 틀렸습니다.",
   };
 
   const text = {
