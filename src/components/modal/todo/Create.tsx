@@ -21,7 +21,7 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
 
   const rules = { required: "빈 값은 안됨." };
 
-  const renderOptionNickName = (option: any) => <ProfileLabel data={option} />;
+  const renderOptionNickName = (option: MemberApplicationServiceResponseDto) => <ProfileLabel data={option} />;
   const defaultMemberId = memberList[0]?.userId || "";
 
   return (

@@ -11,6 +11,7 @@ import { ChipProgress } from "@/components/common/Chips";
 import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
 import AddImageInput from "../input/AddImageInput";
 import { CardServiceResponseDto } from "@/lib/services/cards/schema";
+import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
 
 interface UpdateTodoModalProps<T = void> {
   cardId?: number;
@@ -39,15 +40,15 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
     };
 
     fetchCardData();
-  }, []);
+  }, [cardId]);
 
   if (!cardData) return;
   const { id: memberId } = cardData.assignee;
 
-  const renderOptionPrograss = (option: any) => {
+  const renderOptionPrograss = (option: ColumnServiceResponseDto) => {
     return <ChipProgress columnTitle={option?.title} />;
   };
-  const renderOptionNickName = (option: any) => {
+  const renderOptionNickName = (option: MemberApplicationServiceResponseDto) => {
     return <ProfileLabel data={option} />;
   };
 

@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import { ColumnServiceResponseDto, ResponsePayload_ColumnServiceResponseDto } from "@/lib/services/columns/schema";
+import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
 import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
 import { findColumns } from "@/lib/services/columns";
 import { memberList } from "@/lib/services/members";
@@ -73,7 +73,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const { data: members } = await memberList(qs, config);
     const { data: columns } = await findColumns({ dashboardId }, config);
-    console.log(members, columns);
     if (!members || !columns) {
       return {
         redirect: {

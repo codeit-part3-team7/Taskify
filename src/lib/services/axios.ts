@@ -32,7 +32,7 @@ axiosInstance.interceptors.request.use(
     }
 
     if (typeof window !== "undefined") {
-      let token = localStorage.getItem("accessToken") || getCookie("accessToken");
+      const token = localStorage.getItem("accessToken") || getCookie("accessToken");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

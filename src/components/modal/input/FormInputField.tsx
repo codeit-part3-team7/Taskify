@@ -1,12 +1,12 @@
 import React from "react";
-import { useFormContext, Controller } from "react-hook-form";
+import { useFormContext, Controller, RegisterOptions } from "react-hook-form";
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelName: string;
   labelTitle: string;
   defaultValue?: string;
   textArea?: boolean;
-  rules?: any;
+  rules?: Pick<RegisterOptions, "maxLength" | "minLength" | "validate" | "required">;
   required?: boolean;
 }
 
@@ -15,7 +15,7 @@ interface TextAreaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaEl
   labelTitle: string;
   defaultValue?: string;
   textArea: true;
-  rules?: any;
+  rules?: Pick<RegisterOptions, "maxLength" | "minLength" | "validate" | "required">;
   required?: boolean;
 }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Controller, FieldValues, FormProvider, useForm, useFormContext } from "react-hook-form";
+import { Controller, FieldValues, FormProvider, useForm } from "react-hook-form";
 import Modal from "@/components/common/Modal";
 import { ChipColors } from "@/components/common/Chips";
 import { createDashboard } from "@/lib/services/dashboards";

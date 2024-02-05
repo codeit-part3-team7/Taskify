@@ -40,6 +40,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
   };
 
   const handleDelete = (id: number) => {
+    console.log(id);
     const updatedComments = commentList.filter((_, index) => index !== id);
     setCommentList(updatedComments);
   };
@@ -59,7 +60,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       }
     };
     fetch();
-  }, [handleSubmit]);
+  }, [cardId, handleSubmit]);
 
   return (
     <>
@@ -81,7 +82,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       {commentList && commentList.length > 0 && (
         <div className="overflow-auto max-h-150 w-320 tablet:w-470">
           {commentList.map((comment, index) => (
-            <Comments key={index} comment={comment.content} onDelete={() => handleDelete(index)} />
+            <Comments key={index} comment={comment.content} onDelete={() => handleDelete(comment.id)} />
           ))}
         </div>
       )}
