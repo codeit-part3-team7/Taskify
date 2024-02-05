@@ -49,7 +49,14 @@ export default function SignUp() {
         router.push("/mydashboard");
       }
       if (response.errorMessage) {
-        handleAlert("emailInUse");
+        switch (response.errorMessage) {
+          case "이미 사용중인 이메일입니다.":
+            handleAlert("emailInUse");
+            break;
+          case "Internal Server Error":
+            handleAlert("serverError");
+            break;
+        }
       }
     } catch (error) {
       handleAlert("serverError");
