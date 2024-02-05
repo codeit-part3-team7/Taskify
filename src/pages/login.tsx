@@ -47,6 +47,9 @@ export default function Login() {
           case "비밀번호가 일치하지 않습니다.":
             handleAlert("passwordMismatch");
             break;
+          case "Internal Server Error":
+            handleAlert("serverError");
+            break;
         }
       }
     } catch (error) {
