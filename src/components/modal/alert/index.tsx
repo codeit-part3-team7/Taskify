@@ -11,6 +11,7 @@ export type AlertType =
   | "incorrectPassword"
   | "";
 
+
 interface AlertModalProps {
   modalType: "alert" | "delete";
   alertType?: AlertType;
