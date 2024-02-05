@@ -36,12 +36,10 @@ export default function MyDashboard() {
   useEffect(() => {
     const fetchDashboards = async () => {
       try {
-        const query = {
+        const qs = {
           navigationMethod: ["pagination"],
-          page: 1,
-          size: 10,
         };
-        const response = await findDashboard(query);
+        const response = await findDashboard(qs);
         setDashboards(response.data?.dashboards || []);
       } catch (error) {
         console.error(error);

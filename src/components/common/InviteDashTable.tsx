@@ -45,8 +45,8 @@ function InviteDashTable(): JSX.Element {
   useEffect(() => {
     const fetchInvitationDashboard = async (): Promise<void> => {
       try {
-        const response = await invitation();
-        const invitations = response.data?.invitations || [];
+        const res = await invitation();
+        const invitations = res.data?.invitations || [];
         setInvitedDashBoards(invitations);
         setSearchResult(invitations);
       } catch (error) {
