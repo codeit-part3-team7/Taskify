@@ -2,55 +2,36 @@ import Button from "./Button/Button";
 import PaginationButton from "./Button/PaginationButton";
 import ProfileLabel from "../common/ProfileLabel";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { deleteMember, memberList } from "@/lib/services/members";
-import { findDashboard } from "@/lib/services/dashboards";
+import { MemberListResponseDto } from "@/lib/services/members/schema";
+import Image from "next/image";
 
 function MemberTable() {
-  const [dashboardId, setDashboardId] = useState(null);
   const [members, setMembers] = useState([]);
+  const router = useRouter();
+  const dashboardId = router.query?.id;
 
-  // dashboardid 추출
-  const extractDashboardIdFromUrl = () => {
-    const pathSegments = window.location.pathname.split("/").filter(Boolean);
-    const dashboardIndex = pathSegments.findIndex((segment) => segment === "dashboard");
-    if (dashboardIndex !== -1 && pathSegments.length > dashboardIndex + 1) {
-      return pathSegments[dashboardIndex + 1];
-    }
-    return null;
-  };
-
-  const getMembers = async (dashboardId) => {
-    try {
-      const { data } = await memberList(dashboardId, "/dashboardId");
-      if (data && data.members) {
-        setMembers(data.members);
-      }
-    } catch (error) {
-      console.error("대시보드의 멤버가 아닙니다:", error);
+  const getMembers = async () => {
+    if (typeof dashboardId === "string") {
+      const qs = { dashboardId: Number(dashboardId) };
+      const memberData = (await memberList(qs)).data as MemberListResponseDto;
+      if (memberData) setMembers(memberData.members);
     }
   };
+
+  useEffect(() => {
+    getMembers();
+  }, [dashboardId]);
 
   const handleDeleteMember = async (memberId: number) => {
     try {
       await deleteMember(memberId);
-      getMembers(dashboardId);
+      await getMembers();
     } catch (error) {
       console.error("멤버 삭제 실패:", error);
     }
   };
-
-  useEffect(() => {
-    const id = extractDashboardIdFromUrl();
-    if (id) {
-      setDashboardId(id);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (dashboardId) {
-      getMembers(dashboardId);
-    }
-  }, [dashboardId]);
 
   return (
     <div className="bg-white rounded-8">
@@ -62,15 +43,20 @@ function MemberTable() {
         </div>
       </div>
       <p className="text-gray-9FA6 text-14 pt-18 px-20 tablet:text-16 tablet:px-28">이름</p>
-      {/* 4명씩 페이지네이션, 본인은 왕관으로 나와서 삭제버튼 없는 기능 만들어야 될 듯 */}
       {members.map((member) => (
         <div
           className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28"
           key={member.id}>
           <ProfileLabel data={member} avatarType="table" />
-          <Button variant="ghost" buttonType="delete" onClick={() => handleDeleteMember(member.id)}>
-            삭제
-          </Button>
+          {member.isOwner ? (
+            <div className="px-15 tablet:px-30">
+              <Image src="/images/crown.png" alt="왕관 아이콘" width={24} height={24} />
+            </div>
+          ) : (
+            <Button variant="ghost" buttonType="delete" onClick={() => handleDeleteMember(member.id)}>
+              삭제
+            </Button>
+          )}
         </div>
       ))}
     </div>
