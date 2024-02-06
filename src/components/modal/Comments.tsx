@@ -2,23 +2,18 @@ import { useState } from "react";
 import { CommentServiceDto } from "@/lib/services/comments/schema";
 import { formatDate } from "@/lib/util/formatDate";
 import { comment } from "@/lib/services/comments";
-import { useTrigger } from "../contexts/TriggerContext";
 import Avatar from "../common/Avatar";
 
 interface CommentsProps {
-  comment?: CommentServiceDto;
+  comment: CommentServiceDto;
+  updateCommentList: React.Dispatch<React.SetStateAction<CommentServiceDto[]>>;
 }
 
-function Comments({ comment: commentData }: CommentsProps) {
+function Comments({ comment: commentData, updateCommentList }: CommentsProps) {
   const [editingComment, setEditingComment] = useState(commentData?.content || "");
   const [isEditing, setIsEditing] = useState(false);
-  const author = commentData?.author;
 
-  const { toggleTrigger } = useTrigger();
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  const handleEdit = () => setIsEditing(true);
 
   const handleCancel = () => {
     setEditingComment(commentData?.content || "");
@@ -26,19 +21,25 @@ function Comments({ comment: commentData }: CommentsProps) {
   };
 
   const handleSave = async () => {
-    setIsEditing(false);
-    try {
-      await comment("put", commentData?.id as number, { content: editingComment });
-      toggleTrigger();
-    } catch (error) {
-      console.error(error);
+    if (editingComment.trim() !== "") {
+      try {
+        await comment("put", commentData.id, { content: editingComment });
+        setIsEditing(false);
+        updateCommentList((prevState) =>
+          prevState.map((comment) =>
+            comment.id === commentData.id ? { ...comment, content: editingComment } : comment,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
   const handleDelete = async () => {
     try {
-      await comment("delete", commentData?.id as number);
-      toggleTrigger();
+      await comment("delete", commentData.id);
+      updateCommentList((prevState) => prevState.filter((comment) => comment.id !== commentData.id));
     } catch (error) {
       console.error(error);
     }
@@ -46,7 +47,7 @@ function Comments({ comment: commentData }: CommentsProps) {
 
   return (
     <div className="flex gap-10 mt-20 w-320 tablet:w-450">
-      <Avatar {...author} />
+      <Avatar {...commentData.author} />
       <div className="flex flex-col">
         <div className="flex items-center gap-8">
           <span className="font-bold text-black font-Pretendard text-14">{commentData?.author.nickname}</span>

@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { createComment, findComments, comment } from "@/lib/services/comments";
 import { CommentServiceDto, FindCommentsResponseDto } from "@/lib/services/comments/schema";
 import Button from "@/components/common/Button/Button";
-import { useTrigger } from "@/components/contexts/TriggerContext";
 
 interface CommentInputProps {
   cardId: number;
@@ -12,18 +11,17 @@ interface CommentInputProps {
 }
 
 function CommentInput({ cardId, columnId }: CommentInputProps) {
-  const [currentComment, setcurrentComment] = useState<string>("");
+  const [currentComment, setCurrentComment] = useState<string>("");
   const [commentList, setCommentList] = useState<CommentServiceDto[]>([]);
   const {
     query: { id },
   } = useRouter();
-  const { isTriggered } = useTrigger();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setcurrentComment(e.target.value);
+    setCurrentComment(e.target.value);
   };
 
-  const handleSubmit = async () => {
+  const saveComment = async () => {
     if (currentComment.trim() !== "") {
       const form = {
         content: currentComment,
@@ -33,8 +31,8 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       };
       try {
         const response = await createComment(form);
-        console.log("comment", response);
-        setcurrentComment("");
+        setCommentList((prevState: any) => [...prevState, response.data]);
+        setCurrentComment("");
       } catch (error) {
         console.error(error);
       }
@@ -56,7 +54,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       }
     };
     fetch();
-  }, [cardId, isTriggered]);
+  }, [cardId]);
 
   return (
     <>
@@ -70,15 +68,15 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
             onChange={handleChange}></textarea>
         </div>
         <div className="absolute bottom-15 right-15">
-          <Button variant="ghost" buttonType="comment" onClick={handleSubmit}>
+          <Button variant="ghost" buttonType="comment" onClick={saveComment}>
             입력
           </Button>
         </div>
       </div>
       {commentList && commentList.length > 0 && (
-        <div className="overflow-auto max-h-150 w-320 tablet:w-470">
-          {commentList.map((comment, index) => (
-            <Comments key={index} comment={comment} />
+        <div className="overflow-auto max-h-150">
+          {commentList.map((comment) => (
+            <Comments key={comment.id} comment={comment} updateCommentList={setCommentList} />
           ))}
         </div>
       )}
