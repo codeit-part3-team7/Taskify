@@ -48,7 +48,6 @@ function Modal({
   const isDelete = modalType === "delete";
 
   const isValid = formContext && formContext.formState.isValid;
-
   const stopEventBubbling = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
