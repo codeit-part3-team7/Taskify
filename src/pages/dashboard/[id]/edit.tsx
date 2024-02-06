@@ -85,7 +85,7 @@ export default function Edit({ members, columns }: DashboardProps) {
           sideMenu={<SideMenu dashboards={dashboards} />}
           dashboardHeader={<DashboardHeader myData={myData} dashboardData={dashboardData} members={members} />}>
           <div className="px-12 pt-16 tablet:px-20 tablet:pt-20 pc:w-620">
-            <BackButton onClick={() => router.back()} />
+            <BackButton />
             <div className="flex flex-col gap-y-12 pt-21 pb-40 tablet:pb-48">
               <div className="bg-white px-20 rounded-8">
                 <div className="flex flex-col pt-27 pb-20 tablet:pt-32 tablet:pb-37 tablet:flex-row tablet:justify-between tablet:items-center">
