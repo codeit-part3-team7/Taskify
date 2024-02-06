@@ -110,7 +110,6 @@ function PasswordChangeForm() {
           placeholder="새 비밀번호 입력"
           onBlur={() => setIsPasswordMatchError(getValues("newPassword") !== getValues("newPasswordConfirm"))}
         />
-        {isPasswordMatchError && <div className="text-red-500 text-sm mt-1">비밀번호가 일치하지 않습니다.</div>}
         <div className="flex justify-end tablet:text-14 text-12">
           <Button variant="filled_4" buttonType="comment" type="submit" disabled={!isValid}>
             변경
