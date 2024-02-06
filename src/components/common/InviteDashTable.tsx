@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "../common/Button/Button";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { invitation, responseInvitation } from "@/lib/services/invitations";
-import { InvitaionServiceResponseDto } from "@/lib/services/invitations/schema";
+import { InvitationServiceResponseDto } from "@/lib/services/invitations/schema";
+import { MyDashBoardContext } from "@/pages/mydashboard";
 
 interface Invitation {
   id: number;
@@ -18,6 +19,8 @@ interface Invitation {
 function InviteDashTable(): JSX.Element {
   const [invitedDashBoards, setInvitedDashBoards] = useState<Invitation[]>([]);
   const [searchResult, setSearchResult] = useState<Invitation[]>([]);
+
+  const { toggleTrigger } = useContext(MyDashBoardContext);
 
   const handleSearch = (searchTerm: string): void => {
     if (searchTerm.trim() === "") {
@@ -38,6 +41,7 @@ function InviteDashTable(): JSX.Element {
       setSearchResult((prevSearchResult: Invitation[]) =>
         prevSearchResult.filter((invitation) => invitation.id !== invitationId),
       );
+      toggleTrigger();
     } catch (error) {
       console.error(error);
     }
@@ -46,7 +50,7 @@ function InviteDashTable(): JSX.Element {
   useEffect(() => {
     const fetchInvitationDashboard = async (): Promise<void> => {
       try {
-        const res = (await invitation({})).data as InvitaionServiceResponseDto;
+        const res = (await invitation({})).data as InvitationServiceResponseDto;
         const invitations = res.invitations || [];
         setInvitedDashBoards(invitations);
         setSearchResult(invitations);
