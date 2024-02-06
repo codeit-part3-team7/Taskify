@@ -21,6 +21,11 @@ function FormTagField({ defaultValue }: { defaultValue?: string[] }) {
       }
     }
   };
+  const handleDelete = (index: number) => {
+    const currentTags = getValues("tags") || [];
+    const updatedTags = currentTags.filter((_unused: unknown, tagIndex: number) => tagIndex !== index);
+    setValue("tags", updatedTags, { shouldValidate: true });
+  };
 
   useEffect(() => {
     if (defaultValue) {
@@ -41,7 +46,11 @@ function FormTagField({ defaultValue }: { defaultValue?: string[] }) {
             <div className="flex gap-2 p-2 border-gray-300 border-1 rounded-6 px-16 border-gray-D9D9 h-42 tablet:h-48 overflow-x-auto">
               <div className="flex flex-wrap items-center gap-2">
                 {value?.map((tag: string, index: number) => {
-                  return <ChipCard key={index} tag={tag} index={index} />;
+                  return (
+                    <div className="cursor-pointer" onClick={() => handleDelete(index)}>
+                      <ChipCard key={index} tag={tag} index={index} />
+                    </div>
+                  );
                 })}
               </div>
               <input type="text" className="flex-1 " onKeyDown={handleKeyDown} placeholder="태그를 입력하세요" />
