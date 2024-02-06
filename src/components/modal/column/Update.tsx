@@ -1,9 +1,9 @@
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { useToggle } from "usehooks-ts";
-import Modal from "@/components/common/Modal";
 import { column } from "@/lib/services/columns";
+import Modal from "@/components/common/Modal";
 import AlertModal from "../alert";
-import FormInputField from "../input/FormInputField";
+import { FormInputField } from "../input";
 
 type ColumnData = {
   title: string;

@@ -37,7 +37,7 @@ export const findComments = (qs: FindCommentsRequestDto): Promise<ServiceRespons
  * @returns {Promise<ServiceResponse<CommentServiceDto>>} 댓글 서비스 응답을 포함하는 프로미스
  * @throws {Error} 유효하지 않은 HTTP 메소드가 제공될 경우 오류를 발생시킵니다.
  */
-export const comment = (method: HttpMethod, commentId: number, data: UpdateCommentRequestDto) => {
+export const comment = (method: HttpMethod, commentId: number, data?: UpdateCommentRequestDto) => {
   switch (method) {
     case "delete":
       return service(method, commentAddress.commentId(commentId));

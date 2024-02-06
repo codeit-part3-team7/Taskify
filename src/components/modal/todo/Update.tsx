@@ -1,19 +1,16 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { Controller, FieldValues, FormProvider, useForm } from "react-hook-form";
-import Modal from "@/components/common/Modal";
-import FormInputField from "../input/FormInputField";
+import { format } from "date-fns";
 import { card } from "@/lib/services/cards";
-import FormTagField from "../input/FormTagField";
+import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
+import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
+import { CardServiceResponseDto } from "@/lib/services/cards/schema";
+import { DashboardContext } from "@/pages/dashboard/[id]";
+import Modal from "@/components/common/Modal";
 import Dropdown from "@/components/common/Dropdown";
 import ProfileLabel from "@/components/common/ProfileLabel";
-import { DashboardContext } from "@/pages/dashboard/[id]";
 import { ChipProgress } from "@/components/common/Chips";
-import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import AddImageInput from "../input/AddImageInput";
-import { CardServiceResponseDto } from "@/lib/services/cards/schema";
-import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
-import { DatePickerInput } from "../input/DatePickerInput";
-import { format } from "date-fns";
+import { AddImageInputField, DatePickerInputField, FormInputField, FormTagInputField } from "../input";
 
 type ImageObject = {
   url: string;
@@ -121,9 +118,9 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
             render={({ field }) => (
               <div className="flex flex-col">
                 <label className="text-16 tabelt:text-18" htmlFor="dueDate">
-                  마감일.
+                  마감일
                 </label>
-                <DatePickerInput
+                <DatePickerInputField
                   selected={field.value}
                   onChange={(selectedValue?: Date) => {
                     const formattedDate = format(selectedValue as Date, "yyyy-MM-dd HH:mm");
@@ -133,8 +130,8 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
               </div>
             )}
           />
-          <FormTagField defaultValue={cardData?.tags} />
-          <AddImageInput value={cardData.imageUrl as string} onChange={setSelectedImage} />
+          <FormTagInputField defaultValue={cardData?.tags} />
+          <AddImageInputField value={cardData.imageUrl as string} onChange={setSelectedImage} />
         </div>
       </Modal>
     </FormProvider>

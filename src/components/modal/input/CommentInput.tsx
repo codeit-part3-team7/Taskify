@@ -1,9 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Comments from "../Comments";
 import { useRouter } from "next/router";
-import { createComment, findComments } from "@/lib/services/comments";
+import { createComment, findComments, comment } from "@/lib/services/comments";
 import { CommentServiceDto, FindCommentsResponseDto } from "@/lib/services/comments/schema";
 import Button from "@/components/common/Button/Button";
+import { useTrigger } from "@/components/contexts/TriggerContext";
 
 interface CommentInputProps {
   cardId: number;
@@ -11,20 +12,21 @@ interface CommentInputProps {
 }
 
 function CommentInput({ cardId, columnId }: CommentInputProps) {
-  const [comment, setComment] = useState<string>("");
+  const [currentComment, setcurrentComment] = useState<string>("");
   const [commentList, setCommentList] = useState<CommentServiceDto[]>([]);
   const {
     query: { id },
   } = useRouter();
+  const { isTriggered } = useTrigger();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value);
+    setcurrentComment(e.target.value);
   };
 
   const handleSubmit = async () => {
-    if (comment.trim() !== "") {
+    if (currentComment.trim() !== "") {
       const form = {
-        content: comment,
+        content: currentComment,
         cardId,
         columnId,
         dashboardId: Number(id),
@@ -32,17 +34,11 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       try {
         const response = await createComment(form);
         console.log("comment", response);
-        setComment("");
+        setcurrentComment("");
       } catch (error) {
         console.error(error);
       }
     }
-  };
-
-  const handleDelete = (id: number) => {
-    console.log(id);
-    const updatedComments = commentList.filter((_, index) => index !== id);
-    setCommentList(updatedComments);
   };
 
   useEffect(() => {
@@ -60,7 +56,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       }
     };
     fetch();
-  }, [cardId, handleSubmit]);
+  }, [cardId, isTriggered]);
 
   return (
     <>
@@ -70,7 +66,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
           <textarea
             className="h-full outline-none resize-none w-200 tablet:w-330 text-12"
             placeholder="댓글 작성하기"
-            value={comment}
+            value={currentComment}
             onChange={handleChange}></textarea>
         </div>
         <div className="absolute bottom-15 right-15">
@@ -82,7 +78,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       {commentList && commentList.length > 0 && (
         <div className="overflow-auto max-h-150 w-320 tablet:w-470">
           {commentList.map((comment, index) => (
-            <Comments key={index} comment={comment} onDelete={() => handleDelete(comment.id)} />
+            <Comments key={index} comment={comment} />
           ))}
         </div>
       )}

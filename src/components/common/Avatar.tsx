@@ -9,7 +9,7 @@ interface AvatarProps {
 }
 
 function Avatar({ nickname, profileImageUrl, avatarType = "default" }: AvatarProps) {
-  const initial = nickname?.charAt(0) || "";
+  const initial = profileImageUrl ? "" : nickname?.charAt(0);
 
   const backgroundStyle = {
     backgroundImage: profileImageUrl ? `url(${profileImageUrl})` : "orange",

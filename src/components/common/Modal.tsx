@@ -38,12 +38,9 @@ function Modal({
     update: "수정",
     delete: "삭제",
     invite: "초대",
-    success_profile: "확인",
-    success_password: "확인",
   };
 
-  // const isAlert = modalType === "alert"
-  const isAlert = modalType === "alert" || "success_profile" || "success_password";
+  const isAlert = modalType === "alert";
   const isUpdate = modalType === "update";
   const isDelete = modalType === "delete";
 
@@ -106,7 +103,7 @@ function Modal({
           {/* 모달 푸터 영역 */}
           {modalType && (
             <footer
-              className={`flex flex-col tablet:flex-row tablet:justify-between ${useFormData ? `mt-28 tablet:mt-32` : ""}`}>
+              className={`flex flex-col item-end tablet:flex-row tablet:justify-between ${useFormData ? `mt-28 tablet:mt-32` : ""}`}>
               {onDelete && isUpdate && (
                 <span className="underline cursor-pointer text-nowrap text-gray-9FA6" onClick={onDelete}>
                   삭제하기

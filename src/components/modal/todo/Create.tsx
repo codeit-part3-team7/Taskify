@@ -1,15 +1,12 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { Controller, FieldValues, FormProvider, useForm } from "react-hook-form";
+import { format } from "date-fns";
+import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
+import { DashboardContext } from "@/pages/dashboard/[id]";
 import Modal from "@/components/common/Modal";
 import Dropdown from "@/components/common/Dropdown";
 import ProfileLabel from "@/components/common/ProfileLabel";
-import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import AddImageInput from "../input/AddImageInput";
-import FormInputField from "../input/FormInputField";
-import FormTagField from "../input/FormTagField";
-import { DashboardContext } from "@/pages/dashboard/[id]";
-import { DatePickerInput } from "../input/DatePickerInput";
-import { format } from "date-fns";
+import { AddImageInputField, DatePickerInputField, FormInputField, FormTagInputField } from "../input";
 
 type ImageObject = {
   url: string;
@@ -61,9 +58,9 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
             render={({ field }) => (
               <div className="flex flex-col">
                 <label className="text-16 tabelt:text-18" htmlFor="dueDate">
-                  마감일.
+                  마감일
                 </label>
-                <DatePickerInput
+                <DatePickerInputField
                   selected={field.value}
                   onChange={(selectedValue?: Date) => {
                     const formattedDate = format(selectedValue as Date, "yyyy-MM-dd HH:mm");
@@ -73,8 +70,8 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
               </div>
             )}
           />
-          <FormTagField />
-          <AddImageInput onChange={setSelectedImage} />
+          <FormTagInputField />
+          <AddImageInputField onChange={setSelectedImage} />
         </div>
       </Modal>
     </FormProvider>

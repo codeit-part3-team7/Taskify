@@ -1,43 +1,57 @@
 import { useState } from "react";
-import Avatar from "../common/Avatar";
 import { CommentServiceDto } from "@/lib/services/comments/schema";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/util/formatDate";
+import { comment } from "@/lib/services/comments";
+import { useTrigger } from "../contexts/TriggerContext";
+import Avatar from "../common/Avatar";
 
 interface CommentsProps {
   comment?: CommentServiceDto;
-  onDelete?: () => void;
 }
 
-function Comments({ comment, onDelete }: CommentsProps) {
-  const [editingComment, setEditingComment] = useState(comment?.content || "");
+function Comments({ comment: commentData }: CommentsProps) {
+  const [editingComment, setEditingComment] = useState(commentData?.content || "");
   const [isEditing, setIsEditing] = useState(false);
+  const author = commentData?.author;
 
-  const handleDelete = () => {
-    if (onDelete) {
-      onDelete();
-    }
-  };
+  const { toggleTrigger } = useTrigger();
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleCancel = () => {
+    setEditingComment(commentData?.content || "");
     setIsEditing(false);
   };
 
-  const handleCancel = () => {
-    setEditingComment(comment?.content || "");
+  const handleSave = async () => {
     setIsEditing(false);
+    try {
+      await comment("put", commentData?.id as number, { content: editingComment });
+      toggleTrigger();
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const handleDelete = async () => {
+    try {
+      await comment("delete", commentData?.id as number);
+      toggleTrigger();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex gap-10 mt-20 w-320 tablet:w-450">
-      <Avatar />
+      <Avatar {...author} />
       <div className="flex flex-col">
         <div className="flex items-center gap-8">
-          <span className="font-bold text-black font-Pretendard text-14">{comment?.author.nickname}</span>
+          <span className="font-bold text-black font-Pretendard text-14">{commentData?.author.nickname}</span>
           <span className="font-normal text-gray-9FA6 font-Pretendard text-12">
-            {format(comment?.createdAt as string, "yyyy-MM-dd HH:mm")}
+            {formatDate(commentData?.createdAt as string, true)}
           </span>
         </div>
         {isEditing ? (
@@ -48,7 +62,7 @@ function Comments({ comment, onDelete }: CommentsProps) {
           />
         ) : (
           <div className="mt-6 font-normal text-black w-270 tablet:w-400 font-Pretendard text-12 tablet:text-14">
-            {comment?.content}
+            {commentData?.content}
           </div>
         )}
         <div className="flex gap-12 mt-12">
