@@ -15,11 +15,17 @@ import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
 import { DatePickerInput } from "../input/DatePickerInput";
 import { format } from "date-fns";
 
+type ImageObject = {
+  url: string;
+  name: string;
+  type: string;
+};
+
 interface UpdateTodoModalProps<T = void> {
   cardId?: number;
   onClose: () => void;
   callback: (data: FieldValues) => Promise<T>;
-  setSelectedImage: Dispatch<SetStateAction<File | undefined>>;
+  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>>;
 }
 
 function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: UpdateTodoModalProps) {
@@ -118,7 +124,7 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
                   마감일.
                 </label>
                 <DatePickerInput
-                  selected={field?.value}
+                  selected={field.value}
                   onChange={(selectedValue?: Date) => {
                     const formattedDate = format(selectedValue as Date, "yyyy-MM-dd HH:mm");
                     field.onChange(formattedDate);

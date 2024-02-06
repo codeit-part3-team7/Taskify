@@ -54,7 +54,7 @@ function FormTagField({ defaultValue }: { defaultValue?: string[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 {value?.map((tag: string, index: number) => {
                   return (
-                    <div className="cursor-pointer" onClick={() => handleDelete(index)}>
+                    <div key={`${tag}-${index}`} className="cursor-pointer" onClick={() => handleDelete(index)}>
                       <ChipCard key={index} tag={tag} index={index} />
                     </div>
                   );

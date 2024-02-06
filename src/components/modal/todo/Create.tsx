@@ -11,10 +11,16 @@ import { DashboardContext } from "@/pages/dashboard/[id]";
 import { DatePickerInput } from "../input/DatePickerInput";
 import { format } from "date-fns";
 
+type ImageObject = {
+  url: string;
+  name: string;
+  type: string;
+};
+
 interface CreateTodoModalProps<T = void> {
   onClose: () => void;
   callback?: (data: FieldValues) => Promise<T>;
-  setSelectedImage: Dispatch<SetStateAction<File | undefined>>;
+  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>>;
 }
 
 function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModalProps) {
