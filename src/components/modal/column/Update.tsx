@@ -12,22 +12,12 @@ type ColumnData = {
 
 interface UpdateColumnProps {
   columnData: ColumnData;
+  callback: (data: FieldValues) => Promise<void>;
   onClose: () => void;
 }
-function UpdateColumnModal({ columnData: { title, columnId }, onClose }: UpdateColumnProps) {
+function UpdateColumnModal({ columnData: { title, columnId }, callback: callbackUpdate, onClose }: UpdateColumnProps) {
   const methods = useForm();
   const [deleteValue, deleteToggle, setDeleteValue] = useToggle();
-
-  const callbackUpdate = async ({ title }: FieldValues) => {
-    try {
-      const form = {
-        title,
-      };
-      await column("put", columnId, form);
-    } catch (e) {
-      Promise.reject(new Error("maxColumns"));
-    }
-  };
 
   const callbackDelete = async () => {
     try {

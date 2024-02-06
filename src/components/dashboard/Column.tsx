@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useToggle } from "usehooks-ts";
 import { FieldValues } from "react-hook-form";
+import { postImageToServer } from "@/lib/util/postImageToServer";
 import { createCard, findCards } from "@/lib/services/cards";
 import { CardServiceFindResponseDto, CreateCardRequestDto } from "@/lib/services/cards/schema";
 import { UpdateColumn } from "../modal/column";
@@ -10,8 +11,7 @@ import Card from "@/components/dashboard/Card";
 import AddCardButton from "./AddCardButton";
 import { ChipNum } from "../common/Chips";
 import { CreateTodo } from "../modal/todo";
-import { useTrigger } from "../contexts/TriggerContext";
-import { postImageToServer } from "@/lib/util/postImageToServer";
+import { column } from "@/lib/services/columns";
 
 interface ColumnProps {
   title: string;
@@ -21,7 +21,6 @@ interface ColumnProps {
 function Column({ title, columnId }: ColumnProps) {
   const [cardData, setCardData] = useState<CardServiceFindResponseDto>({ cards: [], totalCount: 0, cursorId: null });
   const [selectedImage, setSelectedImage] = useState<File>();
-  const { isTriggered, toggleTrigger } = useTrigger();
 
   const [columnUpdateValue, columnUpdateToggle, setColumnUpdateValue] = useToggle();
   const [todoValue, todoToggle, setTodoValue] = useToggle();
@@ -32,17 +31,6 @@ function Column({ title, columnId }: ColumnProps) {
   const { totalCount, cards } = cardData;
 
   const dashboardId = Number(id);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const qs = {
-        columnId,
-      };
-      const response = await findCards(qs);
-      setCardData(response?.data as CardServiceFindResponseDto);
-    };
-    fetchData();
-  }, [columnId, isTriggered]);
 
   const callback = async (data: FieldValues) => {
     try {
@@ -57,12 +45,38 @@ function Column({ title, columnId }: ColumnProps) {
           formData.imageUrl = imageUrl;
         }
       }
-      await createCard(formData);
-      toggleTrigger();
+      const response = await createCard(formData);
+      setCardData((prevState: any) => ({
+        ...prevState,
+        cards: [...prevState.cards, response.data],
+        totalCount: prevState.totalCount + 1,
+      }));
     } catch (error) {
       console.error(error);
     }
   };
+
+  const callbackUpdate = async ({ title }: FieldValues) => {
+    try {
+      const form = {
+        title,
+      };
+      const response = await column("put", columnId, form);
+    } catch (e) {
+      Promise.reject(new Error("maxColumns"));
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const qs = {
+        columnId,
+      };
+      const response = await findCards(qs);
+      setCardData(response?.data as CardServiceFindResponseDto);
+    };
+    fetchData();
+  }, [columnId]);
 
   return (
     <section className="flex flex-col flex-shrink-0 w-full gap-16 p-12 pc:min-h-screen tablet:gap-24 pc:w-354 tablet:p-20 bg-gray-FAFA border-b-1 border-b-gray-EEEE pc:border-r-gray-EEEE pc:border-r-1 pc:border-b-0">
@@ -88,6 +102,7 @@ function Column({ title, columnId }: ColumnProps) {
             title,
             columnId,
           }}
+          callback={callbackUpdate}
           onClose={() => setColumnUpdateValue(false)}
         />
       )}
