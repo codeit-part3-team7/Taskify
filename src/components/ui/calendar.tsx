@@ -49,7 +49,6 @@ const classNames = {
 };
 
 function Calendar({ className, showOutsideDays = true, ...props }: CalendarProps) {
-  console.log("calender", props);
   return (
     <DayPicker
       locale={ko}
