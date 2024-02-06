@@ -48,7 +48,7 @@ function InviteListTable() {
   // 컴포넌트 마운트 시 초대 목록 가져오기
   useEffect(() => {
     getInvitations();
-  }, []);
+  }, [dashboardId]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

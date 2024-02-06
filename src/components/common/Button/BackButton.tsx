@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-function BackButton(onClick) {
+function BackButton({ onClick }) {
   return (
     <button className="flex items-center animate-bounce" onClick={onClick}>
       <Image className="transform scale-x-[-1]" width={18} height={18} src="/images/arrow.png" alt="arrow 이미지" />

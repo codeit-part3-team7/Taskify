@@ -34,7 +34,7 @@ function MemberTable() {
   };
 
   return (
-    <div className="bg-white rounded-8">
+    <div className="bg-white rounded-8 pb-8">
       <div className="flex items-center justify-between pt-22 px-20 tablet:px-28 tablet:pt-26">
         <p className="text-20 font-bold tablet:text-24">구성원</p>
         <div className="flex items-center gap-x-12">
@@ -49,7 +49,7 @@ function MemberTable() {
           key={member.id}>
           <ProfileLabel data={member} avatarType="table" />
           {member.isOwner ? (
-            <div className="px-15 tablet:px-30">
+            <div className="px-13 tablet:px-30">
               <Image src="/images/crown.png" alt="왕관 아이콘" width={24} height={24} />
             </div>
           ) : (
