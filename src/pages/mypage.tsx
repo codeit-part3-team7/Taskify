@@ -77,11 +77,4 @@ function MyPage() {
   );
 }
 
-{
-  /* <MyPageForm type="profile">
-<ProfileInputField type="profile" title="프로필" />
-<ProfileInputField type="password" title="비밀번호변경" />
-</MyPageForm> */
-}
-
 export default MyPage;
