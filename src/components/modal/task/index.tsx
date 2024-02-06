@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
+import { CardServiceResponseDto } from "@/lib/services/cards/schema";
 import { ChipCard, ChipProgress } from "@/components/common/Chips";
 import Modal from "@/components/common/Modal";
 import CommentInput from "../input/CommentInput";
 import TaskInfo from "./TaskInfo";
-import { CardServiceResponseDto } from "@/lib/services/cards/schema";
 
 interface TaskModalProps {
   cardTitle: string;

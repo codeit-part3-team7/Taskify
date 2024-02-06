@@ -17,7 +17,7 @@ type ImageObject = {
 interface CreateTodoModalProps<T = void> {
   onClose: () => void;
   callback?: (data: FieldValues) => Promise<T>;
-  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>>;
+  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>> | any;
 }
 
 function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModalProps) {

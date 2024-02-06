@@ -45,6 +45,7 @@ function Modal({
   const isDelete = modalType === "delete";
 
   const isValid = formContext && formContext.formState.isValid;
+  const isDirty = formContext && formContext.formState.isDirty;
   const stopEventBubbling = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -121,7 +122,7 @@ function Modal({
                     type="submit"
                     buttonType="modal"
                     onClick={formContext.handleSubmit(handleButtonClick)}
-                    disabled={!isValid}>
+                    disabled={!isDirty || !isValid}>
                     {buttonMapping[modalType]}
                   </Button>
                 )}

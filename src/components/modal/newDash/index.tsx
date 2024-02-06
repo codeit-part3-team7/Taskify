@@ -5,8 +5,6 @@ import { ChipColors } from "@/components/common/Chips";
 import { createDashboard } from "@/lib/services/dashboards";
 import { useRouter } from "next/router";
 import { FormInputField } from "../input";
-import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
-import { ServiceResponse } from "@/lib/services/axios";
 
 function NewDashModal({ onClose }: { onClose: () => void }) {
   const router = useRouter();
