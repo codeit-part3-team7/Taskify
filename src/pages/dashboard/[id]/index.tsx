@@ -14,9 +14,9 @@ import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import { dashboard, findDashboard } from "@/lib/services/dashboards";
 import { me } from "@/lib/services/users";
 import { UserServiceResponseDto } from "@/lib/services/auth/schema";
-import { FindDashboardsResponseDto, NavigationMethodString } from "@/lib/services/dashboards/schema";
+import { FindDashboardsResponseDto } from "@/lib/services/dashboards/schema";
 import { useRouter } from "next/router";
-import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
+import { FindDashboardsRequestDto, DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -61,10 +61,11 @@ export default function Dashboard({ members, columns }: DashboardProps) {
     };
 
     const getDashboardsData = async () => {
-      const qs = { navigationMethod: "pagination" as NavigationMethodString, cursorId: 0, page: 1, size: 10 };
+      const qs: FindDashboardsRequestDto = { navigationMethod: "pagination", cursorId: 0, page: 1, size: 10 };
       const response = await findDashboard(qs);
       setDashboardList(response.data as FindDashboardsResponseDto);
     };
+
     getDashboard();
     getMeData();
     getDashboardsData();
