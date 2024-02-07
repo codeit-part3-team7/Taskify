@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useToggle, useWindowSize } from "usehooks-ts";
 import NewDashModal from "../modal/newDash";
+import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
 
 interface DashboardItemProps {
   id: number;
@@ -16,8 +17,11 @@ interface DashboardItemProps {
 }
 
 interface SideMenuProps {
-  dashboards?: DashboardItemProps[];
+  dashboards?: DashboardApplicationServiceResponseDto[];
 }
+// interface SideMenuProps {
+//   dashboards?: DashboardItemProps[];
+// }
 
 // 사이드 메뉴 안에 있는 대시보드 버튼 하나
 function DashboardItem({ id, title, createdByMe, color }: DashboardItemProps) {

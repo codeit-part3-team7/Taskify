@@ -18,7 +18,12 @@ export function ChipAdd() {
   return (
     <div className="flex items-center justify-center size-20 tablet:size-22 bg-violet-F1EF rounded-4">
       <div className="relative size-16">
-        <Image fill src="/images/add.png" alt="더하기 아이콘 이미지" />
+        <Image
+          fill
+          src="/images/add.png"
+          alt="더하기 아이콘 이미지"
+          sizes="(max-width: 744px) 100vw, (max-width: 1199px) 50vw, 25vw"
+        />
       </div>
     </div>
   );

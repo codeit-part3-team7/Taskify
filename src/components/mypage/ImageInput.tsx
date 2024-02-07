@@ -52,7 +52,13 @@ function ImageInput({ type, id, imgUrl, register, setValue }: ImgaeInputProps) {
         />
       ) : (
         <div className="relative w-20 h-20 tablet:w-30 tablet:h-30">
-          <Image src="/images/add.png" alt="프로필 추가 아이콘" fill priority={true} />
+          <Image
+            src="/images/add.png"
+            alt="프로필 추가 아이콘"
+            fill
+            priority={true}
+            sizes="(max-width: 744px) 100vw, (max-width: 1199px) 50vw, 25vw"
+          />
         </div>
       )}
     </label>
