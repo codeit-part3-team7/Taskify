@@ -35,7 +35,7 @@ function InviteDashTable(): JSX.Element {
     setSearchResult(filteredResult);
   };
 
-  const ResponseInvitation = async (invitationId: number, inviteAccepted: boolean): Promise<void> => {
+  const getResponseInvitation = async (invitationId: number, inviteAccepted: boolean): Promise<void> => {
     try {
       const response = await responseInvitation(invitationId, inviteAccepted);
       setSearchResult((prevSearchResult: Invitation[]) =>
@@ -48,7 +48,7 @@ function InviteDashTable(): JSX.Element {
   };
 
   useEffect(() => {
-    const fetchInvitationDashboard = async (): Promise<void> => {
+    const getInvitationDashboard = async (): Promise<void> => {
       try {
         const res = (await invitation({})).data as InvitationServiceResponseDto;
         const invitations = res.invitations || [];
@@ -59,7 +59,7 @@ function InviteDashTable(): JSX.Element {
       }
     };
 
-    fetchInvitationDashboard();
+    getInvitationDashboard();
   }, []);
 
   return (
@@ -90,10 +90,13 @@ function InviteDashTable(): JSX.Element {
                   <Button
                     variant="filled_4"
                     buttonType="confirm"
-                    onClick={() => ResponseInvitation(invitation.id, true)}>
+                    onClick={() => getResponseInvitation(invitation.id, true)}>
                     수락
                   </Button>
-                  <Button variant="ghost" buttonType="confirm" onClick={() => ResponseInvitation(invitation.id, false)}>
+                  <Button
+                    variant="ghost"
+                    buttonType="confirm"
+                    onClick={() => getResponseInvitation(invitation.id, false)}>
                     거절
                   </Button>
                 </div>

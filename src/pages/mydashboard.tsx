@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, createContext } from "react";
+import { useRouter } from "next/router";
 import BoardLayout from "@/layouts/board";
 import MyDashboardLayout from "@/layouts/board/mydashboard";
 import DashboardHeader from "@/components/common/DashboardHeader";
 import SideMenu from "@/components/common/SideMenu";
-import { Mock_MyData } from "@/components/mypage/MockData";
 import DashboardLinkButton from "@/components/mydashboard/DashboardLinkButton";
-import AddTodoButton from "@/components/dashboard/AddTodoButton";
+import AddDashBoardButton from "@/components/mydashboard/AddDashBoardButton";
 import PaginationButton from "@/components/common/Button/PaginationButton";
 import InviteDashTable from "@/components/common/InviteDashTable";
 import NewDashModal from "@/components/modal/newDash";
@@ -25,17 +25,16 @@ interface Dashboard {
 export const MyDashBoardContext = createContext({ isTrigger: false, toggleTrigger: () => {} });
 
 export default function MyDashboard() {
-  const [myData, setMyData] = useState(Mock_MyData);
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
-  const [showNewDashModal, setShowNewDashModal] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isTrigger, setIsTrigger] = useState<boolean>(false);
+  const router = useRouter();
 
   const sideMenu = <SideMenu dashboards={dashboards} />;
-  const header = <DashboardHeader myData={myData} />;
+  const header = <DashboardHeader />;
 
-  const [isTrigger, setIsTrigger] = useState<boolean>(false);
-
-  const handleAddNewDashModal = () => {
-    setShowNewDashModal(true);
+  const handleAddNewDashBoard = () => {
+    setIsModalOpen(true);
   };
 
   const toggleTrigger = useCallback(() => {
@@ -43,7 +42,16 @@ export default function MyDashboard() {
   }, []);
 
   useEffect(() => {
-    const fetchDashboards = async () => {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split(";");
+    const accessTokenCookie = cookies.find((cookie) => cookie.trim().startsWith("accessToken="));
+
+    if (!accessTokenCookie) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+    }
+
+    const getDashboards = async () => {
       try {
         const qs: FindDashboardsRequestDto = {
           navigationMethod: "pagination",
@@ -55,7 +63,7 @@ export default function MyDashboard() {
       }
     };
 
-    fetchDashboards();
+    getDashboards();
   }, [isTrigger]);
 
   return (
@@ -64,7 +72,7 @@ export default function MyDashboard() {
         <MyDashboardLayout>
           <div className="flex flex-col gap-8 tablet:gap-10 pc:gap-12">
             <div className="grid grid-cols-1 tablet:grid-cols-2 pc:grid-cols-3 gap-8 tablet:gap-13 w-full">
-              <AddTodoButton title="새로운 대시보드" onClick={handleAddNewDashModal} />
+              <AddDashBoardButton title="새로운 대시보드" onClick={handleAddNewDashBoard} />
               {dashboards.map((dashboard) => (
                 <DashboardLinkButton
                   key={dashboard.id}
@@ -74,7 +82,7 @@ export default function MyDashboard() {
                   color={dashboard.color}
                 />
               ))}
-              {showNewDashModal && <NewDashModal onClose={() => setShowNewDashModal(false)} />}
+              {isModalOpen && <NewDashModal onClose={() => setIsModalOpen(false)} />}
             </div>
             <div className="flex justify-end">
               <PaginationButton />
