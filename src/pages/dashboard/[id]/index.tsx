@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
-import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
+import { ColumnServiceResponseDto, FindColumnsRequestDto } from "@/lib/services/columns/schema";
 import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
 import { findColumns } from "@/lib/services/columns";
 import { memberList } from "@/lib/services/members";
@@ -12,8 +12,6 @@ import DashboardHeader from "@/components/common/DashboardHeader";
 import BoardLayout from "@/layouts/board";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import { dashboard, findDashboard } from "@/lib/services/dashboards";
-import { me } from "@/lib/services/users";
-import { UserServiceResponseDto } from "@/lib/services/auth/schema";
 import { FindDashboardsResponseDto } from "@/lib/services/dashboards/schema";
 import { useRouter } from "next/router";
 import { FindDashboardsRequestDto, DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
@@ -21,32 +19,35 @@ import AlertModal from "@/components/modal/alert";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
-  columns: ColumnServiceResponseDto[];
 };
+interface DashboardContext {
+  members: MemberApplicationServiceResponseDto[];
+  columnsData: ColumnServiceResponseDto[];
+}
 
-export const DashboardContext = createContext<DashboardProps>({
+export const DashboardContext = createContext<DashboardContext>({
   members: [],
-  columns: [],
+  columnsData: [],
 });
 
-export default function Dashboard({ members, columns }: DashboardProps) {
-  const [columnsData, setColumnsData] = useState(columns);
+export default function Dashboard({ members }: DashboardProps) {
+  const [alertValue, setAlertValue] = useState(false);
+  const [columnsData, setColumnsData] = useState<ColumnServiceResponseDto[]>([]);
   const [dashboardList, setDashboardList] = useState<FindDashboardsResponseDto>({
     cursorId: null,
     totalCount: 0,
     dashboards: [],
   });
-  const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
   const [dashboardData, setDashboardData] = useState<DashboardApplicationServiceResponseDto>(
     {} as DashboardApplicationServiceResponseDto,
   );
-  const [alertValue, setAlertValue] = useState(false);
 
   const { dashboards } = dashboardList;
 
   const sideMenu = <SideMenu dashboards={dashboards} />;
-  const header = <DashboardHeader myData={myData} dashboardData={dashboardData} members={members} />;
+  const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
 
+  console.log(columnsData);
   const {
     query: { id },
   } = useRouter();
@@ -58,15 +59,23 @@ export default function Dashboard({ members, columns }: DashboardProps) {
       setDashboardData(response?.data as DashboardApplicationServiceResponseDto);
     };
 
-    const getMeData = async () => {
-      const response = await me("get");
-      setMyData(response?.data as UserServiceResponseDto);
+    const getColumnsData = async () => {
+      const qs: FindColumnsRequestDto = { dashboardId };
+      const response = await findColumns(qs);
+      if (response.data) {
+        const columns = response?.data.data;
+        setColumnsData(columns);
+        return;
+      }
+      if (response.errorMessage) {
+        setAlertValue(true);
+        return;
+      }
     };
 
     const getDashboardsData = async () => {
       const qs: FindDashboardsRequestDto = { navigationMethod: "pagination", cursorId: 0, page: 1, size: 10 };
       const response = await findDashboard(qs);
-      console.log(response);
       if (response.data) {
         setDashboardList(response.data as FindDashboardsResponseDto);
         return;
@@ -78,12 +87,12 @@ export default function Dashboard({ members, columns }: DashboardProps) {
     };
 
     getDashboard();
-    getMeData();
+    getColumnsData();
     getDashboardsData();
   }, [id]);
 
   return (
-    <DashboardContext.Provider value={{ members, columns }}>
+    <DashboardContext.Provider value={{ members, columnsData }}>
       <BoardLayout sideMenu={sideMenu} dashboardHeader={header}>
         <div className="flex flex-col pc:flex-row">
           {columnsData?.map((column) => {
@@ -94,7 +103,7 @@ export default function Dashboard({ members, columns }: DashboardProps) {
             );
           })}
         </div>
-        <AddColumnButton />
+        <AddColumnButton updateColumns={setColumnsData} />
       </BoardLayout>
       {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
     </DashboardContext.Provider>
@@ -137,8 +146,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   try {
     const { data: members } = await memberList(qs, config);
-    const { data: columns } = await findColumns({ dashboardId }, config);
-    if (!members || !columns) {
+    if (!members) {
       return {
         redirect: {
           destination: "/mydashboard",
@@ -150,7 +158,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       props: {
         members: members?.members,
-        columns: columns?.data,
       },
     };
   } catch (error) {
@@ -158,7 +165,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       props: {
         error: "데이터를 불러오는 데 실패했습니다.",
         members: null,
-        columns: null,
       },
     };
   }
