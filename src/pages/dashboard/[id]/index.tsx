@@ -17,6 +17,7 @@ import { UserServiceResponseDto } from "@/lib/services/auth/schema";
 import { FindDashboardsResponseDto } from "@/lib/services/dashboards/schema";
 import { useRouter } from "next/router";
 import { FindDashboardsRequestDto, DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
+import AlertModal from "@/components/modal/alert";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -39,6 +40,8 @@ export default function Dashboard({ members, columns }: DashboardProps) {
   const [dashboardData, setDashboardData] = useState<DashboardApplicationServiceResponseDto>(
     {} as DashboardApplicationServiceResponseDto,
   );
+  const [alertValue, setAlertValue] = useState(false);
+
   const { dashboards } = dashboardList;
 
   const sideMenu = <SideMenu dashboards={dashboards} />;
@@ -57,13 +60,21 @@ export default function Dashboard({ members, columns }: DashboardProps) {
 
     const getMeData = async () => {
       const response = await me("get");
-      setMyData(response.data as UserServiceResponseDto);
+      setMyData(response?.data as UserServiceResponseDto);
     };
 
     const getDashboardsData = async () => {
       const qs: FindDashboardsRequestDto = { navigationMethod: "pagination", cursorId: 0, page: 1, size: 10 };
       const response = await findDashboard(qs);
-      setDashboardList(response.data as FindDashboardsResponseDto);
+      console.log(response);
+      if (response.data) {
+        setDashboardList(response.data as FindDashboardsResponseDto);
+        return;
+      }
+      if (response.errorMessage) {
+        setAlertValue(true);
+        return;
+      }
     };
 
     getDashboard();
@@ -85,6 +96,7 @@ export default function Dashboard({ members, columns }: DashboardProps) {
         </div>
         <AddColumnButton />
       </BoardLayout>
+      {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
     </DashboardContext.Provider>
   );
 }
