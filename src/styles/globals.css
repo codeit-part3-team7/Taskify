@@ -36,6 +36,14 @@
     tab-size: 4;
   }
 
+  .scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   @font-face {
     font-family: Pretendard;
     font-weight: 400;
