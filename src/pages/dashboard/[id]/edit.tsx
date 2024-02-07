@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import BackButton from "@/components/common/Button/BackButton";
 import Button from "@/components/common/Button/Button";
 import DeleteDashButton from "@/components/common/Button/DeleteDashButton";
@@ -8,16 +8,12 @@ import MemberTable from "@/components/common/MemberTable";
 import SideMenu from "@/components/common/SideMenu";
 import DashboardHeader from "@/components/common/DashboardHeader";
 import BoardLayout from "@/layouts/board";
-import { useRouter } from "next/router";
-import { dashboard, findDashboard } from "@/lib/services/dashboards";
-import { Input, Label } from "@/components/Auth/AuthInputField/Elements";
-import { UserServiceResponseDto } from "@/lib/services/auth/schema";
-import { FindDashboardsResponseDto, NavigationMethodString } from "@/lib/services/dashboards/schema";
+import { dashboard } from "@/lib/services/dashboards";
+import { Input } from "@/components/Auth/AuthInputField/Elements";
 import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
 import { UpdateTriggerProvider } from "@/components/contexts/TriggerContext";
 import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
-import { me } from "@/lib/services/users";
+import { useDashboardData } from "@/hooks/useDashboardData";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -30,43 +26,8 @@ export const DashboardContext = createContext<DashboardProps>({
 });
 
 export default function Edit({ members, columns }: DashboardProps) {
-  //주현님이 작성하신 대시보드 불러오기 코드 참고
-  const [dashboardList, setDashboardList] = useState<FindDashboardsResponseDto>({
-    cursorId: null,
-    totalCount: 0,
-    dashboards: [],
-  });
-  const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
-  const [dashboardData, setDashboardData] = useState<DashboardApplicationServiceResponseDto>(
-    {} as DashboardApplicationServiceResponseDto,
-  );
+  const { dashboardData, dashboardList, myData } = useDashboardData();
   const { dashboards } = dashboardList;
-
-  const router = useRouter();
-  const { id } = router.query;
-  const dashboardId = Number(id);
-
-  useEffect(() => {
-    if (!id) return;
-    const getDashboard = async () => {
-      const response = await dashboard("get", dashboardId);
-      setDashboardData(response?.data as DashboardApplicationServiceResponseDto);
-    };
-
-    const getMeData = async () => {
-      const response = await me("get");
-      setMyData(response.data as UserServiceResponseDto);
-    };
-
-    const getDashboardsData = async () => {
-      const qs = { navigationMethod: "pagination" as NavigationMethodString, cursorId: 0, page: 1, size: 10 };
-      const response = await findDashboard(qs);
-      setDashboardList(response.data as FindDashboardsResponseDto);
-    };
-    getDashboard();
-    getMeData();
-    getDashboardsData();
-  }, [id]);
 
   // 대시보드 삭제
   const handleDeleteDashboard = async () => {
