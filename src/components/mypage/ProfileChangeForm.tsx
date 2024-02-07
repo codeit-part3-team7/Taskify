@@ -1,3 +1,120 @@
+// import { SubmitHandler, useForm } from "react-hook-form";
+// import Button from "../common/Button/Button";
+// import ImageInput from "./ImageInput";
+// import { useEffect, useState } from "react";
+// import { me } from "@/lib/services/users";
+// import TextInput from "./PasswordInput";
+// import AlertModal from "../modal/alert";
+// import { postProfileImageToServer } from "@/lib/util/postImageToServer";
+// import { useToggle } from "usehooks-ts";
+// import { UpdateMyInfoRequestDto } from "@/lib/services/users/schema";
+// import { UserServiceResponseDto } from "@/lib/services/auth/schema";
+
+// function ProfileChangeForm() {
+//   const {
+//     register,
+//     handleSubmit,
+//     formState: { errors },
+//     setValue,
+//     getValues,
+//   } = useForm({
+//     shouldUnregister: false,
+//   });
+
+//   const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
+//   const [alertValue, alertToggle, setAlertValue] = useToggle();
+
+//   // 내정보 가져오기
+//   const getMeData = async () => {
+//     const res = await me("get");
+//     setMyData(res.data as UserServiceResponseDto);
+
+//     setValue("email", res.data?.email);
+//     setValue("nickname", res.data?.nickname);
+//     setValue("profileImageUrl", res.data?.profileImageUrl);
+//   };
+
+//   useEffect(() => {
+//     getMeData();
+//   }, []);
+
+//   const onSubmit: SubmitHandler<ProfileChangeFormProps> = async (data) => {
+//     try {
+//       let formData: UpdateMyInfoRequestDto = { nickname: data.nickname, profileImageUrl: null };
+
+//       if (data.profileImageUrl instanceof File) {
+//         const selectedImage = data.profileImageUrl;
+//         const imageUrl = await postProfileImageToServer(selectedImage);
+//         if (imageUrl) {
+//           formData.profileImageUrl = imageUrl;
+//         }
+//       } else if (typeof data.profileImageUrl === "string") {
+//         formData.profileImageUrl = data.profileImageUrl;
+//       }
+
+//       const updateMe = await me("put", formData);
+//       const { nickname, profileImageUrl }: any = updateMe.data;
+//       setMyData((prev: any) => ({ ...prev, nickname, profileImageUrl }));
+//       setValue("profileImageUrl", profileImageUrl);
+//       setAlertValue(true);
+//       // window.location.reload(); 움직임이 심함
+//       //window.location.href = "/mypage";
+//     } catch (error) {
+//       console.error("프로필을 변경하지 못했습니다!");
+//     }
+//   };
+
+//   return (
+//     <>
+//       {alertValue && <AlertModal modalType="alert" onClose={alertToggle} alertType="profileSuccess" />}
+
+//       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col tablet:gap-24 gap-16">
+//         <div className="flex flex-col items-start gap-24 tablet:flex-row tablet:gap-16 tablet:items-center">
+//           <ImageInput
+//             type="file"
+//             id="profileImageUrl"
+//             imgUrl={getValues("profileImageUrl")}
+//             register={register}
+//             setValue={setValue}
+//           />
+//           <div className="flex flex-col w-full gap-16 tablet:gap-20 grow tablet:mt-0">
+//             <TextInput
+//               type="text"
+//               id="email"
+//               register={register("email")}
+//               labelTitle="이메일"
+//               placeholder="이메일을 입력해 주세요."
+//               disabled={true}
+//             />
+//             <TextInput
+//               type="text"
+//               id="nickname"
+//               register={register("nickname")}
+//               validation={{
+//                 minLength: { value: 8, message: "닉네임은 8자까지만 입력할 수 있어요." },
+//               }}
+//               labelTitle="닉네임"
+//               placeholder="닉네임을 입력해 주세요."
+//               setValue={setValue}
+//             />
+//           </div>
+//         </div>
+//         <div className="flex justify-end tablet:text-14 text-12">
+//           <Button variant="filled_4" buttonType="comment" type="submit">
+//             저장
+//           </Button>
+//         </div>
+//       </form>
+//     </>
+//   );
+// }
+
+// export default ProfileChangeForm;
+
+//
+
+//
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../common/Button/Button";
 import ImageInput from "./ImageInput";
@@ -8,6 +125,7 @@ import AlertModal from "../modal/alert";
 import { postProfileImageToServer } from "@/lib/util/postImageToServer";
 import { useToggle } from "usehooks-ts";
 import { UpdateMyInfoRequestDto } from "@/lib/services/users/schema";
+import { UserServiceResponseDto } from "@/lib/services/auth/schema";
 
 export interface ProfileChangeFormProps {
   email: string;
@@ -53,6 +171,8 @@ function ProfileChangeForm({ myData, setMyData }: any) {
       setMyData((prev: any) => ({ ...prev, nickname, profileImageUrl }));
       setValue("profileImageUrl", profileImageUrl);
       setAlertValue(true);
+      // window.location.reload(); 움직임이 심함
+      //window.location.href = "/mypage";
     } catch (error) {
       console.error("프로필을 변경하지 못했습니다!");
     }
@@ -75,7 +195,7 @@ function ProfileChangeForm({ myData, setMyData }: any) {
             <TextInput
               type="text"
               id="email"
-              register={register}
+              register={register("email")}
               labelTitle="이메일"
               placeholder="이메일을 입력해 주세요."
               disabled={true}
@@ -83,13 +203,13 @@ function ProfileChangeForm({ myData, setMyData }: any) {
             <TextInput
               type="text"
               id="nickname"
-              register={register}
-              errors={errors}
+              register={register("nickname")}
               validation={{
-                required: "닉네임을 입력해주세요",
+                minLength: { value: 8, message: "닉네임은 8자까지만 입력할 수 있어요." },
               }}
               labelTitle="닉네임"
               placeholder="닉네임을 입력해 주세요."
+              setValue={setValue}
             />
           </div>
         </div>
