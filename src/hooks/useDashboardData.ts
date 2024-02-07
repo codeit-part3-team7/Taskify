@@ -40,5 +40,5 @@ export const useDashboardData = () => {
     getData();
   }, [id]);
 
-  return { dashboardData, dashboardList, myData };
+  return { dashboardData, setDashboardData, dashboardList, myData };
 };

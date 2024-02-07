@@ -21,6 +21,13 @@ function InviteListTable() {
   const router = useRouter();
   const dashboardId = router.query?.id;
 
+  // 모달 열기 관련 코드
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleInviteDashBoard = () => {
+    setIsModalOpen(true);
+  };
+
   // 초대 목록 조회
   const getInvitations = async () => {
     if (typeof dashboardId === "string") {
@@ -50,43 +57,38 @@ function InviteListTable() {
     getInvitations();
   }, [dashboardId]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <>
-      {isModalOpen && <InviteModal onClose={() => setIsModalOpen(false)} />}
-      <div className="bg-white rounded-8 pb-8">
-        <div className="flex items-center justify-between pt-22 px-20 tablet:px-28 tablet:pt-26">
-          <p className="text-20 font-bold tablet:text-24">초대내역</p>
-          <div className="flex items-center gap-x-12">
-            <p className="text-12 font-normal tablet:text-14">1 페이지 중 1</p>
-            <PaginationButton />
-            <div className="hidden tablet:block">
-              <IconButton variant="filled" type="invite" onClick={() => setIsModalOpen(true)} />
-            </div>
+    <div className="bg-white rounded-8 pb-8">
+      <div className="flex items-center justify-between pt-22 px-20 tablet:px-28 tablet:pt-26">
+        <p className="text-20 font-bold tablet:text-24">초대내역</p>
+        <div className="flex items-center gap-x-12">
+          <p className="text-12 font-normal tablet:text-14">1 페이지 중 1</p>
+          <PaginationButton />
+          <div className="hidden tablet:block">
+            <IconButton variant="filled" type="invite" onClick={handleInviteDashBoard} />
           </div>
-        </div>
-        <div className="pt-18 flex items-center justify-between pb-12 px-20 tablet:px-28">
-          <p className="text-gray-9FA6 text-14 tablet:text-16">이메일</p>
-          <div className="tablet:hidden">
-            {/* 모달이 안열림 */}
-            <IconButton variant="filled" type="invite" onClick={() => setIsModalOpen(true)} />
-          </div>
-        </div>
-        <div>
-          {invitations.map((invitation) => (
-            <div
-              className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28"
-              key={invitation.id}>
-              <p className="text-14">{invitation.invitee.email}</p>
-              <Button variant="ghost" buttonType="delete" onClick={() => handleCancelInvitation(invitation.id)}>
-                취소
-              </Button>
-            </div>
-          ))}
         </div>
       </div>
-    </>
+      <div className="pt-18 flex items-center justify-between pb-12 px-20 tablet:px-28">
+        <p className="text-gray-9FA6 text-14 tablet:text-16">이메일</p>
+        <div className="tablet:hidden">
+          <IconButton variant="filled" type="invite" onClick={handleInviteDashBoard} />
+        </div>
+      </div>
+      {isModalOpen && <InviteModal onClose={() => setIsModalOpen(false)} />}
+      <div>
+        {invitations.map((invitation) => (
+          <div
+            className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28"
+            key={invitation.id}>
+            <p className="text-14">{invitation.invitee.email}</p>
+            <Button variant="ghost" buttonType="delete" onClick={() => handleCancelInvitation(invitation.id)}>
+              취소
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 

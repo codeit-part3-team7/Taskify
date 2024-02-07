@@ -13,6 +13,9 @@ import { UpdateTriggerProvider } from "@/components/contexts/TriggerContext";
 import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import DashboardEdit from "@/components/dashboard/DashboardEdit";
+import { memberList } from "@/lib/services/members";
+import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
+import { GetServerSidePropsContext } from "next";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -59,4 +62,45 @@ export default function Edit({ members, columns }: DashboardProps) {
       </DashboardContext.Provider>
     </UpdateTriggerProvider>
   );
+}
+
+// member 불러오기(리팩토링 때 수정)
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const dashboardId = Number(context.query.id);
+  const cookieValue = context.req.headers.cookie || "";
+  const token = extractTokenFromCookie(cookieValue);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const { data: members } = await memberList({ dashboardId }, config);
+
+    return {
+      props: {
+        members: members?.members || [],
+        columns: [],
+      },
+    };
+  } catch (error) {
+    console.error("데이터를 불러오는 데 실패했습니다.", error);
+    return {
+      props: {
+        members: [],
+        columns: [],
+      },
+    };
+  }
 }
