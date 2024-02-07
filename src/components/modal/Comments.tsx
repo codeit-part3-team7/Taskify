@@ -20,7 +20,7 @@ function Comments({ comment: commentData, updateCommentList }: CommentsProps) {
     setIsEditing(false);
   };
 
-  const handleSave = async () => {
+  const handleUpdateSave = async () => {
     if (editingComment.trim() !== "") {
       try {
         await comment("put", commentData.id, { content: editingComment });
@@ -69,7 +69,9 @@ function Comments({ comment: commentData, updateCommentList }: CommentsProps) {
         <div className="flex gap-12 mt-12">
           {isEditing ? (
             <>
-              <button className="font-normal underline text-gray-9FA6 font-Pretendard text-12" onClick={handleSave}>
+              <button
+                className="font-normal underline text-gray-9FA6 font-Pretendard text-12"
+                onClick={handleUpdateSave}>
                 저장
               </button>
               <button className="font-normal underline text-gray-9FA6 font-Pretendard text-12" onClick={handleCancel}>

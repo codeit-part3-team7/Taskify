@@ -8,7 +8,6 @@ import Popover from "./Popover";
 interface ModalProps<T = void> {
   children: ReactNode;
   title?: string;
-  // modalType?: "alert" | "create" | "update" | "delete" | "invite";
   modalType?: "alert" | "create" | "update" | "delete" | "invite" | "success_profile" | "success_password";
   hasOptionsbutton?: boolean;
   useFormData?: boolean;
@@ -46,6 +45,7 @@ function Modal({
 
   const isValid = formContext && formContext.formState.isValid;
   const isDirty = formContext && formContext.formState.isDirty;
+
   const stopEventBubbling = (e: React.MouseEvent) => {
     e.stopPropagation();
   };

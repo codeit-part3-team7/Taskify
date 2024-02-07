@@ -1,9 +1,9 @@
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { useToggle } from "usehooks-ts";
-import { column } from "@/lib/services/columns";
 import Modal from "@/components/common/Modal";
+import { column } from "@/lib/services/columns";
 import AlertModal from "../alert";
-import { FormInputField } from "../input";
+import FormInputField from "../input/FormInputField";
 
 type ColumnData = {
   title: string;
@@ -12,16 +12,34 @@ type ColumnData = {
 
 interface UpdateColumnProps {
   columnData: ColumnData;
-  callback: (data: FieldValues) => Promise<void>;
+  updateColumns: any;
   onClose: () => void;
 }
-function UpdateColumnModal({ columnData: { title, columnId }, callback: callbackUpdate, onClose }: UpdateColumnProps) {
+function UpdateColumnModal({ columnData: { title, columnId }, updateColumns, onClose }: UpdateColumnProps) {
   const methods = useForm();
   const [deleteValue, deleteToggle, setDeleteValue] = useToggle();
+
+  const callbackUpdate = async ({ title }: FieldValues) => {
+    try {
+      const form = {
+        title,
+      };
+      const response = (await column("put", columnId, form)) as any;
+      if (response.data) {
+        updateColumns((prevState: any) =>
+          prevState.map((column: any) => (column.id === columnId ? { ...column, title: response.data.title } : column)),
+        );
+      }
+    } catch (e) {
+      console.log(e);
+      Promise.reject();
+    }
+  };
 
   const callbackDelete = async () => {
     try {
       await column("delete", columnId);
+      updateColumns((prevState: any) => prevState.filter((column: any) => column.id !== columnId));
     } catch (e) {
       Promise.reject();
     }

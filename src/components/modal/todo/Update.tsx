@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Controller, FieldValues, FormProvider, useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { card } from "@/lib/services/cards";
@@ -12,17 +12,11 @@ import ProfileLabel from "@/components/common/ProfileLabel";
 import { ChipProgress } from "@/components/common/Chips";
 import { AddImageInputField, DatePickerInputField, FormInputField, FormTagInputField } from "../input";
 
-type ImageObject = {
-  url: string;
-  name: string;
-  type: string;
-};
-
 interface UpdateTodoModalProps<T = void> {
   cardId?: number;
   onClose: () => void;
   callback: (data: FieldValues) => Promise<T>;
-  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>>;
+  setSelectedImage: any;
 }
 
 function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: UpdateTodoModalProps) {
@@ -80,7 +74,6 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
                 );
               }}
             />
-
             <Controller
               name="assignee.id"
               control={methods.control}
@@ -91,7 +84,12 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
                   <Dropdown
                     options={memberList}
                     renderOptions={renderOptionNickName}
-                    onChange={(selectedValue) => field.onChange(selectedValue)}
+                    onChange={(selectedId) => {
+                      const selectedMember = memberList.find((member) => member.id === selectedId);
+                      if (selectedMember) {
+                        field.onChange(selectedMember.userId);
+                      }
+                    }}
                     defaultIndex={memberList.findIndex(
                       (option: MemberApplicationServiceResponseDto) => option.userId === field.value,
                     )}
@@ -121,7 +119,7 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
                   마감일
                 </label>
                 <DatePickerInputField
-                  selected={field.value}
+                  selected={field.value as any}
                   onChange={(selectedValue?: Date) => {
                     const formattedDate = format(selectedValue as Date, "yyyy-MM-dd HH:mm");
                     field.onChange(formattedDate);

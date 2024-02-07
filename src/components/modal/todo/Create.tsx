@@ -41,10 +41,13 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
               <Dropdown
                 options={memberList}
                 renderOptions={renderOptionNickName}
-                onChange={(selectedValue) => field.onChange(selectedValue)}
-                defaultIndex={memberList.findIndex(
-                  (member: MemberApplicationServiceResponseDto) => member.userId === field.value,
-                )}
+                onChange={(selectedId) => {
+                  const selectedMember = memberList.find((member) => member.id === selectedId);
+                  if (selectedMember) {
+                    field.onChange(selectedMember.userId);
+                  }
+                }}
+                defaultIndex={memberList.findIndex((member) => member.userId === field.value)}
                 filteringTerm="nickname"
                 autoComplete
               />
