@@ -118,14 +118,14 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../common/Button/Button";
 import ImageInput from "./ImageInput";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { me } from "@/lib/services/users";
 import TextInput from "./PasswordInput";
 import AlertModal from "../modal/alert";
 import { postProfileImageToServer } from "@/lib/util/postImageToServer";
 import { useToggle } from "usehooks-ts";
 import { UpdateMyInfoRequestDto } from "@/lib/services/users/schema";
-import { UserServiceResponseDto } from "@/lib/services/auth/schema";
+import { useMyData } from "@/layouts/board";
 
 export interface ProfileChangeFormProps {
   email: string;
@@ -133,7 +133,7 @@ export interface ProfileChangeFormProps {
   profileImageUrl: string | undefined | Blob;
 }
 
-function ProfileChangeForm({ myData, setMyData }: any) {
+function ProfileChangeForm() {
   const {
     register,
     handleSubmit,
@@ -144,6 +144,7 @@ function ProfileChangeForm({ myData, setMyData }: any) {
     shouldUnregister: false,
   });
 
+  const { myData, setMyData } = useMyData();
   const [alertValue, alertToggle, setAlertValue] = useToggle();
 
   useEffect(() => {
@@ -156,23 +157,29 @@ function ProfileChangeForm({ myData, setMyData }: any) {
     try {
       let formData: UpdateMyInfoRequestDto = { nickname: data.nickname, profileImageUrl: null };
 
+      // 선택된 이미지가 있을 경우, 이미지업로드 요청해서 url받기
       if (data.profileImageUrl instanceof File) {
         const selectedImage = data.profileImageUrl;
         const imageUrl = await postProfileImageToServer(selectedImage);
         if (imageUrl) {
           formData.profileImageUrl = imageUrl;
         }
+
+        // 삭제하기 버튼을 눌렀을 경우
+      } else if (typeof data.profileImageUrl === "undefined") {
+        console.log("아무것도 선택하지 않았습니다.", data.profileImageUrl);
+
+        // 기존 이미지 주소가 있을 경우
       } else if (typeof data.profileImageUrl === "string") {
         formData.profileImageUrl = data.profileImageUrl;
       }
 
       const updateMe = await me("put", formData);
       const { nickname, profileImageUrl }: any = updateMe.data;
+
       setMyData((prev: any) => ({ ...prev, nickname, profileImageUrl }));
       setValue("profileImageUrl", profileImageUrl);
       setAlertValue(true);
-      // window.location.reload(); 움직임이 심함
-      //window.location.href = "/mypage";
     } catch (error) {
       console.error("프로필을 변경하지 못했습니다!");
     }
