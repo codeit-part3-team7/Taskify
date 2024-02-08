@@ -2,13 +2,13 @@ import Image from "next/image";
 import AvatarStack from "./AvatarStack";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProfileLabel from "./ProfileLabel";
 import InviteModal from "../modal/invite";
 import IconButton from "./Button/IconButton";
-import { UserServiceResponseDto } from "@/lib/services/auth/schema";
-import { me } from "@/lib/services/users";
 import ProfilePopover from "./Popover/Profile";
+import { useMyData } from "@/layouts/board";
+
 interface DashboardDataProp {
   id: number;
   title: string;
@@ -30,7 +30,7 @@ interface MembersProps {
 }
 
 interface DashboardHeaderProps {
-  dashboardData?: DashboardDataProp;
+  dashboardData?: DashboardApplicationServiceResponseDto;
   members?: MembersProps[];
 }
 
@@ -41,8 +41,8 @@ function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
     "/mydashboard": "내 대시보드",
     "/mypage": "계정관리",
   };
+  const { myData, setMyData } = useMyData();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
   const [toggleRotate, setToggleRotate] = useState(false);
 
   // 내가 만든 대시보드인지 확인하기
@@ -55,15 +55,6 @@ function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
   const handleClick = () => {
     setToggleRotate((prevRotate) => !prevRotate);
   };
-
-  const getMeData = async () => {
-    const res = await me("get");
-    setMyData(res.data as UserServiceResponseDto);
-  };
-
-  useEffect(() => {
-    getMeData();
-  }, []);
 
   return (
     <>

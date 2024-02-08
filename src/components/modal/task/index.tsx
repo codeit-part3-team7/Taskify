@@ -20,9 +20,9 @@ interface assignee {
 
 function TaskModal({ taskData, onClose }: TaskModalProps) {
   const methods = useForm();
-  const { columns } = useContext(DashboardContext);
+  const { columnsData } = useContext(DashboardContext);
 
-  const column = columns.find((column) => column.id === taskData.columnId);
+  const column = columnsData.find((column) => column.id === taskData.columnId);
 
   return (
     <FormProvider {...methods}>
@@ -36,9 +36,7 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
               <ChipProgress columnTitle={column?.title as string} />
               <Image src="/images/bar.png" alt="바 이미지" className="w-1 h-20" width={1} height={20} />
               <div className="flex flex-wrap gap-y-6">
-                {taskData?.tags.map((tag: string, index: number) => (
-                  <ChipCard key={index} tag={tag} index={index} tagsLength={taskData.tags.length} short />
-                ))}
+                {taskData?.tags.map((tag: string, index: number) => <ChipCard key={index} tag={tag} index={index} />)}
               </div>
             </div>
             <div className="h-auto font-normal text-black font-Pretendard text-14 rounded-6">

@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { ChipColors } from "@/components/common/Chips";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { DashboardContext } from "@/pages/dashboard/[id]/edit";
-import { Input } from "@/components/Auth/AuthInputField/Elements";
+import { Input } from "@/components/Auth/Elements";
 import { dashboard } from "@/lib/services/dashboards";
 
 export default function DashboardEdit() {
