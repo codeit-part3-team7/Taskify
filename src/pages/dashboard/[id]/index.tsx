@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, Dispatch, SetStateAction } from "react";
+import { useEffect, useState, createContext, SetStateAction } from "react";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
@@ -18,6 +18,7 @@ import BoardLayout from "@/layouts/board";
 import Column from "@/components/dashboard/Column";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import AlertModal from "@/components/modal/alert";
+import { UpdateTriggerProvider } from "@/contexts/TriggerContext";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -103,21 +104,23 @@ export default function Dashboard({ members }: DashboardProps) {
   }, [id]);
 
   return (
-    <DashboardContext.Provider value={{ members, columnsData }}>
-      <BoardLayout sideMenu={sideMenu} dashboardHeader={header}>
-        <div className="flex flex-col pc:flex-row">
-          {columnsData?.map((column) => {
-            return (
-              <div key={column.id}>
-                <Column column={column} updateColumns={setColumnsData} />
-              </div>
-            );
-          })}
-        </div>
-        <AddColumnButton updateColumns={setColumnsData} />
-      </BoardLayout>
-      {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
-    </DashboardContext.Provider>
+    <UpdateTriggerProvider>
+      <DashboardContext.Provider value={{ members, columnsData }}>
+        <BoardLayout sideMenu={sideMenu} dashboardHeader={header}>
+          <div className="flex flex-col pc:flex-row">
+            {columnsData?.map((column) => {
+              return (
+                <div key={column.id}>
+                  <Column column={column} updateColumns={setColumnsData} />
+                </div>
+              );
+            })}
+          </div>
+          <AddColumnButton updateColumns={setColumnsData} />
+        </BoardLayout>
+        {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
+      </DashboardContext.Provider>
+    </UpdateTriggerProvider>
   );
 }
 
