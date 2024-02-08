@@ -32,7 +32,7 @@ export const DashboardContext = React.createContext<DashboardContextType>({
 });
 
 export default function Edit({ members, columns }: DashboardContextType) {
-  const { dashboardData, dashboardList, myData, setDashboardData } = useDashboardData();
+  const { dashboardData, dashboardList, setDashboardData } = useDashboardData();
   const router = useRouter();
   const dashboardId = router.query.id;
 
