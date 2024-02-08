@@ -11,8 +11,6 @@ export const useDashboardData = () => {
     dashboards: [],
   });
 
-  // 여기에 members, setMembers?
-
   const router = useRouter();
   const { id } = router.query;
   const dashboardId = Number(id);
