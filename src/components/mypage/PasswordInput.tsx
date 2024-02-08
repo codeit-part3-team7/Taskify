@@ -13,17 +13,7 @@ interface TextInputProps {
   setValue?: any;
 }
 
-function TextInput({
-  type,
-  id,
-  register,
-  errors,
-  validation,
-  labelTitle,
-  placeholder,
-  disabled,
-  setValue,
-}: TextInputProps) {
+function TextInput({ type, id, register, errors, labelTitle, placeholder, disabled }: TextInputProps) {
   const autoCompleteValue = type === "password" ? "current-password" : undefined;
 
   return (
