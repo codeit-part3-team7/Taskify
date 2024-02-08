@@ -34,29 +34,3 @@ export const useDashboardData = () => {
 
   return { dashboardData, setDashboardData, dashboardList, setDashboardList };
 };
-
-// // 대시보드 목록 업데이트
-// const updateDashboardData = async (updatedData: DashboardApplicationServiceResponseDto) => {
-//   try {
-//     setDashboardData(updatedData);
-
-//     const updatedDashboardList = dashboardList.dashboards.map((dashboard) => {
-//       if (dashboard.id === updatedData.id) {
-//         return updatedData;
-//       }
-//       return dashboard;
-//     });
-
-//     setDashboardList({
-//       ...dashboardList,
-//       dashboards: updatedDashboardList,
-//     });
-//   } catch (error) {
-//     console.error("대시보드 데이터 업데이트 실패:", error);
-//   }
-// };
-
-// const meResponse = await me("get");
-// const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
-// setMyData(meResponse.data as UserServiceResponseDto);
-// return { dashboardData, updateDashboardData, setDashboardData, dashboardList, myData };
