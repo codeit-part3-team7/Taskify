@@ -7,7 +7,7 @@ import SideMenu from "@/components/common/SideMenu";
 import DashboardLinkButton from "@/components/mydashboard/DashboardLinkButton";
 import AddDashBoardButton from "@/components/mydashboard/AddDashBoardButton";
 import PaginationButton from "@/components/common/Button/PaginationButton";
-import InviteDashTable from "@/components/common/InviteDashTable";
+import InviteDashboardTable from "@/components/common/InviteDashboardTable";
 import NewDashModal from "@/components/modal/newDash";
 import { findDashboard } from "@/lib/services/dashboards";
 import { FindDashboardsRequestDto } from "@/lib/services/dashboards/schema";
@@ -34,6 +34,23 @@ export default function MyDashboard() {
   const sideMenu = <SideMenu dashboards={dashboards} />;
   const header = <DashboardHeader />;
 
+  const getDashboards = async () => {
+    try {
+      const qs: FindDashboardsRequestDto = {
+        navigationMethod: "pagination",
+        size: 999,
+      };
+      const res = (await findDashboard(qs)).data as any;
+      setDashboards(res.dashboards);
+      if (res.errorMessage) {
+        setAlertValue(true);
+        return;
+      }
+    } catch (error) {
+      console.error("대시보드를 불러오는 데 실패했습니다.");
+    }
+  };
+
   const handleAddNewDashBoard = () => {
     setIsModalOpen(true);
   };
@@ -47,23 +64,6 @@ export default function MyDashboard() {
       alert("로그인이 필요합니다.");
       router.push("/login");
     }
-
-    const getDashboards = async () => {
-      try {
-        const qs: FindDashboardsRequestDto = {
-          navigationMethod: "pagination",
-          size: 999,
-        };
-        const res = (await findDashboard(qs)).data as any;
-        setDashboards(res.dashboards);
-        if (res.errorMessage) {
-          setAlertValue(true);
-          return;
-        }
-      } catch (error) {
-        console.error("대시보드를 불러오는 데 실패했습니다.");
-      }
-    };
 
     getDashboards();
   }, []);
@@ -99,7 +99,7 @@ export default function MyDashboard() {
             </div>
           </div>
           <div className="w-full bg-white rounded-8">
-            <InviteDashTable />
+            <InviteDashboardTable getDashboards={getDashboards} />
           </div>
         </MyDashboardLayout>
       </BoardLayout>
