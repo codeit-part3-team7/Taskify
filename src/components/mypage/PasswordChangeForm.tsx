@@ -10,6 +10,7 @@ interface MessageToType {
 }
 
 interface PasswordFormInput {
+  username: string;
   password: string;
   newPassword: string;
   newPasswordConfirm: string;
@@ -63,6 +64,15 @@ function PasswordChangeForm() {
       {alertValue && <AlertModal modalType="alert" onClose={alertToggle} alertType={alertType} />}
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col tablet:gap-24 gap-16">
+        <TextInput
+          type="text"
+          id="username"
+          register={register("username")}
+          placeholder="사용자 이름 입력"
+          labelTitle="사용자 이름 // DOM 에러로 추가"
+          hidden
+          disabled={true}
+        />
         <TextInput
           type="password"
           id="password"
