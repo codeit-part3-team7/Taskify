@@ -5,6 +5,7 @@ import { changePassword } from "@/lib/services/auth";
 import TextInput from "./PasswordInput";
 import AlertModal, { AlertType } from "../modal/alert";
 import { useToggle } from "usehooks-ts";
+
 interface MessageToType {
   [key: string]: AlertType;
 }
