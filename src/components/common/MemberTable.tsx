@@ -7,7 +7,7 @@ import { deleteMember, memberList } from "@/lib/services/members";
 import { MemberApplicationServiceResponseDto, MemberListResponseDto } from "@/lib/services/members/schema";
 import Image from "next/image";
 
-function MemberTable() {
+function MemberTable({ setMemberList }: any) {
   const [members, setMembers] = useState<MemberApplicationServiceResponseDto[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -33,7 +33,11 @@ function MemberTable() {
   const handleDeleteMember = async (memberId: number) => {
     try {
       await deleteMember(memberId);
-      await getMembers();
+      // 현재 멤버 목록을 조회하기 (prev)
+      // 삭제한 멤버를 찾아서 filter
+      // 삭제한 멤버를 목록에서 빼기
+      setMemberList((prev: any) => prev.filter((member: any) => member.id !== memberId));
+      getMembers();
     } catch (error) {
       console.error("멤버 삭제 실패:", error);
     }

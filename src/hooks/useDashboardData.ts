@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { dashboard, findDashboard } from "@/lib/services/dashboards";
-import { me } from "@/lib/services/users";
 import { DashboardApplicationServiceResponseDto, FindDashboardsResponseDto } from "@/lib/services/dashboards/schema";
-import { UserServiceResponseDto } from "@/lib/services/auth/schema";
 
 export const useDashboardData = () => {
   const [dashboardData, setDashboardData] = useState<DashboardApplicationServiceResponseDto>({});
@@ -12,6 +10,8 @@ export const useDashboardData = () => {
     totalCount: 0,
     dashboards: [],
   });
+
+  // 여기에 members, setMembers?
 
   const router = useRouter();
   const { id } = router.query;
@@ -23,7 +23,6 @@ export const useDashboardData = () => {
       try {
         const dashboardResponse = await dashboard("get", dashboardId);
         setDashboardData(dashboardResponse?.data as DashboardApplicationServiceResponseDto);
-
         const qs = { navigationMethod: "pagination", cursorId: 0, page: 1, size: 999 };
         const dashboardsResponse = await findDashboard(qs);
         setDashboardList(dashboardsResponse.data as FindDashboardsResponseDto);

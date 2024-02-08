@@ -13,7 +13,7 @@ export default function DashboardEdit() {
     try {
       const response = await dashboard("put", dashboardData.id, data as any)!;
       setDashboardData(response.data as any);
-      // 사이드 메뉴 데이터 반영
+      // 사이드 메뉴 데이터 바꾸기
       setDashboardList((prev: any) => ({
         ...prev,
         dashboards: prev.dashboards.map((dashboard: any) =>
