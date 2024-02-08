@@ -51,7 +51,7 @@ export default function Edit({ members, columns }: DashboardContextType) {
       <BoardLayout
         sideMenu={<SideMenu dashboards={dashboardList.dashboards} />}
         dashboardHeader={<DashboardHeader dashboardData={dashboardData} members={members} />}>
-        <div className="px-12 pt-16 tablet:px-20 tablet:pt-20 pc:w-620">
+        <div className="px-12 pt-16 pb-56 tablet:px-20 tablet:pt-20 pc:w-620">
           <BackButton />
           <div className="flex flex-col gap-y-12 pt-21 pb-40 tablet:pb-48">
             <DashboardEdit />
