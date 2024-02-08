@@ -14,7 +14,6 @@ function MemberTable() {
   const router = useRouter();
   const dashboardId = router.query?.id;
 
-  // 멤버 불러오는 함수
   const getMembers = async () => {
     if (typeof dashboardId === "string") {
       const qs = { dashboardId: Number(dashboardId) };
@@ -31,12 +30,10 @@ function MemberTable() {
     getMembers();
   }, [dashboardId, currentPage]);
 
-  // 멤버 삭제하는 함수
   const handleDeleteMember = async (memberId: number) => {
     try {
       await deleteMember(memberId);
-      const updatedMembers = members.filter((member) => member.id !== memberId);
-      setMembers(updatedMembers);
+      await getMembers();
     } catch (error) {
       console.error("멤버 삭제 실패:", error);
     }
