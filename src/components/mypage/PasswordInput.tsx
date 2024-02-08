@@ -1,5 +1,5 @@
 import { RegisterOptions, FieldValues } from "react-hook-form";
-import { ErrorMessage, Label } from "../Auth/AuthInputField/Elements";
+import { ErrorMessage, Label } from "../Auth/Elements";
 
 interface TextInputProps {
   type: string;
@@ -18,7 +18,7 @@ function TextInput({ type, id, register, errors, labelTitle, placeholder, disabl
 
   return (
     <div className="flex flex-col w-full gap-10">
-      <Label id={id}>{labelTitle}</Label>
+      <Label htmlFor={id}>{labelTitle}</Label>
       <input
         type={type}
         id={id}

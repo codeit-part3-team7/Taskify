@@ -30,7 +30,7 @@ interface MembersProps {
 }
 
 interface DashboardHeaderProps {
-  dashboardData?: DashboardDataProp;
+  dashboardData?: DashboardApplicationServiceResponseDto;
   members?: MembersProps[];
 }
 
