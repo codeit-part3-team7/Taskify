@@ -9,7 +9,6 @@ import DashboardHeader from "@/components/common/DashboardHeader";
 import BoardLayout from "@/layouts/board";
 import { dashboard } from "@/lib/services/dashboards";
 import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import { UpdateTriggerProvider } from "@/components/contexts/TriggerContext";
 import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import DashboardEdit from "@/components/dashboard/DashboardEdit";
@@ -44,23 +43,21 @@ export default function Edit({ members, columns }: DashboardProps) {
   };
 
   return (
-    <UpdateTriggerProvider>
-      <DashboardContext.Provider value={{ members, columns }}>
-        <BoardLayout
-          sideMenu={<SideMenu dashboards={dashboards} />}
-          dashboardHeader={<DashboardHeader myData={myData} dashboardData={dashboardData} members={members} />}>
-          <div className="px-12 pt-16 tablet:px-20 tablet:pt-20 pc:w-620">
-            <BackButton />
-            <div className="flex flex-col gap-y-12 pt-21 pb-40 tablet:pb-48">
-              <DashboardEdit />
-              <MemberTable />
-              <InviteListTable />
-            </div>
-            <DeleteDashButton onClick={() => handleDeleteDashboard()} />
+    <DashboardContext.Provider value={{ members, columns }}>
+      <BoardLayout
+        sideMenu={<SideMenu dashboards={dashboards} />}
+        dashboardHeader={<DashboardHeader myData={myData} dashboardData={dashboardData} members={members} />}>
+        <div className="px-12 pt-16 tablet:px-20 tablet:pt-20 pc:w-620">
+          <BackButton />
+          <div className="flex flex-col gap-y-12 pt-21 pb-40 tablet:pb-48">
+            <DashboardEdit />
+            <MemberTable />
+            <InviteListTable />
           </div>
-        </BoardLayout>
-      </DashboardContext.Provider>
-    </UpdateTriggerProvider>
+          <DeleteDashButton onClick={() => handleDeleteDashboard()} />
+        </div>
+      </BoardLayout>
+    </DashboardContext.Provider>
   );
 }
 

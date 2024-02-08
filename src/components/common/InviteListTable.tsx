@@ -28,6 +28,14 @@ function InviteListTable() {
     setIsModalOpen(true);
   };
 
+  // 페이지네이션 관련 코드
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(10);
+
+  useEffect(() => {
+    getInvitations();
+  }, [currentPage, dashboardId]);
+
   // 초대 목록 조회
   const getInvitations = async () => {
     if (typeof dashboardId === "string") {
@@ -35,7 +43,12 @@ function InviteListTable() {
         const qs = { dashboardId: Number(dashboardId) };
         const invitationData = (await findInvitationDashboard(Number(dashboardId), qs))
           .data as FIndDashboardInvitationsRequestDto;
-        if (invitationData) setInvitations(invitationData.invitations);
+        if (invitationData && invitationData.invitations) {
+          // 전체 페이지 수 계산
+          const totalPageCount = Math.ceil(invitationData.invitations.length / 5);
+          setTotalPages(totalPageCount);
+          setInvitations(invitationData.invitations);
+        }
       } catch (error) {
         console.error("초대 목록 조회 실패:", error);
       }
@@ -62,8 +75,7 @@ function InviteListTable() {
       <div className="flex items-center justify-between pt-22 px-20 tablet:px-28 tablet:pt-26">
         <p className="text-20 font-bold tablet:text-24">초대내역</p>
         <div className="flex items-center gap-x-12">
-          <p className="text-12 font-normal tablet:text-14">1 페이지 중 1</p>
-          <PaginationButton />
+          <PaginationButton currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
           <div className="hidden tablet:block">
             <IconButton variant="filled" type="invite" onClick={handleInviteDashBoard} />
           </div>
@@ -77,7 +89,7 @@ function InviteListTable() {
       </div>
       {isModalOpen && <InviteModal onClose={() => setIsModalOpen(false)} />}
       <div>
-        {invitations.map((invitation) => (
+        {invitations.slice((currentPage - 1) * 5, currentPage * 5).map((invitation) => (
           <div
             className="flex items-center justify-between py-12 border-b-1 border-gray-EEEE px-20 tablet:px-28"
             key={invitation.id}>
