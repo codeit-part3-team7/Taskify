@@ -14,13 +14,13 @@ function MemberTable() {
   const router = useRouter();
   const dashboardId = router.query?.id;
 
+  // 멤버 불러오는 함수
   const getMembers = async () => {
     if (typeof dashboardId === "string") {
       const qs = { dashboardId: Number(dashboardId) };
       const memberData = (await memberList(qs)).data as MemberListResponseDto;
       if (memberData) {
         setMembers(memberData.members);
-        // Member는 4명씩 끊어 보여줌
         const pages = Math.ceil(memberData.members.length / 4);
         setTotalPages(pages);
       }
@@ -31,10 +31,12 @@ function MemberTable() {
     getMembers();
   }, [dashboardId, currentPage]);
 
+  // 멤버 삭제하는 함수
   const handleDeleteMember = async (memberId: number) => {
     try {
       await deleteMember(memberId);
-      await getMembers();
+      const updatedMembers = members.filter((member) => member.id !== memberId);
+      setMembers(updatedMembers);
     } catch (error) {
       console.error("멤버 삭제 실패:", error);
     }

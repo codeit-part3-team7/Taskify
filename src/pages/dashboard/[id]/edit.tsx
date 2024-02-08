@@ -22,6 +22,7 @@ type DashboardContextType = {
   columns: ColumnServiceResponseDto[];
   dashboardData: DashboardApplicationServiceResponseDto;
   setDashboardData: (data: DashboardApplicationServiceResponseDto) => void;
+  setDashboardList: any;
 };
 
 export const DashboardContext = React.createContext<DashboardContextType>({
@@ -29,10 +30,11 @@ export const DashboardContext = React.createContext<DashboardContextType>({
   columns: [],
   dashboardData: {} as DashboardApplicationServiceResponseDto,
   setDashboardData: () => {},
+  setDashboardList: () => {},
 });
 
 export default function Edit({ members, columns }: DashboardContextType) {
-  const { dashboardData, dashboardList, setDashboardData } = useDashboardData();
+  const { dashboardData, dashboardList, setDashboardData, setDashboardList } = useDashboardData();
   const router = useRouter();
   const dashboardId = router.query.id;
 
@@ -47,7 +49,7 @@ export default function Edit({ members, columns }: DashboardContextType) {
   };
 
   return (
-    <DashboardContext.Provider value={{ members, columns, dashboardData, setDashboardData }}>
+    <DashboardContext.Provider value={{ members, columns, dashboardData, setDashboardData, setDashboardList }}>
       <BoardLayout
         sideMenu={<SideMenu dashboards={dashboardList.dashboards} />}
         dashboardHeader={<DashboardHeader dashboardData={dashboardData} members={members} />}>

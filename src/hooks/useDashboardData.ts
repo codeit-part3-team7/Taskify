@@ -13,28 +13,6 @@ export const useDashboardData = () => {
     dashboards: [],
   });
 
-  // 대시보드 목록 업데이트
-  const updateDashboardData = async (updatedData: DashboardApplicationServiceResponseDto) => {
-    try {
-      setDashboardData(updatedData);
-
-      const updatedDashboardList = dashboardList.dashboards.map((dashboard) => {
-        if (dashboard.id === updatedData.id) {
-          return updatedData;
-        }
-        return dashboard;
-      });
-
-      setDashboardList({
-        ...dashboardList,
-        dashboards: updatedDashboardList,
-      });
-    } catch (error) {
-      console.error("대시보드 데이터 업데이트 실패:", error);
-    }
-  };
-
-  const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
   const router = useRouter();
   const { id } = router.query;
   const dashboardId = Number(id);
@@ -45,9 +23,6 @@ export const useDashboardData = () => {
       try {
         const dashboardResponse = await dashboard("get", dashboardId);
         setDashboardData(dashboardResponse?.data as DashboardApplicationServiceResponseDto);
-
-        const meResponse = await me("get");
-        setMyData(meResponse.data as UserServiceResponseDto);
 
         const qs = { navigationMethod: "pagination", cursorId: 0, page: 1, size: 999 };
         const dashboardsResponse = await findDashboard(qs);
@@ -60,5 +35,31 @@ export const useDashboardData = () => {
     getData();
   }, [id]);
 
-  return { dashboardData, updateDashboardData, setDashboardData, dashboardList, myData };
+  return { dashboardData, setDashboardData, dashboardList, setDashboardList };
 };
+
+// // 대시보드 목록 업데이트
+// const updateDashboardData = async (updatedData: DashboardApplicationServiceResponseDto) => {
+//   try {
+//     setDashboardData(updatedData);
+
+//     const updatedDashboardList = dashboardList.dashboards.map((dashboard) => {
+//       if (dashboard.id === updatedData.id) {
+//         return updatedData;
+//       }
+//       return dashboard;
+//     });
+
+//     setDashboardList({
+//       ...dashboardList,
+//       dashboards: updatedDashboardList,
+//     });
+//   } catch (error) {
+//     console.error("대시보드 데이터 업데이트 실패:", error);
+//   }
+// };
+
+// const meResponse = await me("get");
+// const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
+// setMyData(meResponse.data as UserServiceResponseDto);
+// return { dashboardData, updateDashboardData, setDashboardData, dashboardList, myData };
