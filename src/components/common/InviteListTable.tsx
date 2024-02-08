@@ -28,6 +28,8 @@ function InviteListTable() {
     setIsModalOpen(true);
   };
 
+  useEffect(() => {}, [isModalOpen]);
+
   // 페이지네이션 관련 코드
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(10);

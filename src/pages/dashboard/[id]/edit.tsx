@@ -1,4 +1,3 @@
-import { createContext } from "react";
 import { useRouter } from "next/router";
 import BackButton from "@/components/common/Button/BackButton";
 import DeleteDashButton from "@/components/common/Button/DeleteDashButton";
@@ -15,20 +14,25 @@ import DashboardEdit from "@/components/dashboard/DashboardEdit";
 import { memberList } from "@/lib/services/members";
 import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
 import { GetServerSidePropsContext } from "next";
+import { DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
+import React from "react";
 
-type DashboardProps = {
+type DashboardContextType = {
   members: MemberApplicationServiceResponseDto[];
   columns: ColumnServiceResponseDto[];
+  dashboardData: DashboardApplicationServiceResponseDto;
+  setDashboardData: (data: DashboardApplicationServiceResponseDto) => void;
 };
 
-export const DashboardContext = createContext<DashboardProps>({
+export const DashboardContext = React.createContext<DashboardContextType>({
   members: [],
   columns: [],
+  dashboardData: {} as DashboardApplicationServiceResponseDto,
+  setDashboardData: () => {},
 });
 
-export default function Edit({ members, columns }: DashboardProps) {
-  const { dashboardData, dashboardList, myData } = useDashboardData();
-  const { dashboards } = dashboardList;
+export default function Edit({ members, columns }: DashboardContextType) {
+  const { dashboardData, dashboardList, myData, setDashboardData } = useDashboardData();
   const router = useRouter();
   const dashboardId = router.query.id;
 
@@ -43,9 +47,9 @@ export default function Edit({ members, columns }: DashboardProps) {
   };
 
   return (
-    <DashboardContext.Provider value={{ members, columns }}>
+    <DashboardContext.Provider value={{ members, columns, dashboardData, setDashboardData }}>
       <BoardLayout
-        sideMenu={<SideMenu dashboards={dashboards} />}
+        sideMenu={<SideMenu dashboards={dashboardList.dashboards} />}
         dashboardHeader={<DashboardHeader myData={myData} dashboardData={dashboardData} members={members} />}>
         <div className="px-12 pt-16 tablet:px-20 tablet:pt-20 pc:w-620">
           <BackButton />

@@ -1,21 +1,21 @@
-import { useEffect } from "react";
-
+import { useEffect, useContext } from "react";
 import Button from "@/components/common/Button/Button";
 import { useForm, Controller } from "react-hook-form";
 import { ChipColors } from "@/components/common/Chips";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { DashboardContext } from "@/pages/dashboard/[id]/edit";
 import { Input } from "@/components/Auth/AuthInputField/Elements";
 import { dashboard } from "@/lib/services/dashboards";
 
 export default function DashboardEdit() {
-  const { dashboardData, setDashboardData } = useDashboardData();
+  const { dashboardData, setDashboardData } = useContext(DashboardContext);
 
   const onSubmit = async (data: any) => {
     try {
       const response = await dashboard("put", dashboardData.id, data);
       setDashboardData(response.data);
     } catch (error) {
-      console.error("Dashboard update failed", error);
+      console.error("대시보드 업데이트 실패:", error);
     }
   };
 
