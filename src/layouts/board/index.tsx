@@ -46,7 +46,6 @@ function BoardLayout({ sideMenu, dashboardHeader, children, scrollBtn }: BoardLa
 
   const { width: windowWidth } = useWindowSize();
   const containerWidth = windowWidth - SIDEBAR_WIDTH;
-  console.log(`scrollPosition:${scrollPosition}`);
 
   const handleScroll = (scrollAmount: number) => {
     if (containerRef.current) {
