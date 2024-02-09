@@ -9,7 +9,6 @@ import { postImageToServer } from "@/lib/util/postImageToServer";
 import { UpdateCardRequestDto } from "@/lib/services/cards/schema";
 import { useCardList } from "@/components/dashboard/Column";
 import { DashboardContext } from "@/pages/dashboard/[id]";
-import { useTrigger } from "@/contexts/TriggerContext";
 
 export interface PopoverContent {
   title: string;
@@ -28,7 +27,7 @@ function Popover({ children, cardId }: PopoverProps) {
   const [deleteValue, deleteToggle, setDeleteValue] = useToggle();
   const popoverRef = useRef<HTMLDivElement>(null);
   const { setCardList } = useCardList();
-  const { toggleTrigger } = useTrigger();
+  const { setColumnsData } = useContext(DashboardContext);
 
   const MODAL_POPOVER = [
     {
@@ -62,7 +61,7 @@ function Popover({ children, cardId }: PopoverProps) {
           cards: prevState.cards.map((card) => (card.id === cardId ? { ...card, ...(response.data as any) } : card)),
         }));
       }
-      toggleTrigger();
+      setColumnsData((prev) => prev.map((item) => ({ ...item })));
     } catch (error) {
       console.error(error);
     }
@@ -86,6 +85,7 @@ function Popover({ children, cardId }: PopoverProps) {
       setPopoverOpen(false);
     }
   };
+
   useOnClickOutside(popoverRef, handleOutsideClick);
 
   return (

@@ -4,18 +4,17 @@ import { useRouter } from "next/router";
 import { useToggle } from "usehooks-ts";
 import { FieldValues } from "react-hook-form";
 import { createCard, findCards } from "@/lib/services/cards";
+import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
 import { CardServiceFindResponseDto, CreateCardRequestDto } from "@/lib/services/cards/schema";
 import { postImageToServer } from "@/lib/util/postImageToServer";
+import { CreateTodo } from "../modal/todo";
 import { UpdateColumn } from "../modal/column";
 import Card from "@/components/dashboard/Card";
 import AddCardButton from "./AddCardButton";
 import { ChipNum } from "../common/Chips";
-import { CreateTodo } from "../modal/todo";
-import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
-import { useTrigger } from "@/contexts/TriggerContext";
 
 interface ColumnProps {
-  column: any;
+  column: ColumnServiceResponseDto;
   updateColumns: Dispatch<SetStateAction<ColumnServiceResponseDto[]>>;
 }
 
@@ -36,10 +35,8 @@ export const useCardList = () => {
 function Column({ column, updateColumns }: ColumnProps) {
   const [cardList, setCardList] = useState<CardServiceFindResponseDto>({ cards: [], totalCount: 0, cursorId: null });
   const [selectedImage, setSelectedImage] = useState<File>();
-
   const [columnUpdateModal, columnUpdateToggle, setColumnUpdateModal] = useToggle();
   const [todoModal, todoToggle, setTodoMdodal] = useToggle();
-  const { isTriggered } = useTrigger();
 
   const {
     query: { id },
@@ -80,7 +77,7 @@ function Column({ column, updateColumns }: ColumnProps) {
       setCardList(response?.data as CardServiceFindResponseDto);
     };
     fetchData();
-  }, [column.id, isTriggered]);
+  }, [column]);
 
   return (
     <CardContext.Provider value={{ cardList, setCardList }}>

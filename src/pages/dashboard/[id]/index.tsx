@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, SetStateAction } from "react";
+import { useEffect, useState, createContext, SetStateAction, useContext, Dispatch } from "react";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
@@ -18,7 +18,6 @@ import BoardLayout from "@/layouts/board";
 import Column from "@/components/dashboard/Column";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import AlertModal from "@/components/modal/alert";
-import { UpdateTriggerProvider } from "@/contexts/TriggerContext";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -26,11 +25,13 @@ type DashboardProps = {
 interface DashboardContext {
   members: MemberApplicationServiceResponseDto[];
   columnsData: ColumnServiceResponseDto[];
+  setColumnsData: Dispatch<SetStateAction<ColumnServiceResponseDto[]>>;
 }
 
 export const DashboardContext = createContext<DashboardContext>({
   members: [],
   columnsData: [],
+  setColumnsData: () => {},
 });
 
 export default function Dashboard({ members }: DashboardProps) {
@@ -104,24 +105,27 @@ export default function Dashboard({ members }: DashboardProps) {
   }, [id]);
 
   return (
-    <UpdateTriggerProvider>
-      <DashboardContext.Provider value={{ members, columnsData }}>
-        <BoardLayout sideMenu={sideMenu} dashboardHeader={header} scrollBtn>
-          <div className="flex flex-col pc:flex-row">
-            {columnsData?.map((column) => {
-              return (
-                <div key={column.id}>
-                  <Column column={column} updateColumns={setColumnsData} />
-                </div>
-              );
-            })}
-          </div>
-          <AddColumnButton updateColumns={setColumnsData} />
-        </BoardLayout>
-        {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
-      </DashboardContext.Provider>
-    </UpdateTriggerProvider>
+    <DashboardContext.Provider value={{ members, columnsData, setColumnsData }}>
+      <BoardLayout sideMenu={sideMenu} dashboardHeader={header}>
+        <div className="flex flex-col pc:flex-row">
+          <ColumnList />
+        </div>
+        <AddColumnButton updateColumns={setColumnsData} />
+      </BoardLayout>
+      {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
+    </DashboardContext.Provider>
   );
+}
+
+function ColumnList() {
+  const { columnsData, setColumnsData } = useContext(DashboardContext);
+  return columnsData?.map((column) => {
+    return (
+      <div key={column.id}>
+        <Column column={column} updateColumns={setColumnsData} />
+      </div>
+    );
+  });
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
