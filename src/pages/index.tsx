@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 import LandingLayout from "@/layouts/landing";
 import Content from "@/components/landing/Content";
 import ScrollTopButton from "@/components/landing/ScrollTopButton";

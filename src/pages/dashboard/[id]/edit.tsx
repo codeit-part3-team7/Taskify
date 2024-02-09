@@ -1,21 +1,21 @@
+import React, { useState } from "react";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
+import { memberList } from "@/lib/services/members";
+import { dashboard } from "@/lib/services/dashboards";
+import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
+import { useDashboardData } from "@/hooks/useDashboardData";
+import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
+import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
+import { DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
 import BackButton from "@/components/common/Button/BackButton";
 import DeleteDashButton from "@/components/common/Button/DeleteDashButton";
 import InviteListTable from "@/components/common/InviteListTable";
 import MemberTable from "@/components/common/MemberTable";
 import SideMenu from "@/components/common/SideMenu";
 import DashboardHeader from "@/components/common/DashboardHeader";
-import BoardLayout from "@/layouts/board";
-import { dashboard } from "@/lib/services/dashboards";
-import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import { ColumnServiceResponseDto } from "@/lib/services/columns/schema";
-import { useDashboardData } from "@/hooks/useDashboardData";
 import DashboardEdit from "@/components/dashboard/DashboardEdit";
-import { memberList } from "@/lib/services/members";
-import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
-import { GetServerSidePropsContext } from "next";
-import { DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
-import React, { useState } from "react";
+import BoardLayout from "@/layouts/board";
 
 type DashboardContextType = {
   members: MemberApplicationServiceResponseDto[];
@@ -51,9 +51,7 @@ export default function Edit({ members, columns }: DashboardContextType) {
 
   return (
     <DashboardContext.Provider value={{ members, columns, dashboardData, setDashboardData, setDashboardList }}>
-      <BoardLayout
-        sideMenu={<SideMenu dashboards={dashboardList.dashboards} />}
-        dashboardHeader={<DashboardHeader dashboardData={dashboardData} members={memberList} />}>
+      <BoardLayout dashboardHeader={<DashboardHeader dashboardData={dashboardData} members={memberList} />}>
         <div className="px-12 pt-16 pb-56 tablet:px-20 tablet:pt-20 pc:w-620">
           <BackButton />
           <div className="flex flex-col gap-y-12 pt-21 pb-40 tablet:pb-48">

@@ -1,8 +1,8 @@
-import Image from "next/image";
-import AvatarStack from "./AvatarStack";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import AvatarStack from "./AvatarStack";
 import ProfileLabel from "./ProfileLabel";
 import InviteModal from "../modal/invite";
 import IconButton from "./Button/IconButton";
@@ -30,20 +30,20 @@ interface MembersProps {
 }
 
 interface DashboardHeaderProps {
-  dashboardData?: any;
+  dashboardData?: DashboardDataProp;
   members?: MembersProps[];
 }
 
 function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
   const router = useRouter();
   const path = router.pathname;
-  const PATH_TITLE: any = {
+  const PATH_TITLE: Record<string, string> = {
     "/mydashboard": "내 대시보드",
     "/mypage": "계정관리",
   };
-  const { myData, setMyData } = useMyData();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [toggleRotate, setToggleRotate] = useState(false);
+  const [toggleRotate, setToggleRotate] = useState<boolean>(false);
+  const { myData } = useMyData();
 
   // 내가 만든 대시보드인지 확인하기
   const ownerIsMe = dashboardData?.createdByMe;
@@ -61,7 +61,7 @@ function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
       <div className="fixed top-0 left-0 right-0 flex items-center justify-end pr-12 bg-white pc:justify-between tablet:h-70 h-60 border-b-1 border-gray-D9D9 pc:pl-340 pl-0 pc:pr-80 tablet:pr-40 z-[300]">
         <div className="items-center hidden gap-8 font-bold pc:flex text-20 text-black-3332">
           {dashboardData ? dashboardData.title : PATH_TITLE[path]}
-          {ownerIsMe && <Image src="/images/crown.png" alt="왕관 아이콘 이모지" width="20" height="16" />}
+          {ownerIsMe && <Image src="/images/crown.png" alt="왕관 아이콘 이모지" width="20" height="16" sizes="16px" />}
         </div>
         <div className="flex items-center justify-end h-full gap-16 pc:gap-40 tablet:gap-32 shrink-0">
           {ownerIsMe && (
@@ -83,6 +83,7 @@ function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
                   className={`transform ${toggleRotate ? "rotate-180" : "rotate-0"}`}
                   width={26}
                   height={26}
+                  sizes="100vw"
                   src="/images/arrow_drop_down.png"
                   alt="토글 버튼"
                 />

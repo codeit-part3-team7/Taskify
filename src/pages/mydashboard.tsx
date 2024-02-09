@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import BoardLayout from "@/layouts/board";
+import { findDashboard } from "@/lib/services/dashboards";
+import { FindDashboardsRequestDto } from "@/lib/services/dashboards/schema";
 import MyDashboardLayout from "@/layouts/board/mydashboard";
 import DashboardHeader from "@/components/common/DashboardHeader";
 import SideMenu from "@/components/common/SideMenu";
-import DashboardLinkButton from "@/components/mydashboard/DashboardLinkButton";
-import AddDashBoardButton from "@/components/mydashboard/AddDashBoardButton";
 import PaginationButton from "@/components/common/Button/PaginationButton";
 import InviteDashboardTable from "@/components/common/InviteDashboardTable";
+import DashboardLinkButton from "@/components/mydashboard/DashboardLinkButton";
+import AddDashBoardButton from "@/components/mydashboard/AddDashBoardButton";
 import NewDashModal from "@/components/modal/newDash";
-import { findDashboard } from "@/lib/services/dashboards";
-import { FindDashboardsRequestDto } from "@/lib/services/dashboards/schema";
 import AlertModal from "@/components/modal/alert";
 
 export interface Dashboard {

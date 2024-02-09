@@ -1,13 +1,13 @@
-import { useEffect, useState, createContext, SetStateAction, useContext, Dispatch } from "react";
-import { GetServerSidePropsContext } from "next";
+import { useEffect, useState, createContext, useContext, Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
-import { findColumns } from "@/lib/services/columns";
 import { ColumnServiceResponseDto, FindColumnsRequestDto } from "@/lib/services/columns/schema";
+import { dashboard, findDashboard } from "@/lib/services/dashboards";
+import { findColumns } from "@/lib/services/columns";
 import { memberList } from "@/lib/services/members";
 import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import { dashboard, findDashboard } from "@/lib/services/dashboards";
 import {
   FindDashboardsResponseDto,
   FindDashboardsRequestDto,
@@ -19,7 +19,6 @@ import BoardLayout from "@/layouts/board";
 import Column from "@/components/dashboard/Column";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import AlertModal from "@/components/modal/alert";
-
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
 };

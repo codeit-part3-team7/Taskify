@@ -1,15 +1,15 @@
-import BackButton from "@/components/common/Button/BackButton";
-import DashboardHeader from "@/components/common/DashboardHeader";
-import SideMenu from "@/components/common/SideMenu";
-import AlertModal from "@/components/modal/alert";
-import PasswordChangeForm from "@/components/mypage/PasswordChangeForm";
-import ProfileChangeForm from "@/components/mypage/ProfileChangeForm";
-import BoardLayout from "@/layouts/board";
-import MyPageFormLayout from "@/layouts/board/mypage/MyPageFormLayout";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { findDashboard } from "@/lib/services/dashboards";
 import { FindDashboardsRequestDto } from "@/lib/services/dashboards/schema";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import BoardLayout from "@/layouts/board";
+import DashboardHeader from "@/components/common/DashboardHeader";
+import MyPageFormLayout from "@/layouts/board/mypage/MyPageFormLayout";
+import PasswordChangeForm from "@/components/mypage/PasswordChangeForm";
+import ProfileChangeForm from "@/components/mypage/ProfileChangeForm";
+import BackButton from "@/components/common/Button/BackButton";
+import SideMenu from "@/components/common/SideMenu";
+import AlertModal from "@/components/modal/alert";
 
 interface myDataProps {
   email: string;
@@ -40,8 +40,9 @@ function MyPage() {
           navigationMethod: "pagination",
           size: 999,
         };
-        const res = (await findDashboard(qs)).data as any;
-        setDashboardList(res.dashboards);
+        const res = await findDashboard(qs);
+        if (res.data) setDashboardList(res.data.dashboards as any);
+        console.log("data", res.data?.dashboards);
       } catch (error) {
         setAlertValue(true);
         console.error("대시보드를 불러오는 데 실패했습니다.");
