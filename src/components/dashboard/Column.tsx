@@ -23,6 +23,12 @@ interface ContextType {
   setCardList: Dispatch<SetStateAction<CardServiceFindResponseDto>>;
 }
 
+type ImageObject = {
+  url: string;
+  name: string;
+  type: string;
+};
+
 export const CardContext = createContext<ContextType | undefined>(undefined);
 
 export const useCardList = () => {
@@ -34,7 +40,7 @@ export const useCardList = () => {
 };
 function Column({ column, updateColumns }: ColumnProps) {
   const [cardList, setCardList] = useState<CardServiceFindResponseDto>({ cards: [], totalCount: 0, cursorId: null });
-  const [selectedImage, setSelectedImage] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState<File | ImageObject>({ url: "", name: "", type: "" });
   const [columnUpdateModal, columnUpdateToggle, setColumnUpdateModal] = useToggle();
   const [todoModal, todoToggle, setTodoMdodal] = useToggle();
 
@@ -46,21 +52,21 @@ function Column({ column, updateColumns }: ColumnProps) {
 
   const createCardCallback = async (data: FieldValues) => {
     try {
-      let formData: CreateCardRequestDto = {
+      const formData: CreateCardRequestDto = {
         ...(data as CreateCardRequestDto),
         dashboardId,
         columnId: column.id,
       };
       if (selectedImage) {
-        const imageUrl = await postImageToServer(selectedImage, column.id);
+        const imageUrl = await postImageToServer(selectedImage as File, column.id);
         if (imageUrl) {
           formData.imageUrl = imageUrl;
         }
       }
       const response = await createCard(formData);
-      setCardList((prevState: any) => ({
+      setCardList((prevState: CardServiceFindResponseDto) => ({
         ...prevState,
-        cards: [...prevState.cards, response.data],
+        cards: [...prevState.cards, response.data!],
         totalCount: prevState.totalCount + 1,
       }));
     } catch (error) {
@@ -85,13 +91,13 @@ function Column({ column, updateColumns }: ColumnProps) {
         <div className="flex justify-between">
           <div className="flex items-center gap-8">
             <span className="relative inline-block size-8">
-              <Image fill src="/images/ellipse.png" alt="원 아이콘 이미지" />
+              <Image width={8} height={8} src="/images/ellipse.png" alt="원 아이콘 이미지" />
             </span>
             <p className="mr-4 font-bold tablet:text-18">{column.title}</p>
             <ChipNum totalCount={cardList.totalCount} />
           </div>
           <button className="relative inline-block size-22 tablet:size-24" onClick={columnUpdateToggle}>
-            <Image fill src="/images/settings.png" alt="setting" />
+            <Image fill src="/images/settings.png" alt="setting" sizes="auto" />
           </button>
         </div>
         <div className="flex flex-col gap-16">
@@ -112,9 +118,9 @@ function Column({ column, updateColumns }: ColumnProps) {
         )}
         {todoModal && (
           <CreateTodo
+            setSelectedImage={setSelectedImage}
             onClose={() => setTodoMdodal(false)}
             callback={createCardCallback}
-            setSelectedImage={setSelectedImage}
           />
         )}
       </section>

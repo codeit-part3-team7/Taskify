@@ -45,7 +45,7 @@ function DashboardItem({ id, title, createdByMe, color }: DashboardItemProps) {
                 fill
                 src="/images/crown.png"
                 alt="내가 만든 대시보드 표시 왕관 아이콘 이미지"
-                sizes="(max-width: 744px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           )}
@@ -59,11 +59,11 @@ function DashboardItem({ id, title, createdByMe, color }: DashboardItemProps) {
 function SideMenu({ dashboards }: SideMenuProps) {
   const { width } = useWindowSize();
   const tabletOrLarge = width >= 744;
-  const [newDashValue, newDashToggel, setNewDashValue] = useToggle();
+  const [newDashValue, newDashToggle, setNewDashValue] = useToggle();
 
   return (
     <>
-      {newDashValue && <NewDashModal onClose={newDashToggel} />}
+      {newDashValue && <NewDashModal onClose={newDashToggle} />}
       <div className="fixed top-0 left-0 bottom-0 flex flex-col h-screen gap-3 px-12 py-20 bg-white pc:w-300 tablet:w-160 w-67 border-r-1 border-gray-D9D9 z-sticky">
         <Link href="/">
           <div className="relative ml-12 tablet:w-109 tablet:h-33 w-23 h-27 tablet:mb-42 mb-27">

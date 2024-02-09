@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Button from "./Button/Button";
+import Button from "./Button";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { invitation, responseInvitation } from "@/lib/services/invitations";
@@ -38,7 +38,7 @@ function InviteDashboardTable({ getDashboards }: InviteDashboardTableProp) {
 
   const getResponseInvitation = async (invitationId: number, inviteAccepted: boolean): Promise<void> => {
     try {
-      const res = (await responseInvitation(invitationId, inviteAccepted)).data as any;
+      await responseInvitation(invitationId, inviteAccepted);
       setSearchResult((prevSearchResult: Invitation[]) =>
         prevSearchResult.filter((invitation) => invitation.id !== invitationId),
       );

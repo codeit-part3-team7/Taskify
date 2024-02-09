@@ -19,16 +19,17 @@ import BoardLayout from "@/layouts/board";
 import Column from "@/components/dashboard/Column";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import AlertModal from "@/components/modal/alert";
+import { checkLogin } from "@/lib/util/checkLogin";
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
 };
-interface DashboardContext {
+interface DashboardContextType {
   members: MemberApplicationServiceResponseDto[];
   columnsData: ColumnServiceResponseDto[];
   setColumnsData: Dispatch<SetStateAction<ColumnServiceResponseDto[]>>;
 }
 
-export const DashboardContext = createContext<DashboardContext>({
+export const DashboardContext = createContext<DashboardContextType>({
   members: [],
   columnsData: [],
   setColumnsData: () => {},
@@ -46,28 +47,11 @@ export default function Dashboard({ members }: DashboardProps) {
     {} as DashboardApplicationServiceResponseDto,
   );
 
-  const { dashboards } = dashboardList;
-
-  const sideMenu = <SideMenu dashboards={dashboards} />;
-  const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
-
-  const {
-    query: { id },
-  } = useRouter();
   const router = useRouter();
-  const dashboardId = Number(id);
+  const dashboardId = Number(router.query.id);
 
   useEffect(() => {
-    const cookieString = document.cookie;
-    const cookies = cookieString.split(";");
-    const accessTokenCookie = cookies.find((cookie) => cookie.trim().startsWith("accessToken="));
-
-    if (!accessTokenCookie) {
-      alert("로그인이 필요합니다.");
-      router.push("/login");
-      return;
-    }
-
+    if (!checkLogin(router)) return;
     const getDashboard = async () => {
       const response = await dashboard("get", dashboardId);
       return response?.data as DashboardApplicationServiceResponseDto;
@@ -98,7 +82,6 @@ export default function Dashboard({ members }: DashboardProps) {
 
     Promise.all([getDashboard(), getColumnsData(), getDashboardsData()])
       .then(([dashboardData, columnsData, dashboardList]) => {
-        console.log(dashboardData, columnsData, dashboardList);
         setDashboardData(dashboardData);
         setColumnsData(columnsData as ColumnServiceResponseDto[]);
         setDashboardList(dashboardList as FindDashboardsResponseDto);
@@ -107,7 +90,11 @@ export default function Dashboard({ members }: DashboardProps) {
         console.error(error);
         setAlertValue(true);
       });
-  }, [id]);
+  }, [router, dashboardId]);
+
+  const { dashboards } = dashboardList;
+  const sideMenu = <SideMenu dashboards={dashboards} />;
+  const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
 
   return (
     <DashboardContext.Provider value={{ members, columnsData, setColumnsData }}>

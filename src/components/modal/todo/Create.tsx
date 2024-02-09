@@ -1,11 +1,9 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { Controller, FieldValues, FormProvider, useForm } from "react-hook-form";
 import { format } from "date-fns";
-import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
 import { DashboardContext } from "@/pages/dashboard/[id]";
 import Modal from "@/components/common/Modal";
 import Dropdown from "@/components/common/Dropdown";
-import ProfileLabel from "@/components/common/ProfileLabel";
 import { AddImageInputField, DatePickerInputField, FormInputField, FormTagInputField } from "../input";
 
 type ImageObject = {
@@ -17,7 +15,7 @@ type ImageObject = {
 interface CreateTodoModalProps<T = void> {
   onClose: () => void;
   callback?: (data: FieldValues) => Promise<T>;
-  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>> | any;
+  setSelectedImage: Dispatch<SetStateAction<File | ImageObject>>;
 }
 
 function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModalProps) {
@@ -26,7 +24,6 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
 
   const rules = { required: "빈 값은 안됨." };
 
-  const renderOptionNickName = (option: MemberApplicationServiceResponseDto) => <ProfileLabel data={option} />;
   const defaultMemberId = memberList[0]?.userId || "";
 
   return (
@@ -40,7 +37,6 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
             render={({ field }) => (
               <Dropdown
                 options={memberList}
-                renderOptions={renderOptionNickName}
                 onChange={(selectedId) => {
                   const selectedMember = memberList.find((member) => member.id === selectedId);
                   if (selectedMember) {

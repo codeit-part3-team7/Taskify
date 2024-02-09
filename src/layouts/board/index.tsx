@@ -1,14 +1,13 @@
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useWindowSize } from "usehooks-ts";
+import { DashboardContext } from "@/pages/dashboard/[id]";
 import { UserServiceResponseDto } from "@/lib/services/auth/schema";
 import { me } from "@/lib/services/users";
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useRef, useState } from "react";
-import { DashboardContext } from "@/pages/dashboard/[id]";
-import { useWindowSize } from "usehooks-ts";
-import { useRouter } from "next/router";
-import Image from "next/image";
 
 interface BoardLayoutProps {
-  sideMenu: any;
-  dashboardHeader: any;
+  sideMenu: React.ReactElement;
+  dashboardHeader: React.ReactElement;
   children: ReactNode;
   scrollBtn?: boolean;
 }
@@ -38,8 +37,6 @@ function BoardLayout({ sideMenu, dashboardHeader, children, scrollBtn }: BoardLa
 
   const { columnsData } = useContext(DashboardContext);
   const columnsCount = columnsData.length;
-  const router = useRouter();
-  const dashboardId = router.query.id;
   const columnsWidth = columnsCount * COLUMN_WIDTH;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -55,15 +52,6 @@ function BoardLayout({ sideMenu, dashboardHeader, children, scrollBtn }: BoardLa
     }
   };
 
-  const handleScrollReset = () => {
-    if (columnsCount < 6) return;
-    if (containerRef.current) {
-      containerRef.current.scrollLeft = 0;
-      setScrollPosition(0);
-      return;
-    }
-  };
-
   const scrollLimit = windowWidth - 354;
 
   useEffect(() => {
@@ -72,10 +60,18 @@ function BoardLayout({ sideMenu, dashboardHeader, children, scrollBtn }: BoardLa
       setMyData(response.data as UserServiceResponseDto);
     };
 
-    handleScrollReset();
+    const handleScrollReset = () => {
+      if (columnsCount < 6) return;
+      if (containerRef.current) {
+        containerRef.current.scrollLeft = 0;
+        setScrollPosition(0);
+        return;
+      }
+    };
 
+    handleScrollReset();
     fetchMyData();
-  }, [dashboardId]);
+  }, [columnsCount]);
 
   return (
     <MyDataContext.Provider value={{ myData, setMyData }}>

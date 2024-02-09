@@ -15,7 +15,11 @@ function AddImageInput({
   onChange: Dispatch<SetStateAction<File | ImageObject>>;
 }) {
   const [addImages, setAddImages] = useState<(File | ImageObject)[]>([]);
-  const [selectedImage, setSelectedImage] = useState<File | ImageObject | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | ImageObject | null>({
+    url: "",
+    name: "",
+    type: "",
+  });
 
   const handleImageUpload = () => {
     const imageInput = document.getElementById("imageInput") as HTMLInputElement;
@@ -36,7 +40,7 @@ function AddImageInput({
     }
   };
 
-  const handleSelectedImage = (image: File | ImageObject) => {
+  const handleSelectedImage = (image: File) => {
     setSelectedImage(image);
     onChange(image);
   };
@@ -80,8 +84,8 @@ function AddImageInput({
 
         return (
           <div key={index} className="relative">
-            <div onClick={() => handleSelectedImage(image)}>
-              <img
+            <div onClick={() => handleSelectedImage(image as File)}>
+              <Image
                 src={src}
                 alt={`추가된 이미지 ${index}`}
                 width={76}

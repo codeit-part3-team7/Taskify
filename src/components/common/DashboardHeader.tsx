@@ -8,30 +8,12 @@ import InviteModal from "../modal/invite";
 import IconButton from "./Button/IconButton";
 import ProfilePopover from "./Popover/Profile";
 import { useMyData } from "@/layouts/board";
-
-interface DashboardDataProp {
-  id: number;
-  title: string;
-  color: string;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-  createdByMe: boolean;
-}
-interface MembersProps {
-  id: number;
-  userId: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-}
+import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
+import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
 
 interface DashboardHeaderProps {
-  dashboardData?: DashboardDataProp;
-  members?: MembersProps[];
+  dashboardData?: DashboardApplicationServiceResponseDto;
+  members?: MemberApplicationServiceResponseDto[];
 }
 
 function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
@@ -74,7 +56,7 @@ function DashboardHeader({ dashboardData, members }: DashboardHeaderProps) {
           )}
           {isModalOpen && <InviteModal onClose={() => setIsModalOpen(false)} />}
           <div className="flex items-center gap-12 pc:gap-32 tablet:gap-24">
-            {dashboardData && <AvatarStack list={members} />}
+            {dashboardData && <AvatarStack list={members as MemberApplicationServiceResponseDto[]} />}
             {dashboardData && <div className="w-1 bg-gray-D9D9 tablet:h-38 h-34" />}
             <ProfilePopover>
               <div className="flex gap-5 items-center" onClick={handleClick}>

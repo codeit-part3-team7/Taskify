@@ -6,7 +6,7 @@ import { UpdateTodo } from "@/components/modal/todo";
 import AlertModal from "@/components/modal/alert";
 import { card } from "@/lib/services/cards";
 import { postImageToServer } from "@/lib/util/postImageToServer";
-import { UpdateCardRequestDto } from "@/lib/services/cards/schema";
+import { CardServiceResponseDto, UpdateCardRequestDto } from "@/lib/services/cards/schema";
 import { useCardList } from "@/components/dashboard/Column";
 import { DashboardContext } from "@/pages/dashboard/[id]";
 
@@ -44,7 +44,7 @@ function Popover({ children, cardId }: PopoverProps) {
   const cardUpdate = async (data: FieldValues) => {
     try {
       const { assignee, ...rest } = data;
-      let formData: UpdateCardRequestDto = {
+      const formData: UpdateCardRequestDto = {
         ...(rest as UpdateCardRequestDto),
         assigneeUserId: assignee.id,
       };
@@ -55,10 +55,12 @@ function Popover({ children, cardId }: PopoverProps) {
         }
       }
       const response = await card("put", cardId as number, formData);
-      if (response.data) {
+      if (response.data!) {
         setCardList((prevState) => ({
           ...prevState,
-          cards: prevState.cards.map((card) => (card.id === cardId ? { ...card, ...(response.data as any) } : card)),
+          cards: prevState.cards.map((card) =>
+            card.id === cardId ? { ...card, ...(response.data as CardServiceResponseDto) } : card,
+          ),
         }));
       }
       setColumnsData((prev) => prev.map((item) => ({ ...item })));

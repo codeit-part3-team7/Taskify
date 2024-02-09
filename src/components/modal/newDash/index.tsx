@@ -16,7 +16,7 @@ function NewDashModal({ onClose }: { onClose: () => void }) {
       title,
       color: methods.getValues("color"),
     };
-    const response = (await createDashboard(form)) as any;
+    const response = await createDashboard(form);
 
     if (response.errorMessage) {
       methods.setError("color", { type: "noColor", message: response.errorMessage });

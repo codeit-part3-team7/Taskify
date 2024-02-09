@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { ko } from "date-fns/locale";
@@ -56,8 +55,8 @@ function Calendar({ className, showOutsideDays = true, ...props }: CalendarProps
       className={cn("p-3", className)}
       classNames={classNames}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="size-20" />,
-        IconRight: ({ ...props }) => <ChevronRight className="size-20" />,
+        IconLeft: () => <ChevronLeft className="size-20" />,
+        IconRight: () => <ChevronRight className="size-20" />,
       }}
       {...props}
     />

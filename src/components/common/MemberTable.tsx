@@ -1,7 +1,7 @@
-import Button from "./Button/Button";
+import Button from "./Button";
 import PaginationButton from "./Button/PaginationButton";
 import ProfileLabel from "../common/ProfileLabel";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { deleteMember, memberList } from "@/lib/services/members";
 import { MemberApplicationServiceResponseDto, MemberListResponseDto } from "@/lib/services/members/schema";
@@ -14,7 +14,7 @@ function MemberTable({ setMemberList }: any) {
   const router = useRouter();
   const dashboardId = router.query?.id;
 
-  const getMembers = async () => {
+  const getMembers = useCallback(async () => {
     if (typeof dashboardId === "string") {
       const qs = { dashboardId: Number(dashboardId) };
       const memberData = (await memberList(qs)).data as MemberListResponseDto;
@@ -24,11 +24,11 @@ function MemberTable({ setMemberList }: any) {
         setTotalPages(pages);
       }
     }
-  };
+  }, [dashboardId]);
 
   useEffect(() => {
     getMembers();
-  }, [dashboardId, currentPage]);
+  }, [getMembers]);
 
   const handleDeleteMember = async (memberId: number) => {
     try {

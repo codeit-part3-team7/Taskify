@@ -11,6 +11,8 @@ export type AlertType =
   | "passwordSuccess"
   | "incorrectPassword"
   | "passwordSameError"
+  | "passwordEmpty"
+  | "inputNewPassword"
   | "";
 
 interface AlertModalProps<T = void> {
@@ -31,6 +33,8 @@ function AlertModal({ modalType, callback, onClose, alertType, deleteType }: Ale
     passwordSuccess: "비밀번호가 변경되었습니다.",
     incorrectPassword: "현재 비밀번호가 틀렸습니다.",
     passwordSameError: "현재 비밀번호와 새 비밀번호가 동일합니다.",
+    passwordEmpty: "비밀번호를 입력해 주세요.",
+    inputNewPassword: "새 비밀번호를 입력해주세요",
   };
 
   const deleteMessage = {
