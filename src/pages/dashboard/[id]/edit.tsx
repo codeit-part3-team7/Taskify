@@ -65,8 +65,7 @@ export default function Edit({ members }: DashbordProps) {
     fetch();
   }, [dashboardId]);
 
-  const sideMenu = <SideMenu dashboards={dashboardList} />;
-  const header = <DashboardHeader dashboardData={dashboardData} members={memberList} />;
+  const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
 
   return (
     <EditDashboardContext.Provider value={{ dashboardData, setDashboardData, updateDashboardList }}>

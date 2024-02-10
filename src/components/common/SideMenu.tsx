@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useToggle, useWindowSize } from "usehooks-ts";
 import NewDashModal from "../modal/newDash";
 import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
+import { useDashboards } from "@/hooks/useDashboard";
 
 interface DashboardItemProps {
   id: number;
@@ -14,10 +15,6 @@ interface DashboardItemProps {
   createdByMe: boolean;
   userId: number;
   tabletOrLarge?: boolean;
-}
-
-interface SideMenuProps {
-  dashboards?: DashboardApplicationServiceResponseDto[];
 }
 
 // 사이드 메뉴 안에 있는 대시보드 버튼 하나
@@ -56,10 +53,11 @@ function DashboardItem({ id, title, createdByMe, color }: DashboardItemProps) {
 }
 
 // 사이드메뉴 전체
-function SideMenu({ dashboards }: SideMenuProps) {
+function SideMenu() {
   const { width } = useWindowSize();
   const tabletOrLarge = width >= 744;
   const [newDashValue, newDashToggle, setNewDashValue] = useToggle();
+  const { dashboardList } = useDashboards();
 
   return (
     <>
@@ -84,7 +82,7 @@ function SideMenu({ dashboards }: SideMenuProps) {
           <Image src="/images/add_box_gray.png" alt="대시보드 추가 버튼 이미지" width={20} height={20} />
         </div>
         <div className="overflow-auto">
-          {dashboards?.map((dashboard) => <DashboardItem key={dashboard.id} {...dashboard} />)}
+          {dashboardList?.map((dashboard) => <DashboardItem key={dashboard.id} {...dashboard} />)}
         </div>
       </div>
     </>

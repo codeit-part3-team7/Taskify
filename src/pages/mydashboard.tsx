@@ -26,12 +26,11 @@ export default function MyDashboard() {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const displayedDashboards = dashboardList.slice(startIndex, endIndex);
-  const sideMenu = <SideMenu dashboards={dashboardList} />;
   const header = <DashboardHeader />;
 
   return (
     <>
-      <BoardLayout sideMenu={sideMenu} dashboardHeader={header}>
+      <BoardLayout dashboardHeader={header}>
         <MyDashboardLayout>
           <div className="flex flex-col gap-8 tablet:gap-10 pc:gap-12">
             <div className="grid w-full grid-cols-1 grid-rows-6 gap-8 h-400 tablet:h-250 pc:h-150 tablet:grid-cols-2 tablet:grid-rows-3 pc:grid-cols-3 pc:grid-rows-2 tablet:gap-13 ">

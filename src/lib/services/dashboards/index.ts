@@ -9,6 +9,7 @@ import {
   FindDashboardsRequestDto,
   FindDashboardsResponseDto,
 } from "./schema";
+import { AxiosRequestConfig } from "axios";
 
 /**
  * 새로운 대시보드를 생성하는 함수입니다.
@@ -38,10 +39,15 @@ export const findDashboard = (qs?: FindDashboardsRequestDto): Promise<ServiceRes
  * @param {DashboardRequestDto} data - 대시보드 업데이트를 위한 데이터
  * @returns {Promise<ServiceResponse<DashboardApplicationServiceResponseDto>>} 서비스 응답을 포함하는 프로미스
  */
-export const dashboard = (method: HttpMethod, dashboardId: number, data?: DashboardRequestDto) => {
+export const dashboard = (
+  method: HttpMethod,
+  dashboardId: number,
+  data?: DashboardRequestDto,
+  config: AxiosRequestConfig = {},
+) => {
   switch (method) {
     case "get":
-      return service(method, dashboardAddress.dashboardId(dashboardId)) as Promise<
+      return service(method, dashboardAddress.dashboardId(dashboardId), undefined, config) as Promise<
         ServiceResponse<DashboardApplicationServiceResponseDto>
       >;
     case "delete":
