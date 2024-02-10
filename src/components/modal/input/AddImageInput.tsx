@@ -12,7 +12,7 @@ function AddImageInput({
   onChange,
 }: {
   value?: string;
-  onChange: Dispatch<SetStateAction<File | ImageObject>>;
+  onChange: Dispatch<SetStateAction<File | ImageObject | undefined>>;
 }) {
   const [addImages, setAddImages] = useState<(File | ImageObject)[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | ImageObject | null>({

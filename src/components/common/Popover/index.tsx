@@ -20,9 +20,15 @@ interface PopoverProps {
   cardId?: number;
 }
 
+type ImageObject = {
+  url: string;
+  name: string;
+  type: string;
+};
+
 function Popover({ children, cardId }: PopoverProps) {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState<File | ImageObject | undefined>(undefined);
   const [updateValue, updateToggle, setUpdateValue] = useToggle();
   const [deleteValue, deleteToggle, setDeleteValue] = useToggle();
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -49,7 +55,7 @@ function Popover({ children, cardId }: PopoverProps) {
         assigneeUserId: assignee.id,
       };
       if (selectedImage) {
-        const imageUrl = await postImageToServer(selectedImage, data.columnId);
+        const imageUrl = await postImageToServer(selectedImage as File, data.columnId);
         if (imageUrl) {
           formData.imageUrl = imageUrl;
         }

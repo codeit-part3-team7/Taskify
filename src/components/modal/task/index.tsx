@@ -7,6 +7,7 @@ import Modal from "@/components/common/Modal";
 import CommentInput from "../input/CommentInput";
 import TaskInfo from "./TaskInfo";
 import { CardServiceResponseDto } from "@/lib/services/cards/schema";
+import Popover from "@/components/common/Popover";
 
 interface TaskModalProps {
   taskData: CardServiceResponseDto;
@@ -25,9 +26,20 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
 
   const column = columnsData.find((column) => column.id === taskData.columnId);
 
+  const modalHeaderContent = (
+    <div className="flex items-center gap-15">
+      <Popover cardId={taskData.id as number}>
+        <Image src="/images/kebab.png" alt="kebab" width={28} height={28} />
+      </Popover>
+      <button onClick={onClose}>
+        <Image src="/images/close.png" alt="close" width={32} height={32} />
+      </button>
+    </div>
+  );
+
   return (
     <FormProvider {...methods}>
-      <Modal title={taskData?.title} onClose={onClose} cardId={taskData.id} hasOptionsbutton>
+      <Modal title={taskData?.title} onClose={onClose} headerContent={modalHeaderContent} hasOptionsbutton>
         <div className="flex flex-col gap-24 tablet:flex-row w-327 tablet:w-680 pc:w-680">
           <div className="flex w-full m-auto tablet:hidden">
             <TaskInfo data={taskData?.assignee as assignee} dueDate={taskData?.dueDate as Date} />

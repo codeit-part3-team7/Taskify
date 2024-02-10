@@ -60,7 +60,7 @@ function UpdateColumnModal({ columnData: { title, columnId }, updateColumns, onC
         onClose={onClose}
         onDelete={deleteToggle}
         callback={callbackUpdate}
-        useFormData>
+        isFormData>
         <FormInputField labelName="title" labelTitle="이름" defaultValue={title} rules={rules} />
       </Modal>
       {deleteValue && (

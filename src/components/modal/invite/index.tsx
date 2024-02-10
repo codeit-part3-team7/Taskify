@@ -35,7 +35,7 @@ function InviteModal({ onClose }: InviteModalProps) {
 
   return (
     <FormProvider {...methods}>
-      <Modal title="초대하기" modalType={"invite"} onClose={onClose} callback={callback} useFormData>
+      <Modal title="초대하기" modalType={"invite"} onClose={onClose} callback={callback} isFormData>
         <FormInputField labelName="email" labelTitle="이메일" type="email" rules={rules} />
       </Modal>
     </FormProvider>

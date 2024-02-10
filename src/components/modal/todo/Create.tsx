@@ -28,7 +28,7 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
 
   return (
     <FormProvider {...methods}>
-      <Modal title="할 일 생성" modalType={"create"} onClose={onClose} callback={callback} useFormData>
+      <Modal title="할 일 생성" modalType={"create"} onClose={onClose} callback={callback} isFormData>
         <div className="flex flex-col gap-32">
           <Controller
             name="assigneeUserId"

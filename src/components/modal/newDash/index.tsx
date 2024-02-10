@@ -31,7 +31,7 @@ function NewDashModal({ onClose }: { onClose: () => void }) {
 
   return (
     <FormProvider {...methods}>
-      <Modal title="새로운 대시보드" modalType={"create"} onClose={onClose} callback={callback} useFormData>
+      <Modal title="새로운 대시보드" modalType={"create"} onClose={onClose} callback={callback} isFormData>
         <div className="mb-28">
           <FormInputField
             labelName="title"

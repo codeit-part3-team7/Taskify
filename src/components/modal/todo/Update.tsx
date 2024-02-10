@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { Controller, FieldValues, FormProvider, useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { card } from "@/lib/services/cards";
@@ -9,11 +9,17 @@ import Modal from "@/components/common/Modal";
 import Dropdown from "@/components/common/Dropdown";
 import { AddImageInputField, DatePickerInputField, FormInputField, FormTagInputField } from "../input";
 
+type ImageObject = {
+  url: string;
+  name: string;
+  type: string;
+};
+
 interface UpdateTodoModalProps<T = void> {
   cardId?: number;
   onClose: () => void;
   callback: (data: FieldValues) => Promise<T>;
-  setSelectedImage: () => void;
+  setSelectedImage: Dispatch<SetStateAction<File | ImageObject | undefined>>;
 }
 
 function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: UpdateTodoModalProps) {
@@ -43,7 +49,7 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
 
   return (
     <FormProvider {...methods}>
-      <Modal title="할 일 수정" modalType={"update"} onClose={onClose} callback={callback} useFormData>
+      <Modal title="할 일 수정" modalType={"update"} onClose={onClose} callback={callback} isFormData>
         <div className="flex flex-col gap-32">
           <div className="tablet:flex tablet:gap-16 justify-between">
             <Controller
