@@ -1,13 +1,17 @@
 import Button from "./Button";
 import PaginationButton from "./Button/PaginationButton";
 import ProfileLabel from "../common/ProfileLabel";
-import { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { deleteMember, memberList } from "@/lib/services/members";
 import { MemberApplicationServiceResponseDto, MemberListResponseDto } from "@/lib/services/members/schema";
 import Image from "next/image";
 
-function MemberTable({ setMemberList }: any) {
+function MemberTable({
+  setMemberList,
+}: {
+  setMemberList: Dispatch<SetStateAction<MemberApplicationServiceResponseDto[]>>;
+}) {
   const [members, setMembers] = useState<MemberApplicationServiceResponseDto[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -31,12 +35,15 @@ function MemberTable({ setMemberList }: any) {
   }, [getMembers]);
 
   const handleDeleteMember = async (memberId: number) => {
+    console.log(memberId);
     try {
       await deleteMember(memberId);
       // 현재 멤버 목록을 조회하기 (prev)
       // 삭제한 멤버를 찾아서 filter
       // 삭제한 멤버를 목록에서 빼기
-      setMemberList((prev: any) => prev.filter((member: any) => member.id !== memberId));
+      setMemberList((prev: MemberApplicationServiceResponseDto[]) =>
+        prev.filter((member: MemberApplicationServiceResponseDto) => member.id !== memberId),
+      );
       getMembers();
     } catch (error) {
       console.error("멤버 삭제 실패:", error);

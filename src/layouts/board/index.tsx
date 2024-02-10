@@ -3,10 +3,12 @@ import Image from "next/image";
 import { useWindowSize } from "usehooks-ts";
 import { DashboardContext } from "@/pages/dashboard/[id]";
 import { UserServiceResponseDto } from "@/lib/services/auth/schema";
+import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
 import { me } from "@/lib/services/users";
 import SideMenu from "@/components/common/SideMenu";
 
 interface BoardLayoutProps {
+  dashboardList: DashboardApplicationServiceResponseDto[];
   dashboardHeader: React.ReactElement;
   children: ReactNode;
   scrollBtn?: boolean;
@@ -31,7 +33,7 @@ export const useMyData = () => {
   return context;
 };
 
-function BoardLayout({ dashboardHeader, children, scrollBtn }: BoardLayoutProps) {
+function BoardLayout({ dashboardList, dashboardHeader, children, scrollBtn }: BoardLayoutProps) {
   const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
   const [scrollPosition, setScrollPosition] = useState<number>(0);
 
@@ -77,7 +79,7 @@ function BoardLayout({ dashboardHeader, children, scrollBtn }: BoardLayoutProps)
     <MyDataContext.Provider value={{ myData, setMyData }}>
       <div className="grid grid-rows-[60px_1fr] tablet:grid-rows-[70px_1fr] grid-cols-[67px_minmax(auto,_1fr)] tablet:grid-cols-[160px_minmax(auto,_1fr)] pc:grid-cols-[300px_minmax(auto,_1fr)] min-h-screen bg-gray-FAFA">
         <div className="row-span-2">
-          <SideMenu />
+          <SideMenu dashboardList={dashboardList} />
         </div>
         <div className="col-span-1">{dashboardHeader}</div>
         <div ref={containerRef} className="col-span-1 overflow-auto h-[calc(100vh-7rem)] scroll-smooth">

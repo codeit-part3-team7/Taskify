@@ -1,24 +1,30 @@
-import { useEffect, useContext } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import Button from "@/components/common/Button";
 import { useForm, Controller } from "react-hook-form";
 import { ChipColors } from "@/components/common/Chips";
 import { Input } from "@/components/Auth/Elements";
 import { dashboard } from "@/lib/services/dashboards";
-import { EditDashboardContext } from "@/pages/dashboard/[id]/edit";
 import { DashboardRequestDto } from "@/lib/services/dashboards/schema";
 import { DashboardApplicationServiceResponseDto } from "@/lib/services/comments/schema";
+import AlertModal from "../modal/alert";
+import { useToggle } from "usehooks-ts";
 
-export default function DashboardEdit() {
-  const { dashboardData, setDashboardData, updateDashboardList } = useContext(EditDashboardContext);
+interface DashboardProps {
+  dashboardData: DashboardApplicationServiceResponseDto;
+  setDashboardData: Dispatch<SetStateAction<DashboardApplicationServiceResponseDto>>;
+  updateDashboardList: (data: DashboardRequestDto, id: number) => void;
+}
 
+export default function DashboardEdit({ dashboardData, setDashboardData, updateDashboardList }: DashboardProps) {
+  const [alertValue, toggleValue] = useToggle();
   const onSubmit = async (data: DashboardRequestDto) => {
     try {
       const response = await dashboard("put", dashboardData.id, data)!;
       setDashboardData(response.data as DashboardApplicationServiceResponseDto);
+      toggleValue();
+      updateDashboardList(data, dashboardData.id);
     } catch (error) {
       console.error("대시보드 업데이트 실패:", error);
-    } finally {
-      updateDashboardList(data, dashboardData.id);
     }
   };
 
@@ -57,6 +63,7 @@ export default function DashboardEdit() {
           변경
         </Button>
       </div>
+      {alertValue && <AlertModal modalType="alert" alertType="successToChangedashboard" onClose={toggleValue} />}
     </form>
   );
 }

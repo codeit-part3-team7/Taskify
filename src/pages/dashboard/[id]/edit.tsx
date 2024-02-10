@@ -13,7 +13,6 @@ import BackButton from "@/components/common/Button/BackButton";
 import DeleteDashButton from "@/components/common/Button/DeleteDashButton";
 import InviteListTable from "@/components/common/InviteListTable";
 import MemberTable from "@/components/common/MemberTable";
-import SideMenu from "@/components/common/SideMenu";
 import DashboardHeader from "@/components/common/DashboardHeader";
 import DashboardEdit from "@/components/dashboard/DashboardEdit";
 
@@ -65,18 +64,22 @@ export default function Edit({ members }: DashbordProps) {
     fetch();
   }, [dashboardId]);
 
-  const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
+  const header = <DashboardHeader dashboardData={dashboardData} members={memberList} />;
 
   return (
     <EditDashboardContext.Provider value={{ dashboardData, setDashboardData, updateDashboardList }}>
       <Head>
         <title>{`${dashboardData.title} - 설정`}</title>
       </Head>
-      <BoardLayout dashboardHeader={header}>
+      <BoardLayout dashboardList={dashboardList} dashboardHeader={header}>
         <div className="px-12 pt-16 pb-56 tablet:px-20 tablet:pt-20 pc:w-620">
           <BackButton />
           <div className="flex flex-col gap-y-12 pt-21 pb-40 tablet:pb-48">
-            <DashboardEdit />
+            <DashboardEdit
+              dashboardData={dashboardData}
+              setDashboardData={setDashboardData}
+              updateDashboardList={updateDashboardList}
+            />
             <MemberTable setMemberList={setMemberList} />
             <InviteListTable />
           </div>

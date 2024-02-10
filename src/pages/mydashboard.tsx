@@ -3,7 +3,6 @@ import { useDashboards } from "@/hooks/useDashboard";
 import BoardLayout from "@/layouts/board";
 import MyDashboardLayout from "@/layouts/board/mydashboard";
 import DashboardHeader from "@/components/common/DashboardHeader";
-import SideMenu from "@/components/common/SideMenu";
 import PaginationButton from "@/components/common/Button/PaginationButton";
 import InviteDashboardTable from "@/components/common/InviteDashboardTable";
 import DashboardLinkButton from "@/components/mydashboard/DashboardLinkButton";
@@ -30,7 +29,7 @@ export default function MyDashboard() {
 
   return (
     <>
-      <BoardLayout dashboardHeader={header}>
+      <BoardLayout dashboardList={dashboardList} dashboardHeader={header}>
         <MyDashboardLayout>
           <div className="flex flex-col gap-8 tablet:gap-10 pc:gap-12">
             <div className="grid w-full grid-cols-1 grid-rows-6 gap-8 h-400 tablet:h-250 pc:h-150 tablet:grid-cols-2 tablet:grid-rows-3 pc:grid-cols-3 pc:grid-rows-2 tablet:gap-13 ">

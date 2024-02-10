@@ -5,16 +5,17 @@ import MyPageFormLayout from "@/layouts/board/mypage/MyPageFormLayout";
 import PasswordChangeForm from "@/components/mypage/PasswordChangeForm";
 import ProfileChangeForm from "@/components/mypage/ProfileChangeForm";
 import BackButton from "@/components/common/Button/BackButton";
-import SideMenu from "@/components/common/SideMenu";
 import AlertModal from "@/components/modal/alert";
+import { useDashboards } from "@/hooks/useDashboard";
 
 function MyPage() {
   const [alertValue, setAlertValue] = useState<boolean>(false);
+  const { dashboardList } = useDashboards();
 
   const header = <DashboardHeader />;
 
   return (
-    <BoardLayout dashboardHeader={header}>
+    <BoardLayout dashboardList={dashboardList} dashboardHeader={header}>
       <div className="min-h-screen flex flex-col tablet:pl-20 gap-12 px-12 pb-40">
         <div className="flex items-center mt-8 tablet:h-44 tablet:mt-8 h-34 tablet:text-16 text-14">
           <BackButton />

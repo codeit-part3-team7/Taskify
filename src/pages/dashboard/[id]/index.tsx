@@ -15,6 +15,7 @@ import Column from "@/components/dashboard/Column";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import AlertModal from "@/components/modal/alert";
 import { checkLogin } from "@/lib/util/checkLogin";
+import { useDashboards } from "@/hooks/useDashboard";
 
 type DashboardProps = {
   members: MemberApplicationServiceResponseDto[];
@@ -55,6 +56,8 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
     getColumnsData();
   }, [router, dashboardId]);
 
+  const { dashboardList } = useDashboards();
+
   const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
 
   return (
@@ -62,7 +65,7 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
       <Head>
         <title>{dashboardData.title}</title>
       </Head>
-      <BoardLayout dashboardHeader={header} scrollBtn>
+      <BoardLayout dashboardList={dashboardList} dashboardHeader={header} scrollBtn>
         <div className="flex flex-col pc:flex-row">
           <ColumnList />
         </div>
