@@ -33,7 +33,7 @@ function Modal({
   const isDelete = modalType === "delete";
 
   const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
+    if (e.target !== e.currentTarget) {
       onClose();
     }
   };
@@ -82,7 +82,7 @@ function Modal({
         onClick={handleOverlayClick}>
         <div className="bg-white min-w-327 tablet:min-w-540 max-h-[90vh] overflow-auto rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto]">
           <ModalHeader {...{ title, hasOptionsbutton, onClose, isDelete }}>{headerContent}</ModalHeader>
-          <div className="h-full overflow-auto">{children}</div>
+          <div className="h-full overflow-auto ">{children}</div>
           {modalType && <ModalFooter {...{ modalType, isFormData, onClose, onDelete, handleButtonClick }} />}
         </div>
       </div>,

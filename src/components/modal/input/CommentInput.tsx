@@ -31,7 +31,7 @@ function CommentInput({ cardId, columnId }: CommentInputProps) {
       };
       try {
         const response = await createComment(form);
-        setCommentList((prevState) => [...prevState, response.data]);
+        setCommentList((prevState: CommentServiceDto[]) => [...prevState, response.data as CommentServiceDto]);
         setCurrentComment("");
       } catch (error) {
         console.error(error);

@@ -107,7 +107,7 @@ function InviteDashboardTable({ getDashboards }: InviteDashboardTableProp) {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center gap-20 my-50">
-          <Image src="/images/no_invite.png" width={100} height={100} alt="초대 여부 이미지" />
+          <Image src="/images/no_invite.png" width={100} height={100} alt="초대 여부 이미지" priority />
           <p className="font-normal text-center font-Pretendard text-gray-9FA6 text-14 tablet:text-18">
             {invitedDashBoards.length > 0 ? "검색 결과가 없습니다." : "아직 초대받은 대시보드가 없습니다."}
           </p>
