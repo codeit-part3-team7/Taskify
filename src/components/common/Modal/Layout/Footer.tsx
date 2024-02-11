@@ -23,7 +23,6 @@ export const ModalFooter = ({ modalType, isFormData, onClose, onDelete, handleBu
 
   const formContext = useFormContext();
   const isValid = formContext && formContext.formState.isValid;
-  const isDirty = formContext && formContext.formState.isDirty;
 
   return (
     <footer
@@ -45,7 +44,7 @@ export const ModalFooter = ({ modalType, isFormData, onClose, onDelete, handleBu
             type="submit"
             buttonType="modal"
             onClick={formContext.handleSubmit(handleButtonClick)}
-            disabled={!isDirty || !isValid}>
+            disabled={!isValid}>
             {buttonMapping[modalType]}
           </Button>
         ) : (
