@@ -1,13 +1,9 @@
 import Image from "next/image";
 import { useState, MouseEvent, forwardRef, ReactNode } from "react";
-interface InputProps {
-  id: string;
-  type?: string;
-  placeholder?: string;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   isError?: boolean;
   auth?: boolean;
   autoComplete?: string;
-  onChange: () => void;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
