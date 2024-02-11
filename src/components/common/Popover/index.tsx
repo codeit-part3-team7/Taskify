@@ -16,7 +16,7 @@ export interface PopoverContent {
 
 interface PopoverProps {
   children: ReactNode;
-  cardId?: number;
+  cardId: number;
 }
 
 type ImageObject = {
@@ -53,48 +53,36 @@ function Popover({ children, cardId }: PopoverProps) {
         assigneeUserId: assignee.id,
         columnId: data.columnId,
       };
-
       if (selectedImage) {
         const imageUrl = await postImageToServer(selectedImage as File, formData.columnId);
         if (imageUrl) {
           formData.imageUrl = imageUrl;
         }
       }
-      const response = await card("put", cardId as number, formData);
 
-      if (response.data) {
-        setCardData((prevCardData) => {
-          let cardToUpdate: CardServiceResponseDto | null = null;
-          let originalColumnId: number | undefined;
+      const response = await card("put", cardId, formData);
+      const updateCard = response.data as CardServiceResponseDto;
 
-          const newCardDataWithoutCard = prevCardData.map((columnData) => {
-            const filteredCards = columnData.cards.filter((card) => {
-              if (card.id === cardId) {
-                cardToUpdate = card;
-                originalColumnId = columnData.columnId;
-                return false;
+      if (updateCard as CardServiceResponseDto) {
+        setCardData((prevState) => {
+          return prevState.map((column) => {
+            if (column.columnId === updateCard.columnId) {
+              const cardIndex = column.cards.findIndex((card) => card.id === updateCard.id);
+              if (cardIndex !== -1) {
+                // 카드가 현재 컬럼에 있음, 업데이트 실행
+                const updatedCards = [...column.cards];
+                updatedCards[cardIndex] = { ...updatedCards[cardIndex], ...updateCard };
+                return { ...column, cards: updatedCards };
+              } else {
+                // 업데이트된 카드가 이 컬럼에 새로 추가되어야 함
+                return { ...column, cards: [...column.cards, updateCard] };
               }
-              return true;
-            });
-
-            return { ...columnData, cards: filteredCards };
+            } else if (column.cards.some((card) => card.id === updateCard.id)) {
+              // 업데이트된 카드가 다른 컬럼에서 이 컬럼으로 이동해야 함
+              return { ...column, cards: column.cards.filter((card) => card.id !== updateCard.id) };
+            }
+            return column;
           });
-
-          if (cardToUpdate && originalColumnId !== data.columnId) {
-            const newCardDataWithCard = newCardDataWithoutCard.map((columnData) => {
-              if (columnData.columnId === data.columnId) {
-                return {
-                  ...columnData,
-                  cards: [...columnData.cards, { ...cardToUpdate, ...(response.data as CardServiceResponseDto) }],
-                };
-              }
-              return columnData;
-            });
-
-            return newCardDataWithCard;
-          }
-
-          return newCardDataWithoutCard;
         });
       }
     } catch (error) {

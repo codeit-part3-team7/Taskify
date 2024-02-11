@@ -57,13 +57,12 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
 
     const getColumnsData = async () => {
       const qs: FindColumnsRequestDto = { dashboardId };
-      const response = await findColumns(qs);
-      if (response.data) {
-        setColumnsData(response?.data.data as ColumnServiceResponseDto[]);
-        let allCardsData: CardState[] = [];
-
+      const { data: columns, errorMessage } = await findColumns(qs);
+      if (columns) {
+        setColumnsData(columns.data as ColumnServiceResponseDto[]);
+        const allCardsData: CardState[] = [];
         await Promise.all(
-          response.data.data.map(async (column: ColumnServiceResponseDto) => {
+          columns.data.map(async (column: ColumnServiceResponseDto) => {
             const response = await findCards({ columnId: column.id });
             if (response.data) {
               allCardsData.push({ columnId: column.id, cards: response.data.cards });
@@ -73,7 +72,7 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
 
         setCardData(allCardsData);
       }
-      if (response.errorMessage) {
+      if (errorMessage) {
         setAlertValue(true);
       }
     };
@@ -92,11 +91,7 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
       <BoardLayout dashboardList={dashboardList} dashboardHeader={header} scrollBtn>
         <div className="flex flex-col pc:flex-row">
           {columnsData?.map((column) => {
-            return (
-              <div key={column.id}>
-                <Column column={column} updateColumns={setColumnsData} />
-              </div>
-            );
+            return <Column key={column.id} column={column} updateColumns={setColumnsData} />;
           })}
         </div>
         <AddColumnButton updateColumns={setColumnsData} />
