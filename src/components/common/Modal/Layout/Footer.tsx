@@ -4,20 +4,12 @@ import Button from "../../Button";
 interface ModalFooterProps {
   modalType: "alert" | "create" | "update" | "delete" | "invite" | "success_profile" | "success_password";
   isFormData?: boolean;
-  hasOptionsbutton?: boolean;
   onClose: () => void;
   onDelete?: () => void;
   handleButtonClick: (data: FieldValues) => void;
 }
 
-export const ModalFooter = ({
-  modalType,
-  isFormData,
-  hasOptionsbutton,
-  onClose,
-  onDelete,
-  handleButtonClick,
-}: ModalFooterProps) => {
+export const ModalFooter = ({ modalType, isFormData, onClose, onDelete, handleButtonClick }: ModalFooterProps) => {
   const isAlert = modalType === "alert";
   const isUpdate = modalType === "update";
 
@@ -29,10 +21,9 @@ export const ModalFooter = ({
     invite: "초대",
   };
 
-  const {
-    formState: { isDirty, isValid },
-    handleSubmit,
-  } = useFormContext();
+  const formContext = useFormContext();
+  const isValid = formContext && formContext.formState.isValid;
+  const isDirty = formContext && formContext.formState.isDirty;
 
   return (
     <footer
@@ -48,17 +39,16 @@ export const ModalFooter = ({
             취소
           </Button>
         )}
-        {isFormData && (
+        {isFormData ? (
           <Button
             variant="filled"
             type="submit"
             buttonType="modal"
-            onClick={handleSubmit(handleButtonClick)}
+            onClick={formContext.handleSubmit(handleButtonClick)}
             disabled={!isDirty || !isValid}>
             {buttonMapping[modalType]}
           </Button>
-        )}
-        {!hasOptionsbutton && !isFormData && (
+        ) : (
           <Button variant="filled" buttonType="modal" onClick={handleButtonClick}>
             {buttonMapping[modalType]}
           </Button>

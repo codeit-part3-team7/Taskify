@@ -40,7 +40,7 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
   return (
     <FormProvider {...methods}>
       <Modal title={taskData?.title} onClose={onClose} headerContent={modalHeaderContent} hasOptionsbutton>
-        <div className="flex flex-col gap-24 tablet:flex-row w-327 tablet:w-680 pc:w-680">
+        <div className="flex flex-col gap-24 tablet:flex-row w-327 tablet:w-680 pc:w-680 ">
           <div className="flex w-full m-auto tablet:hidden">
             <TaskInfo data={taskData?.assignee as assignee} dueDate={taskData?.dueDate as Date} />
           </div>
@@ -55,8 +55,8 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
             <div className="h-auto font-normal text-black font-Pretendard text-14 rounded-6">
               {taskData?.description}
             </div>
-            <div className="flex items-center justify-center w-full h-auto tablet:w-450">
-              {taskData?.imageUrl && <Image src={taskData?.imageUrl} alt="테스트 이미지" width={450} height={260} />}
+            <div className="flex items-center justify-center w-full h-auto min-h-260 tablet:w-450 relative">
+              {taskData?.imageUrl && <Image src={taskData?.imageUrl} alt="테스트 이미지" fill objectFit="contain" />}
             </div>
             <CommentInput cardId={taskData.id} columnId={taskData?.columnId as number} />
           </div>

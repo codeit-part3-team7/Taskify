@@ -32,10 +32,8 @@ function Modal({
 
   const isDelete = modalType === "delete";
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target !== e.currentTarget) {
-      onClose();
-    }
+  const stopEventBubbling = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   const handleButtonClick = async (data: FieldValues) => {
@@ -79,10 +77,12 @@ function Modal({
     createPortal(
       <div
         className="fixed inset-0 flex items-center justify-center w-full h-full modal-bg bg-black-overlay z-modal"
-        onClick={handleOverlayClick}>
-        <div className="bg-white min-w-327 tablet:min-w-540 max-h-[90vh] overflow-auto rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto]">
-          <ModalHeader {...{ title, hasOptionsbutton, onClose, isDelete }}>{headerContent}</ModalHeader>
-          <div className="h-full overflow-auto ">{children}</div>
+        onClick={onClose}>
+        <div
+          className="bg-white min-w-327 tablet:min-w-540 max-h-[95vh] overflow-x-hidden rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto]"
+          onClick={stopEventBubbling}>
+          <ModalHeader {...{ title, hasOptionsbutton, isDelete }}>{headerContent}</ModalHeader>
+          <div className="h-full overflow-auto scrollbar-hide">{children}</div>
           {modalType && <ModalFooter {...{ modalType, isFormData, onClose, onDelete, handleButtonClick }} />}
         </div>
       </div>,

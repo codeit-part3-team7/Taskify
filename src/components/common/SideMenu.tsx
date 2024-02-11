@@ -79,7 +79,7 @@ function SideMenu({ dashboardList }: { dashboardList: DashboardApplicationServic
           <span className="font-semibold text-12 text-gray-7874 tablet:inline-block mobile:hidden">Dash Boards</span>
           <Image src="/images/add_box_gray.png" alt="대시보드 추가 버튼 이미지" width={20} height={20} />
         </div>
-        <div className="overflow-auto">
+        <div className="overflow-auto scrollbar-hide">
           {dashboardList?.map((dashboard: DashboardApplicationServiceResponseDto) => (
             <DashboardItem key={dashboard.id} {...dashboard} />
           ))}

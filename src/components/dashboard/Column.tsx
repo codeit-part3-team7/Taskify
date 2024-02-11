@@ -40,7 +40,7 @@ export const useCardList = () => {
 };
 function Column({ column, updateColumns }: ColumnProps) {
   const [cardList, setCardList] = useState<CardServiceFindResponseDto>({ cards: [], totalCount: 0, cursorId: null });
-  const [selectedImage, setSelectedImage] = useState<File | ImageObject>({ url: "", name: "", type: "" });
+  const [selectedImage, setSelectedImage] = useState<File | ImageObject | undefined>({ url: "", name: "", type: "" });
   const [columnUpdateModal, columnUpdateToggle, setColumnUpdateModal] = useToggle();
   const [todoModal, todoToggle, setTodoMdodal] = useToggle();
 
