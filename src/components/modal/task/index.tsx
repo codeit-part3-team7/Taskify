@@ -28,7 +28,7 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
 
   const modalHeaderContent = (
     <div className="flex items-center gap-15">
-      <Popover cardId={taskData.id as number}>
+      <Popover cardId={taskData.id}>
         <Image src="/images/kebab.png" alt="kebab" width={28} height={28} />
       </Popover>
       <button onClick={onClose}>
@@ -55,7 +55,8 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
             <div className="h-auto font-normal text-black font-Pretendard text-14 rounded-6">
               {taskData?.description}
             </div>
-            <div className="flex items-center justify-center w-full h-auto min-h-260 tablet:w-450 relative">
+            <div
+              className={`flex items-center justify-center w-full h-auto ${taskData?.imageUrl && "min-h-260"} tablet:w-450 relative`}>
               {taskData?.imageUrl && <Image src={taskData?.imageUrl} alt="테스트 이미지" fill objectFit="contain" />}
             </div>
             <CommentInput cardId={taskData.id} columnId={taskData?.columnId as number} />

@@ -1,20 +1,22 @@
-import { useEffect, useState, createContext, useContext, Dispatch, SetStateAction } from "react";
+import { useEffect, useState, createContext, Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/router";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
-import { ColumnServiceResponseDto, FindColumnsRequestDto } from "@/lib/services/columns/schema";
-import { dashboard } from "@/lib/services/dashboards";
-import { findColumns } from "@/lib/services/columns";
-import { memberList } from "@/lib/services/members";
-import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
-import { DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
-import DashboardHeader from "@/components/common/DashboardHeader";
-import BoardLayout from "@/layouts/board";
-import Column from "@/components/dashboard/Column";
 import AddColumnButton from "@/components/dashboard/AddColumnButton";
 import AlertModal from "@/components/modal/alert";
+import BoardLayout from "@/layouts/board";
+import Column from "@/components/dashboard/Column";
+import DashboardHeader from "@/components/common/DashboardHeader";
+import { findColumns } from "@/lib/services/columns";
+import { findCards } from "@/lib/services/cards";
+import { memberList } from "@/lib/services/members";
+import { dashboard } from "@/lib/services/dashboards";
 import { checkLogin } from "@/lib/util/checkLogin";
+import { extractTokenFromCookie } from "@/lib/util/extractTokenFromCookie";
+import { ColumnServiceResponseDto, FindColumnsRequestDto } from "@/lib/services/columns/schema";
+import { DashboardApplicationServiceResponseDto } from "@/lib/services/dashboards/schema";
+import { MemberApplicationServiceResponseDto } from "@/lib/services/members/schema";
+import { CardServiceResponseDto } from "@/lib/services/cards/schema";
 import { useDashboards } from "@/hooks/useDashboard";
 
 type DashboardProps = {
@@ -24,18 +26,28 @@ type DashboardProps = {
 interface DashboardContextType {
   members: MemberApplicationServiceResponseDto[];
   columnsData: ColumnServiceResponseDto[];
+  cardData: CardState[];
   setColumnsData: Dispatch<SetStateAction<ColumnServiceResponseDto[]>>;
+  setCardData: Dispatch<SetStateAction<CardState[]>>;
+}
+
+interface CardState {
+  columnId: number;
+  cards: CardServiceResponseDto[];
 }
 
 export const DashboardContext = createContext<DashboardContextType>({
   members: [],
   columnsData: [],
+  cardData: [{ columnId: 0, cards: [] }],
   setColumnsData: () => {},
+  setCardData: () => {},
 });
 
 export default function Dashboard({ members, dashboardData }: DashboardProps) {
   const [alertValue, setAlertValue] = useState(false);
   const [columnsData, setColumnsData] = useState<ColumnServiceResponseDto[]>([]);
+  const [cardData, setCardData] = useState<CardState[]>([{ columnId: 0, cards: [] }]);
 
   const router = useRouter();
   const dashboardId = Number(router.query.id);
@@ -48,6 +60,18 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
       const response = await findColumns(qs);
       if (response.data) {
         setColumnsData(response?.data.data as ColumnServiceResponseDto[]);
+        let allCardsData: CardState[] = [];
+
+        await Promise.all(
+          response.data.data.map(async (column: ColumnServiceResponseDto) => {
+            const response = await findCards({ columnId: column.id });
+            if (response.data) {
+              allCardsData.push({ columnId: column.id, cards: response.data.cards });
+            }
+          }),
+        );
+
+        setCardData(allCardsData);
       }
       if (response.errorMessage) {
         setAlertValue(true);
@@ -61,30 +85,25 @@ export default function Dashboard({ members, dashboardData }: DashboardProps) {
   const header = <DashboardHeader dashboardData={dashboardData} members={members} />;
 
   return (
-    <DashboardContext.Provider value={{ members, columnsData, setColumnsData }}>
+    <DashboardContext.Provider value={{ members, columnsData, cardData, setCardData, setColumnsData }}>
       <Head>
         <title>{dashboardData.title}</title>
       </Head>
       <BoardLayout dashboardList={dashboardList} dashboardHeader={header} scrollBtn>
         <div className="flex flex-col pc:flex-row">
-          <ColumnList />
+          {columnsData?.map((column) => {
+            return (
+              <div key={column.id}>
+                <Column column={column} updateColumns={setColumnsData} />
+              </div>
+            );
+          })}
         </div>
         <AddColumnButton updateColumns={setColumnsData} />
       </BoardLayout>
       {alertValue && <AlertModal modalType="alert" alertType="serverError" onClose={() => setAlertValue(false)} />}
     </DashboardContext.Provider>
   );
-}
-
-function ColumnList() {
-  const { columnsData, setColumnsData } = useContext(DashboardContext);
-  return columnsData?.map((column) => {
-    return (
-      <div key={column.id}>
-        <Column column={column} updateColumns={setColumnsData} />
-      </div>
-    );
-  });
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

@@ -7,7 +7,6 @@ import AlertModal from "@/components/modal/alert";
 import { card } from "@/lib/services/cards";
 import { postImageToServer } from "@/lib/util/postImageToServer";
 import { CardServiceResponseDto, UpdateCardRequestDto } from "@/lib/services/cards/schema";
-import { useCardList } from "@/components/dashboard/Column";
 import { DashboardContext } from "@/pages/dashboard/[id]";
 
 export interface PopoverContent {
@@ -32,8 +31,7 @@ function Popover({ children, cardId }: PopoverProps) {
   const [updateValue, updateToggle, setUpdateValue] = useToggle();
   const [deleteValue, deleteToggle, setDeleteValue] = useToggle();
   const popoverRef = useRef<HTMLDivElement>(null);
-  const { setCardList } = useCardList();
-  const { setColumnsData } = useContext(DashboardContext);
+  const { setCardData } = useContext(DashboardContext);
 
   const MODAL_POPOVER = [
     {
@@ -53,23 +51,52 @@ function Popover({ children, cardId }: PopoverProps) {
       const formData: UpdateCardRequestDto = {
         ...(rest as UpdateCardRequestDto),
         assigneeUserId: assignee.id,
+        columnId: data.columnId,
       };
+
       if (selectedImage) {
-        const imageUrl = await postImageToServer(selectedImage as File, data.columnId);
+        const imageUrl = await postImageToServer(selectedImage as File, formData.columnId);
         if (imageUrl) {
           formData.imageUrl = imageUrl;
         }
       }
       const response = await card("put", cardId as number, formData);
-      if (response.data!) {
-        setCardList((prevState) => ({
-          ...prevState,
-          cards: prevState.cards.map((card) =>
-            card.id === cardId ? { ...card, ...(response.data as CardServiceResponseDto) } : card,
-          ),
-        }));
+
+      if (response.data) {
+        setCardData((prevCardData) => {
+          let cardToUpdate: CardServiceResponseDto | null = null;
+          let originalColumnId: number | undefined;
+
+          const newCardDataWithoutCard = prevCardData.map((columnData) => {
+            const filteredCards = columnData.cards.filter((card) => {
+              if (card.id === cardId) {
+                cardToUpdate = card;
+                originalColumnId = columnData.columnId;
+                return false;
+              }
+              return true;
+            });
+
+            return { ...columnData, cards: filteredCards };
+          });
+
+          if (cardToUpdate && originalColumnId !== data.columnId) {
+            const newCardDataWithCard = newCardDataWithoutCard.map((columnData) => {
+              if (columnData.columnId === data.columnId) {
+                return {
+                  ...columnData,
+                  cards: [...columnData.cards, { ...cardToUpdate, ...(response.data as CardServiceResponseDto) }],
+                };
+              }
+              return columnData;
+            });
+
+            return newCardDataWithCard;
+          }
+
+          return newCardDataWithoutCard;
+        });
       }
-      setColumnsData((prev) => prev.map((item) => ({ ...item })));
     } catch (error) {
       console.error(error);
     }
@@ -78,11 +105,12 @@ function Popover({ children, cardId }: PopoverProps) {
   const cardDelete = async () => {
     try {
       await card("delete", cardId as number);
-      setCardList((prevState) => ({
-        ...prevState,
-        cards: prevState.cards.filter((card) => card.id !== cardId),
-        totalCount: prevState.totalCount - 1,
-      }));
+      setCardData((prevCardData) => {
+        return prevCardData.map((columnData) => {
+          const filteredCards = columnData.cards.filter((card) => card.id !== cardId);
+          return { ...columnData, cards: filteredCards };
+        });
+      });
     } catch (error) {
       console.error(error);
     }
