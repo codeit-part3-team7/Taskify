@@ -76,10 +76,10 @@ function Modal({
     portalRoot &&
     createPortal(
       <div
-        className="fixed inset-0 flex items-center justify-center w-full h-full modal-bg bg-black-overlay z-modal"
+        className="fixed inset-0 flex items-center justify-center w-full h-full modal-bg bg-black-overlay z-overlay"
         onClick={onClose}>
         <div
-          className="bg-white min-w-327 tablet:min-w-540 max-h-[95vh] overflow-x-hidden rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto]"
+          className="bg-white min-w-327 tablet:min-w-540 max-h-[95vh] overflow-x-hidden rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto] z-modal"
           onClick={stopEventBubbling}>
           <ModalHeader {...{ title, hasOptionsbutton, isDelete }}>{headerContent}</ModalHeader>
           <div className="h-full overflow-auto scrollbar-hide">{children}</div>
