@@ -90,7 +90,7 @@ function Dropdown({ defaultIndex, options, filteringTerm, autoComplete, onChange
   }, [autoComplete, isInputMode]);
 
   return (
-    <div ref={ref} className="relative w-220 h-48">
+    <div ref={ref} className="relative tablet:w-220 h-48">
       {autoComplete && isInputMode ? (
         <input
           ref={inputRef}

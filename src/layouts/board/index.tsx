@@ -82,7 +82,7 @@ function BoardLayout({ dashboardList, dashboardHeader, children, scrollBtn }: Bo
           <SideMenu dashboardList={dashboardList} />
         </div>
         <div className="col-span-1">{dashboardHeader}</div>
-        <div ref={containerRef} className="col-span-1 overflow-auto h-[calc(100vh-7rem)] scroll-smooth scrollbar-hide">
+        <div ref={containerRef} className="col-span-1 overflow-auto h-[calc(100vh-7rem)] scroll-smooth">
           {children}
         </div>
       </div>

@@ -6,7 +6,7 @@ export default function Document() {
       <title>Taskify</title>
       <link rel="icon" href="/images/logo.png" />
       <Head />
-      <body className="scrollbar-hide">
+      <body>
         <Main />
         <NextScript />
       </body>

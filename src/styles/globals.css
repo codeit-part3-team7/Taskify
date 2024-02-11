@@ -24,6 +24,25 @@
     -webkit-box-shadow: 0 0 0px 1000px #fff inset;
   }
 
+  ::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5534da; /* 스크롤바 핸들의 배경 색상 (Violet) */
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1effd; /* 스크롤바 트랙의 배경 색상 */
+  }
+
+  .scrollbar-hide {
+    scrollbar-gutter: stable both-edges;
+  }
+
   /* 스크롤바 숨김 */
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
