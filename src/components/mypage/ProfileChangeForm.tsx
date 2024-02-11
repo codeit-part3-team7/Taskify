@@ -38,8 +38,7 @@ function ProfileChangeForm() {
 
         // 삭제하기 버튼을 눌렀을 경우
       } else if (typeof data.profileImageUrl === "undefined") {
-        console.log("아무것도 선택하지 않았습니다.", data.profileImageUrl);
-
+        // console.log("아무것도 선택하지 않았습니다.", data.profileImageUrl);
         // 기존 이미지 주소가 있을 경우
       } else if (typeof data.profileImageUrl === "string") {
         formData.profileImageUrl = data.profileImageUrl;

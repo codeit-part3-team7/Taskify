@@ -26,7 +26,7 @@ type ImageObject = {
 };
 
 function Column({ column, updateColumns }: ColumnProps) {
-  const [selectedImage, setSelectedImage] = useState<File | ImageObject | undefined>({ url: "", name: "", type: "" });
+  const [selectedImage, setSelectedImage] = useState<File | ImageObject | undefined>(undefined);
   const { cardData, setCardData } = useContext(DashboardContext);
   const [columnUpdateModal, columnUpdateToggle, setColumnUpdateModal] = useToggle();
   const [todoModal, todoToggle, setTodoMdodal] = useToggle();

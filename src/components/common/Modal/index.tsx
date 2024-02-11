@@ -82,7 +82,7 @@ function Modal({
           className="bg-white min-w-327 tablet:min-w-540 max-h-[95vh] overflow-x-hidden rounded-5 px-20 py-28 tablet:px-28 grid grid-rows-[auto,1fr,auto] z-modal"
           onClick={stopEventBubbling}>
           <ModalHeader {...{ title, hasOptionsbutton, isDelete }}>{headerContent}</ModalHeader>
-          <div className="flex flex-col items-center h-full tablet:w-730 overflow-auto scrollbar-hide">{children}</div>
+          <div className="h-full overflow-auto">{children}</div>
           {modalType && <ModalFooter {...{ modalType, isFormData, onClose, onDelete, handleButtonClick }} />}
         </div>
       </div>,

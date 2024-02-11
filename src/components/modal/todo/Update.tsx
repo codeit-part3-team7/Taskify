@@ -50,7 +50,7 @@ function UpdateTodoModal({ cardId, onClose, callback, setSelectedImage }: Update
   return (
     <FormProvider {...methods}>
       <Modal title="할 일 수정" modalType={"update"} onClose={onClose} callback={callback} isFormData>
-        <div className="flex flex-col gap-32">
+        <div className="flex flex-col gap-32 w-full">
           <div className="tablet:flex gap-16">
             <Controller
               name="columnId"

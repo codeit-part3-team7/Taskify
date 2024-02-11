@@ -35,7 +35,6 @@ function MemberTable({
   }, [getMembers]);
 
   const handleDeleteMember = async (memberId: number) => {
-    console.log(memberId);
     try {
       await deleteMember(memberId);
       // 현재 멤버 목록을 조회하기 (prev)

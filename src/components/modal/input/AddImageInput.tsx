@@ -33,7 +33,7 @@ function AddImageInput({
       const totalImages = addImages.length + newImages.length;
       if (totalImages <= 4) {
         setAddImages((prevImages) => [...newImages, ...prevImages]);
-        console.log("선택된 파일:", newImages);
+        // console.log("선택된 파일:", newImages);
       } else {
         alert("이미지 추가는 최대 4개까지 가능합니다.");
       }

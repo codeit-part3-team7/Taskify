@@ -29,26 +29,31 @@ function CreateTodoModal({ onClose, callback, setSelectedImage }: CreateTodoModa
   return (
     <FormProvider {...methods}>
       <Modal title="할 일 생성" modalType={"create"} onClose={onClose} callback={callback} isFormData>
-        <div className="flex flex-col gap-32">
-          <Controller
-            name="assigneeUserId"
-            control={methods.control}
-            defaultValue={defaultMemberId}
-            render={({ field }) => (
-              <Dropdown
-                options={memberList}
-                onChange={(selectedId) => {
-                  const selectedMember = memberList.find((member) => member.id === selectedId);
-                  if (selectedMember) {
-                    field.onChange(selectedMember.userId);
-                  }
-                }}
-                defaultIndex={memberList.findIndex((member) => member.userId === field.value)}
-                filteringTerm="nickname"
-                autoComplete
-              />
-            )}
-          />
+        <div className="flex flex-col gap-32 w-full">
+          <div>
+            <Controller
+              name="assigneeUserId"
+              control={methods.control}
+              defaultValue={defaultMemberId}
+              render={({ field }) => (
+                <div className="flex flex-col gap-10">
+                  <label className="text-16 tablet:text-18">담당자</label>
+                  <Dropdown
+                    options={memberList}
+                    onChange={(selectedId) => {
+                      const selectedMember = memberList.find((member) => member.id === selectedId);
+                      if (selectedMember) {
+                        field.onChange(selectedMember.userId);
+                      }
+                    }}
+                    defaultIndex={memberList.findIndex((member) => member.userId === field.value)}
+                    filteringTerm="nickname"
+                    autoComplete
+                  />
+                </div>
+              )}
+            />
+          </div>
           <FormInputField labelName="title" labelTitle="제목" rules={rules} required />
           <FormInputField labelName="description" labelTitle="설명" rules={rules} textArea required />
           <Controller
