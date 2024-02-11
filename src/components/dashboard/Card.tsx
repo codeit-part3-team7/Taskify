@@ -22,14 +22,7 @@ const Card = ({ cardData }: CardProps) => {
       onClick={taskToggle}>
       {cardData.imageUrl && (
         <div className="relative w-full overflow-hidden shrink-0 pc:w-274 tablet:w-91 h-152 pc:h-160 tablet:h-53 rounded-6">
-          <Image
-            fill
-            src={cardData.imageUrl}
-            alt="카드 이미지"
-            style={{ objectFit: "contain" }}
-            sizes="auto"
-            priority
-          />
+          <Image fill src={cardData.imageUrl} alt="카드 이미지" style={{ objectFit: "cover" }} sizes="auto" priority />
         </div>
       )}
       <div className="flex flex-wrap w-full pc:flex-col tablet:flex-row tablet:gap-y-10 gap-y-6 items-end tablet:items-stretch">

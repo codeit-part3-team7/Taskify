@@ -57,7 +57,9 @@ function TaskModal({ taskData, onClose }: TaskModalProps) {
             </div>
             <div
               className={`flex items-center justify-center w-full h-auto ${taskData?.imageUrl && "min-h-260"} tablet:w-450 relative`}>
-              {taskData?.imageUrl && <Image src={taskData?.imageUrl} alt="테스트 이미지" fill objectFit="contain" />}
+              {taskData?.imageUrl && (
+                <Image src={taskData?.imageUrl} alt="테스트 이미지" fill style={{ objectFit: "cover" }} sizes="auto" />
+              )}
             </div>
             <CommentInput cardId={taskData.id} columnId={taskData?.columnId as number} />
           </div>
