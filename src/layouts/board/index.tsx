@@ -4,14 +4,12 @@ import {
   SetStateAction,
   createContext,
   useContext,
-  useEffect,
   useRef,
   useState,
   useLayoutEffect,
 } from "react";
 import { DashboardContext } from "@/pages/dashboard/[id]";
 import { useWindowSize } from "usehooks-ts";
-import { useRouter } from "next/router";
 import { LeftScrollButton, RightScrollButton } from "@/components/dashboard/ScrollButton";
 import { useEventListener } from "usehooks-ts";
 import { UserServiceResponseDto } from "@/lib/services/auth/schema";
@@ -49,9 +47,6 @@ function BoardLayout({ dashboardList, dashboardHeader, children, scrollBtn }: Bo
   const [myData, setMyData] = useState<UserServiceResponseDto>({} as UserServiceResponseDto);
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [rightButtonToggle, setRightButtonToggle] = useState(true);
-
-  const router = useRouter();
-  const dashboardId = router.query.id;
 
   const { columnsData } = useContext(DashboardContext);
 
@@ -95,7 +90,6 @@ function BoardLayout({ dashboardList, dashboardHeader, children, scrollBtn }: Bo
       if (containerRef.current) {
         containerRef.current.style.setProperty("scroll-behavior", "auto");
         containerRef.current.scrollTo(0, 0);
-        console.log(scrollPosition);
         setScrollPosition(0);
         setRightButtonToggle(true);
         return;
@@ -104,7 +98,7 @@ function BoardLayout({ dashboardList, dashboardHeader, children, scrollBtn }: Bo
 
     handleScrollReset();
     fetchMyData();
-  }, [dashboardId]);
+  }, [columnsData]);
 
   return (
     <MyDataContext.Provider value={{ myData, setMyData }}>
