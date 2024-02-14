@@ -36,7 +36,7 @@ function ImageInput({ type, imgUrl, register, setValue }: ImgaeInputProps) {
     <div className="relative">
       {avatarPreview && (
         <div
-          className="flex justify-center items-center absolute top-[-10px] left-[-10px] z-modal h-28 w-28 rounded-50 bg-violet text-white border-1 border-violet-F1EF"
+          className="flex justify-center items-center absolute top-[-10px] left-[-10px] z-popover h-28 w-28 rounded-50 bg-violet text-white border-1 border-violet-F1EF"
           onClick={handleFileDelete}>
           <Image src="/images/close_white.png" alt="삭제 버튼 이미지" width="12" height="12" />
         </div>
